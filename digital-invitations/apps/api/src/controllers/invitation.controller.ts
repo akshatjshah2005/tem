@@ -109,7 +109,13 @@ export const getInvitation = asyncHandler(async (req: Request, res: Response) =>
       media: {
         orderBy: { galleryOrder: 'asc' }
       },
-      whatsappMessage: true
+      whatsappMessage: true,
+      user: {
+        select: { name: true }
+      },
+      _count: {
+        select: { guests: true, events: true }
+      }
     }
   });
 
