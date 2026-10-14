@@ -58,9 +58,33 @@ export default function CreateInvitationPage() {
   const fetchCategories = async () => {
     try {
       const response = await templateAPI.getCategories();
-      setCategories(response.data.data);
-    } catch (error) {
-      toast.error('Failed to load categories');
+      const loadedCategories: Category[] = response.data.data || [];
+      setCategories(loadedCategories);
+
+      // Preserve the category and template selected from the public template gallery.
+      if (typeof window !== 'undefined') {
+        const query = new URLSearchParams(window.location.search);
+        const requestedCategory = query.get('category');
+        const requestedTemplate = query.get('template');
+        const matchedCategory = loadedCategories.find((item) => item.slug === requestedCategory);
+
+        if (matchedCategory) {
+          setFormData((current) => ({
+            ...current,
+            categoryId: matchedCategory.id,
+            categorySlug: matchedCategory.slug,
+            templateId: requestedTemplate || '',
+          }));
+          try {
+            const templateResponse = await templateAPI.getAll({ category: matchedCategory.slug, limit: 100 });
+            setTemplates(templateResponse.data.data || []);
+          } catch {
+            toast.error('The selected category loaded, but its templates could not be loaded.');
+          }
+        }
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error || error?.response?.data?.message || 'Failed to load categories');
     } finally {
       setLoading(false);
     }
@@ -152,7 +176,7 @@ export default function CreateInvitationPage() {
             </div>
             <div className="mt-6 flex justify-end">
               <button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(formData.categorySlug && formData.templateId ? 3 : 2)}
                 disabled={!formData.name.trim()}
                 className="bg-primary-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
