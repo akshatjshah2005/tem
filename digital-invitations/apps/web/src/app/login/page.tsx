@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const candidate = new URLSearchParams(window.location.search).get('next');
-    if (candidate && candidate.startsWith('/') && !candidate.startsWith('//') && !candidate.includes('\\\\')) {
+    if (candidate && candidate.startsWith('/') && !candidate.startsWith('//') && !candidate.includes(String.fromCharCode(92))) {
       setNextPath(candidate);
     }
   }, []);
