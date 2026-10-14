@@ -85,7 +85,17 @@ export default function RegisterPage() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-primary-600 hover:text-primary-500">
+            <Link
+              href="/login"
+              onClick={(event) => {
+                const destination = new URLSearchParams(window.location.search).get('next');
+                if (destination && destination.startsWith('/') && !destination.startsWith('//')) {
+                  event.preventDefault();
+                  router.push(`/login?next=${encodeURIComponent(destination)}`);
+                }
+              }}
+              className="font-medium text-primary-600 hover:text-primary-500"
+            >
               Sign in
             </Link>
           </p>
