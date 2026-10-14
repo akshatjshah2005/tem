@@ -20,6 +20,8 @@ interface Invitation {
   description?: string;
   whatsappMessageTemplate?: string;
   metadata?: any;
+  content?: Record<string, any>;
+  personalizationEnabled?: boolean;
   template?: {
     id: string;
     name: string;
@@ -82,6 +84,18 @@ export default function InvitationEditorPage() {
   const [showEventForm, setShowEventForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
+  // Re-sync the editor from the loaded invitation. This keeps controlled inputs
+  // populated after refreshes and after invitation/event/media mutations.
+  useEffect(() => {
+    if (!invitation) return;
+    setFormData({
+      name: invitation.name ?? '',
+      description: invitation.description ?? '',
+      isPersonalized: Boolean(invitation.isPersonalized ?? invitation.personalizationEnabled),
+    });
+    setContent(invitation.content && typeof invitation.content === 'object' ? invitation.content : {});
+  }, [invitation]);
+
   useEffect(() => {
     if (!authLoading && !user) {
       router.push('/login');
@@ -98,13 +112,17 @@ export default function InvitationEditorPage() {
     try {
       setLoading(true);
       const response = await invitationAPI.getOne(params?.id as string);
-      setInvitation(response.data.data);
+      const loadedInvitation = response.data?.data;
+      if (!loadedInvitation?.id) {
+        throw new Error('The invitation response did not contain an invitation.');
+      }
+      setInvitation(loadedInvitation);
       setFormData({
-        name: response.data.data.name,
-        description: response.data.data.description || '',
-        isPersonalized: response.data.data.isPersonalized,
+        name: loadedInvitation.name ?? '',
+        description: loadedInvitation.description ?? '',
+        isPersonalized: Boolean(loadedInvitation.isPersonalized ?? loadedInvitation.personalizationEnabled),
       });
-      setContent(response.data.data.content || {});
+      setContent(loadedInvitation.content && typeof loadedInvitation.content === 'object' ? loadedInvitation.content : {});
     } catch (error) {
       toast.error('Failed to load invitation');
       router.push('/dashboard');
@@ -117,12 +135,18 @@ export default function InvitationEditorPage() {
     if (!invitation) return;
 
     try {
+      if (!formData.name.trim()) {
+        toast.error('Please enter an invitation name.');
+        return;
+      }
       setSaving(true);
-      await invitationAPI.update(invitation.id, formData);
-      toast.success('Invitation updated');
-      fetchInvitation();
-    } catch (error) {
-      toast.error('Failed to update invitation');
+      const payload = { ...formData, name: formData.name.trim() };
+      const response = await invitationAPI.update(invitation.id, payload);
+      setInvitation((current) => current ? { ...current, ...response.data.data } : current);
+      setFormData((current) => ({ ...current, name: payload.name }));
+      toast.success('Invitation details saved.');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Could not save invitation details.');
     } finally {
       setSaving(false);
     }
@@ -133,11 +157,12 @@ export default function InvitationEditorPage() {
 
     try {
       setSaving(true);
-      await invitationAPI.update(invitation.id, { content });
-      toast.success('Invitation content saved');
-      fetchInvitation();
-    } catch (error) {
-      toast.error('Failed to save content');
+      const response = await invitationAPI.update(invitation.id, { content });
+      setInvitation((current) => current ? { ...current, ...response.data.data } : current);
+      setContent(response.data.data?.content || content);
+      toast.success('Invitation content saved.');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Could not save invitation content.');
     } finally {
       setSaving(false);
     }
@@ -350,7 +375,7 @@ export default function InvitationEditorPage() {
             </div>
             <div className="flex items-center space-x-3">
               <Link
-                href={`/i/${invitation.slug}`}
+                href={`/dashboard/invitations/${invitation.id}/preview`}
                 target="_blank"
                 className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
               >
