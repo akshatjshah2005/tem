@@ -129,14 +129,25 @@ export default function DashboardPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">My Invitations</h2>
-          <Link
-            href="/dashboard/create"
-            className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
-          >
-            + Create New
-          </Link>
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">My Invitations</h2>
+            <p className="mt-1 text-sm text-gray-500">Create, personalize, and share your next celebration.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/templates"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Browse templates
+            </Link>
+            <Link
+              href="/dashboard/create"
+              className="inline-flex items-center justify-center rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700"
+            >
+              + Create New
+            </Link>
+          </div>
         </div>
 
         {/* Invitations List */}
