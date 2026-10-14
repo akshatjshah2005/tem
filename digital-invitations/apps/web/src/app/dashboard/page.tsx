@@ -161,7 +161,7 @@ export default function DashboardPage() {
                 onEdit={() => router.push(`/dashboard/invitations/${invitation.id}`)}
                 onDelete={() => handleDelete(invitation.id)}
                 onDuplicate={() => handleDuplicate(invitation.id)}
-                onView={() => window.open(`/i/${invitation.slug}`, '_blank')}
+                onView={() => window.open(`/dashboard/invitations/${invitation.id}/preview`, '_blank', 'noopener,noreferrer')}
               />
             ))}
           </div>
