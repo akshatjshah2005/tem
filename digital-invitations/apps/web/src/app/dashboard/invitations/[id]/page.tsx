@@ -91,7 +91,7 @@ export default function InvitationEditorPage() {
     setFormData({
       name: invitation.name ?? '',
       description: invitation.description ?? '',
-      isPersonalized: Boolean(invitation.isPersonalized ?? invitation.personalizationEnabled),
+      isPersonalized: Boolean(invitation.isPersonalized || invitation.personalizationEnabled),
     });
     setContent(invitation.content && typeof invitation.content === 'object' ? invitation.content : {});
   }, [invitation]);
@@ -120,7 +120,7 @@ export default function InvitationEditorPage() {
       setFormData({
         name: loadedInvitation.name ?? '',
         description: loadedInvitation.description ?? '',
-        isPersonalized: Boolean(loadedInvitation.isPersonalized ?? loadedInvitation.personalizationEnabled),
+        isPersonalized: Boolean(loadedInvitation.isPersonalized || loadedInvitation.personalizationEnabled),
       });
       setContent(loadedInvitation.content && typeof loadedInvitation.content === 'object' ? loadedInvitation.content : {});
     } catch (error) {
@@ -140,7 +140,12 @@ export default function InvitationEditorPage() {
         return;
       }
       setSaving(true);
-      const payload = { ...formData, name: formData.name.trim() };
+      const payload = {
+        ...formData,
+        name: formData.name.trim(),
+        isPersonalized: formData.isPersonalized,
+        personalizationEnabled: formData.isPersonalized,
+      };
       const response = await invitationAPI.update(invitation.id, payload);
       setInvitation((current) => current ? { ...current, ...response.data.data } : current);
       setFormData((current) => ({ ...current, name: payload.name }));
