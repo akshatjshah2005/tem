@@ -299,11 +299,11 @@ export default function InvitationEditorPage() {
     const placeholder = field?.placeholder || '';
     const value = content[key] ?? field?.default ?? (type === 'boolean' ? false : '');
     const inputClasses =
-      'w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500';
+      'w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-primary-500 focus:border-primary-500';
 
     return (
       <div key={key}>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -318,12 +318,12 @@ export default function InvitationEditorPage() {
             className={inputClasses}
           />
         ) : type === 'boolean' ? (
-          <label className="flex items-center gap-2 text-sm text-gray-700">
+          <label className="flex items-center gap-2 text-sm text-slate-700">
             <input
               type="checkbox"
               checked={Boolean(value)}
               onChange={(e) => setContentValue(key, e.target.checked)}
-              className="h-4 w-4 text-primary-600 border-gray-300 rounded"
+              className="h-4 w-4 text-primary-600 border-slate-300 rounded"
             />
             {field?.hint || 'Enabled'}
           </label>
@@ -355,17 +355,17 @@ export default function InvitationEditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center space-x-4">
-              <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
+              <Link href="/dashboard" className="text-slate-600 hover:text-slate-900">
                 ← Back
               </Link>
               <span className="text-gray-300">|</span>
-              <h1 className="text-lg font-semibold text-gray-900 truncate max-w-md">
+              <h1 className="text-lg font-semibold text-slate-900 truncate max-w-md">
                 {invitation.name}
               </h1>
               <span
@@ -382,7 +382,7 @@ export default function InvitationEditorPage() {
               <Link
                 href={`/dashboard/invitations/${invitation.id}/preview`}
                 target="_blank"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                className="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium"
               >
                 Preview
               </Link>
@@ -404,16 +404,16 @@ export default function InvitationEditorPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-8">
-          <nav className="flex space-x-8">
+        <div className="border-b border-slate-200 mb-8">
+          <nav className="flex max-w-full gap-5 overflow-x-auto px-1 sm:gap-8">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
                   activeTab === tab.id
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                 }`}
               >
                 <span className="mr-2">{tab.icon}</span>
@@ -424,32 +424,32 @@ export default function InvitationEditorPage() {
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           {/* Details Tab */}
           {activeTab === 'details' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Invitation Details</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Invitation Details</h2>
               <div className="max-w-2xl space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Invitation Name
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Description
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
                 <div className="flex items-center">
@@ -458,9 +458,9 @@ export default function InvitationEditorPage() {
                     id="personalized"
                     checked={formData.isPersonalized}
                     onChange={(e) => setFormData({ ...formData, isPersonalized: e.target.checked })}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
                   />
-                  <label htmlFor="personalized" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="personalized" className="ml-2 text-sm text-slate-700">
                     Enable guest personalization
                   </label>
                 </div>
@@ -477,10 +477,10 @@ export default function InvitationEditorPage() {
 
               {/* Template Info */}
               {invitation.template && (
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Template</h3>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-gray-700">
+                <div className="mt-8 pt-6 border-t border-slate-200">
+                  <h3 className="text-lg font-medium text-slate-900 mb-4">Template</h3>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <p className="text-slate-700">
                       <span className="font-medium">Template:</span> {invitation.template.name}
                     </p>
                   </div>
@@ -494,8 +494,8 @@ export default function InvitationEditorPage() {
             <div className="space-y-6">
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Invitation Content</h2>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <h2 className="text-xl font-semibold text-slate-900">Invitation Content</h2>
+                  <p className="text-sm text-slate-500 mt-1">
                     Fields are defined by the selected template
                     {invitation.template ? ` (${invitation.template.name})` : ''}.
                   </p>
@@ -510,10 +510,10 @@ export default function InvitationEditorPage() {
               </div>
 
               {editableFieldKeys.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <div className="text-center py-12 bg-slate-50 rounded-lg">
                   <div className="text-4xl mb-4">✍️</div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No content fields</h3>
-                  <p className="text-gray-500">
+                  <h3 className="text-lg font-medium text-slate-900 mb-2">No content fields</h3>
+                  <p className="text-slate-500">
                     This template does not expose any editable content fields.
                   </p>
                 </div>
@@ -527,7 +527,7 @@ export default function InvitationEditorPage() {
           {activeTab === 'events' && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">Events</h2>
+                <h2 className="text-xl font-semibold text-slate-900">Events</h2>
                 <button
                   onClick={() => setShowEventForm(true)}
                   className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
@@ -537,10 +537,10 @@ export default function InvitationEditorPage() {
               </div>
 
               {invitation.events.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <div className="text-center py-12 bg-slate-50 rounded-lg">
                   <div className="text-4xl mb-4">📅</div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No events yet</h3>
-                  <p className="text-gray-500 mb-4">Add events to your invitation</p>
+                  <h3 className="text-lg font-medium text-slate-900 mb-2">No events yet</h3>
+                  <p className="text-slate-500 mb-4">Add events to your invitation</p>
                   <button
                     onClick={() => setShowEventForm(true)}
                     className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
@@ -553,15 +553,15 @@ export default function InvitationEditorPage() {
                   {invitation.events.map((event, index) => (
                     <div
                       key={event.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:border-gray-300"
+                      className="border border-slate-200 rounded-lg p-4 hover:border-slate-300"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
-                            <span className="text-gray-400 font-medium">#{index + 1}</span>
-                            <h3 className="font-medium text-gray-900">{event.name}</h3>
+                            <span className="text-slate-400 font-medium">#{index + 1}</span>
+                            <h3 className="font-medium text-slate-900">{event.name}</h3>
                           </div>
-                          <div className="mt-2 text-sm text-gray-600 space-y-1">
+                          <div className="mt-2 text-sm text-slate-600 space-y-1">
                             <p>
                               📅 {formatDateOnly(event.date)}
                             </p>
@@ -569,13 +569,13 @@ export default function InvitationEditorPage() {
                               <p>🕐 {formatTimeRange(event.startTime, event.endTime)}</p>
                             )}
                             {event.venueName && <p>📍 {event.venueName}</p>}
-                            {event.description && <p className="text-gray-500">{event.description}</p>}
+                            {event.description && <p className="text-slate-500">{event.description}</p>}
                           </div>
                         </div>
                         <div className="flex space-x-2 ml-4">
                           <button
                             onClick={() => handleEditEvent(event)}
-                            className="text-gray-600 hover:text-gray-900 px-2 py-1 text-sm"
+                            className="text-slate-600 hover:text-slate-900 px-2 py-1 text-sm"
                           >
                             Edit
                           </button>
@@ -597,7 +597,7 @@ export default function InvitationEditorPage() {
           {/* Media Tab */}
           {activeTab === 'media' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Media</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Media</h2>
               <MediaUploader
                 invitationId={invitation.id}
                 media={invitation.media}
@@ -612,7 +612,7 @@ export default function InvitationEditorPage() {
           {/* WhatsApp Tab */}
           {activeTab === 'whatsapp' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">WhatsApp Message</h2>
+              <h2 className="text-xl font-semibold text-slate-900">WhatsApp Message</h2>
               <WhatsAppMessageEditor
                 invitationId={invitation.id}
                 invitation={invitation}
@@ -624,10 +624,10 @@ export default function InvitationEditorPage() {
           {/* Settings Tab */}
           {activeTab === 'settings' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Settings</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Settings</h2>
               <div className="max-w-2xl space-y-6">
-                <div className="pt-4 border-t border-gray-200">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Danger Zone</h3>
+                <div className="pt-4 border-t border-slate-200">
+                  <h3 className="text-lg font-medium text-slate-900 mb-4">Danger Zone</h3>
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <p className="text-red-700 mb-4">
                       Deleting this invitation will remove all associated data including guests, events, and media.
