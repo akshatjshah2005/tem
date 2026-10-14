@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +9,15 @@ import toast from 'react-hot-toast';
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const [nextPath, setNextPath] = useState('/dashboard');
+
+  useEffect(() => {
+    const candidate = new URLSearchParams(window.location.search).get('next');
+    if (candidate && candidate.startsWith('/') && !candidate.startsWith('//') && !candidate.includes('\\\\')) {
+      setNextPath(candidate);
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,7 +30,7 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.password);
-      router.push('/dashboard');
+      router.push(nextPath);
     } catch (error: any) {
       toast.error(error.message || 'Login failed');
     } finally {
@@ -41,7 +50,7 @@ export default function LoginPage() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <Link href="/register" className="font-medium text-primary-600 hover:text-primary-500">
+            <Link href={`/register?next=${encodeURIComponent(nextPath)}`} className="font-medium text-primary-600 hover:text-primary-500">
               create a new account
             </Link>
           </p>
