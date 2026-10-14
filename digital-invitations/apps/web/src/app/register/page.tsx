@@ -64,7 +64,7 @@ export default function RegisterPage() {
         password: formData.password,
       });
       const candidate = new URLSearchParams(window.location.search).get('next');
-      const destination = candidate && candidate.startsWith('/') && !candidate.startsWith('//') ? candidate : '/dashboard';
+      const destination = candidate && candidate.startsWith('/') && !candidate.startsWith('//') && !candidate.includes(String.fromCharCode(92)) ? candidate : '/dashboard';
       router.push(destination);
     } catch (error: any) {
       toast.error(error.message || 'Registration failed');
