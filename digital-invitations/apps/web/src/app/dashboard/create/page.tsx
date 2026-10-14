@@ -46,8 +46,9 @@ export default function CreateInvitationPage() {
   });
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
+    if (!authLoading && !user && typeof window !== 'undefined') {
+      const returnTo = `${window.location.pathname}${window.location.search}`;
+      router.replace(`/login?next=${encodeURIComponent(returnTo)}`);
     }
   }, [user, authLoading, router]);
 
