@@ -56,14 +56,27 @@ export default function Gallery({ model, section }: SectionProps) {
                 onClick={() => setIndex(itemIndex)}
                 aria-label={`Open image ${itemIndex + 1} of ${gallery.length}`}
               >
-                <img
-                  src={item.thumbnailUrl || item.url}
-                  alt={item.alt}
-                  loading="lazy"
-                  decoding="async"
-                  width={640}
-                  height={640}
-                />
+                {item.isImage ? (
+                  <img
+                    src={item.thumbnailUrl || item.url}
+                    alt={item.alt}
+                    loading="lazy"
+                    decoding="async"
+                    width={640}
+                    height={640}
+                  />
+                ) : (
+                  <video
+                    src={item.url}
+                    poster={item.thumbnailUrl || undefined}
+                    muted
+                    loop
+                    autoPlay
+                    playsInline
+                    preload="metadata"
+                    aria-label={item.alt}
+                  />
+                )}
               </button>
             </Reveal>
           ))}
