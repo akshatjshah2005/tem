@@ -16,19 +16,21 @@ const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB limit
+    fileSize: 25 * 1024 * 1024 // 25MB limit for portrait invitation clips
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = [
       'image/jpeg',
       'image/png',
       'image/webp',
-      'image/gif'
+      'image/gif',
+      'video/mp4',
+      'video/webm'
     ];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.'));
+      cb(new Error('Unsupported file type. Use JPEG, PNG, WebP, GIF, MP4, or WebM.'));
     }
   }
 });
