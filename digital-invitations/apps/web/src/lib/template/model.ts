@@ -148,6 +148,11 @@ function isImageMedia(media: RawMedia): boolean {
   return (media.mimeType || '').startsWith('image/');
 }
 
+function isVideoUrl(url: string): boolean {
+  const path = url.split(/[?#]/, 1)[0].toLowerCase();
+  return /\\.(mp4|webm|mov|m4v|ogv)$/.test(path);
+}
+
 function googleMapsLink(venue?: string | null, address?: string | null, mapUrl?: string | null): string | null {
   if (mapUrl && text(mapUrl)) return text(mapUrl);
   const query = `${text(venue)} ${text(address)}`.trim();
@@ -378,6 +383,12 @@ export function buildRenderModel(input: BuildModelInput): RenderModel {
     isImage: isImageMedia(item)
   }));
 
+  const coverIsImage = coverUrl
+    ? coverMedia && mediaUrl(coverMedia) === coverUrl
+      ? isImageMedia(coverMedia)
+      : !isVideoUrl(coverUrl)
+    : true;
+
   const cover: RenderMedia | null = coverUrl
     ? {
         id: coverMedia?.id || 'cover',
@@ -385,7 +396,7 @@ export function buildRenderModel(input: BuildModelInput): RenderModel {
         thumbnailUrl: coverMedia?.thumbnailUrl || null,
         alt: invitation.name,
         isCover: true,
-        isImage: true
+        isImage: coverIsImage
       }
     : null;
 
