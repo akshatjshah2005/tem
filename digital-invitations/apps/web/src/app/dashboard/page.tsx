@@ -85,7 +85,7 @@ export default function DashboardPage() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-sky-100 border-t-sky-600"></div>
       </div>
     );
   }
@@ -101,8 +101,9 @@ export default function DashboardPage() {
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <div className="flex min-h-[72px] items-center justify-between gap-4">
             <div className="flex items-center">
-              <Link href="/dashboard" className="text-2xl font-bold text-primary-600">
-                Invitations
+              <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900">
+                <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">i</span>
+                <span className="text-xl">invitations<span className="text-sky-600">.</span></span>
               </Link>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">\n              <Link href="/templates" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">Explore themes</Link>
@@ -143,7 +144,7 @@ export default function DashboardPage() {
             </Link>
             <Link
               href="/dashboard/create"
-              className="inline-flex items-center justify-center rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700"
+              className="inline-flex items-center justify-center rounded-full bg-sky-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700"
             >
               + Create New
             </Link>
