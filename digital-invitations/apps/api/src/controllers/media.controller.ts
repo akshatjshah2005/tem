@@ -36,8 +36,8 @@ export const uploadMedia = asyncHandler(async (req: Request, res: Response) => {
   const filename = `${fileId}${ext}`;
 
   // Process image
-  let optimizedUrl = '';
-  let thumbnailUrl = '';
+  let optimizedUrl: string | null = null;
+  let thumbnailUrl: string | null = null;
   let width = 0;
   let height = 0;
 
