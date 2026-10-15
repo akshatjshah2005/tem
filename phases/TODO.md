@@ -1,5 +1,8 @@
 # DIGITAL INVITATION PLATFORM — MASTER TODO
 
+> **Current product direction:** See [Product Vision V2](product-vision-v2.md). This supersedes older wording that ruled out video. The product is a cinematic, animated web invitation first, with MP4 export planned after the editor and scene renderer are stable.
+
+
 ## Project Overview
 Web-based animated digital invitation platform with guest-level personalization and WhatsApp sharing.
 
