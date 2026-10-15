@@ -39,8 +39,8 @@ export default function MediaUploader({
   const handleFileSelect = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/webm'];
+    const maxSize = 25 * 1024 * 1024; // 25MB for image/video assets
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -119,7 +119,7 @@ export default function MediaUploader({
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm"
           onChange={(e) => handleFileSelect(e.target.files)}
           className="hidden"
         />
@@ -128,7 +128,7 @@ export default function MediaUploader({
           {uploading ? 'Uploading...' : 'Drag & drop files here, or click to select'}
         </p>
         <p className="text-sm text-gray-500 mb-4">
-          Supports: JPG, PNG, GIF, WebP (max 10MB each)
+          Supports: JPG, PNG, GIF, WebP, MP4 and WebM (max 25MB each)
         </p>
         <button
           onClick={() => fileInputRef.current?.click()}
@@ -165,6 +165,9 @@ export default function MediaUploader({
                 <video
                   src={mediaDisplayUrl(item)}
                   className="w-full h-32 object-cover"
+                  muted
+                  playsInline
+                  preload="metadata"
                 />
               )}
 
