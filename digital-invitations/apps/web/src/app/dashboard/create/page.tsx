@@ -124,7 +124,7 @@ export default function CreateInvitationPage() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-sky-100 border-t-sky-600"></div>
       </div>
     );
   }
@@ -189,7 +189,7 @@ export default function CreateInvitationPage() {
 
         {/* Step 2: Category */}
         {step === 2 && (
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="rounded-[1.8rem] border border-sky-100 bg-white p-6 shadow-[0_18px_60px_-34px_rgba(2,132,199,0.28)] sm:p-9">
             <div className="mb-7"><h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">What are you celebrating?</h2><p className="mt-2 text-sm leading-6 text-slate-500">Choose an occasion to find themes and ceremony details that fit.</p></div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => (
@@ -231,7 +231,7 @@ export default function CreateInvitationPage() {
 
         {/* Step 3: Template */}
         {step === 3 && (
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="rounded-[1.8rem] border border-sky-100 bg-white p-6 shadow-[0_18px_60px_-34px_rgba(2,132,199,0.28)] sm:p-9">
             <div className="mb-7"><h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Choose your visual theme</h2><p className="mt-2 text-sm leading-6 text-slate-500">Pick a starting point. You can personalize the invitation details next.</p></div>
             {templates.length === 0 ? (
               <div className="text-center py-12">
@@ -289,7 +289,7 @@ function StepIndicator({
           completed
             ? 'bg-sky-600 text-white shadow-md shadow-sky-200'
             : active
-            ? 'bg-primary-600 text-white'
+            ? 'bg-sky-600 text-white shadow-md shadow-sky-200'
             : 'bg-slate-100 text-slate-500'
         }`}
       >
