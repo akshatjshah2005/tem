@@ -49,7 +49,6 @@ export default function Hero({ model, section }: SectionProps) {
             className="tpl-hero__background-video"
             src={cover.url}
             poster={cover.thumbnailUrl || undefined}
-            autoPlay
             muted
             loop
             playsInline
