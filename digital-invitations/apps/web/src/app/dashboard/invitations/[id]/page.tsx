@@ -355,43 +355,43 @@ export default function InvitationEditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-[#f4faff] text-slate-900">
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-4">
+      <header className="sticky top-0 z-30 border-b border-sky-100 bg-white/90 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="flex min-h-[72px] items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
               <Link href="/dashboard" className="text-slate-600 hover:text-slate-900">
                 ← Back
               </Link>
-              <span className="text-gray-300">|</span>
-              <h1 className="text-lg font-semibold text-slate-900 truncate max-w-md">
+              <span className="hidden h-7 w-px bg-slate-200 sm:block" aria-hidden="true" />
+              <h1 className="max-w-[34vw] truncate text-sm font-bold tracking-tight text-slate-950 sm:max-w-md sm:text-base">
                 {invitation.name}
               </h1>
               <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                className={`shrink-0 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide ${
                   invitation.status === 'PUBLISHED'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-yellow-100 text-yellow-800'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-amber-100 text-amber-800'
                 }`}
               >
                 {invitation.status}
               </span>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex shrink-0 items-center gap-2">
               <Link
                 href={`/dashboard/invitations/${invitation.id}/preview`}
                 target="_blank"
-                className="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium"
+                className="rounded-full border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-sky-800"
               >
                 Preview
               </Link>
               <button
                 onClick={handlePublish}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${
+                className={`rounded-full px-4 py-2.5 text-sm font-bold transition ${
                   invitation.status === 'PUBLISHED'
-                    ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                    : 'bg-green-600 text-white hover:bg-green-700'
+                    ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                    : 'bg-sky-600 text-white shadow-sm shadow-sky-200 hover:bg-sky-700'
                 }`}
               >
                 {invitation.status === 'PUBLISHED' ? 'Unpublish' : 'Publish'}
@@ -402,17 +402,17 @@ export default function InvitationEditorPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="mx-auto max-w-7xl px-5 py-7 sm:px-8 sm:py-10 lg:px-10">
         {/* Tabs */}
-        <div className="border-b border-slate-200 mb-8">
+        <div className="mb-8 rounded-2xl border border-sky-100 bg-white px-3 shadow-sm sm:px-5">
           <nav className="flex max-w-full gap-5 overflow-x-auto px-1 sm:gap-8">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                className={`whitespace-nowrap border-b-2 px-2 py-4 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${
                   activeTab === tab.id
-                    ? 'border-primary-500 text-primary-600'
+                    ? 'border-sky-500 text-sky-700'
                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                 }`}
               >
@@ -438,7 +438,7 @@ export default function InvitationEditorPage() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
                   />
                 </div>
                 <div>
@@ -449,7 +449,7 @@ export default function InvitationEditorPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
                   />
                 </div>
                 <div className="flex items-center">
@@ -468,7 +468,7 @@ export default function InvitationEditorPage() {
                   <button
                     onClick={handleSaveDetails}
                     disabled={saving}
-                    className="bg-primary-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-primary-700 disabled:opacity-50"
+                    className="rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700 disabled:opacity-50"
                   >
                     {saving ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -530,7 +530,7 @@ export default function InvitationEditorPage() {
                 <h2 className="text-xl font-semibold text-slate-900">Events</h2>
                 <button
                   onClick={() => setShowEventForm(true)}
-                  className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
+                  className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-sky-700"
                 >
                   + Add Event
                 </button>
@@ -553,7 +553,7 @@ export default function InvitationEditorPage() {
                   {invitation.events.map((event, index) => (
                     <div
                       key={event.id}
-                      className="border border-slate-200 rounded-lg p-4 hover:border-slate-300"
+                      className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:bg-sky-50/40"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -628,7 +628,7 @@ export default function InvitationEditorPage() {
               <div className="max-w-2xl space-y-6">
                 <div className="pt-4 border-t border-slate-200">
                   <h3 className="text-lg font-medium text-slate-900 mb-4">Danger Zone</h3>
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4">
                     <p className="text-red-700 mb-4">
                       Deleting this invitation will remove all associated data including guests, events, and media.
                     </p>
