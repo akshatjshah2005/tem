@@ -25,13 +25,13 @@ Users will be able to:
 * Generate WhatsApp-ready messages
 * Request bulk WhatsApp sending services
 
-The invitation will be a:
+The invitation will be a **cinematic, video-like interactive web invitation**.
 
-**WEB-BASED ANIMATED INVITATION**
+It should combine scene-based animation, animated text, photos/video clips, optional music, events, maps, countdown and RSVP where supported. Each invitation is primarily shared as a link so it can render guest-specific names and event access dynamically.
 
-It will NOT be a video.
+A downloadable MP4 export is also part of the product direction, to be implemented after the scene renderer and editor are reliable. A static exported MP4 cannot dynamically personalize itself per guest, so secure personalized web links remain the source of truth.
 
-The invitation will behave like an interactive website/page with animations, sections, images, event details, maps, etc.
+**Updated specification:** Follow [Product Vision V2](phases/product-vision-v2.md) for the current product direction. It supersedes older wording in this document that says the invitation will not be a video.
 
 ---
 
