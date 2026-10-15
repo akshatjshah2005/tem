@@ -8,8 +8,8 @@ import { AuthProvider } from '@/hooks/useAuth';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Digital Invitation Platform',
-  description: 'Create, personalize, and share beautiful animated invitations',
+  title: 'Invitations — Cinematic Digital Invitations',
+  description: 'Create cinematic digital invitations for weddings and celebrations. Customize your theme, add every event, and share a personal link with your guests.',
 };
 
 export default function RootLayout({
