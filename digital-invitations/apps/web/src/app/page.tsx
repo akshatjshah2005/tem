@@ -137,7 +137,7 @@ export default function Home() {
                   <p className="relative z-10 mt-5 font-serif text-base italic text-sky-50/90">A new chapter, a lifetime of memories.</p>
                   <div className="relative z-10 mx-auto mt-6 rounded-full border border-sky-100/30 bg-white/5 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-100">Saturday · 14 February 2027</div>
                   <div className="relative z-10 mt-auto pt-10">
-                    <div className="mx-auto flex max-w-[240px] items-center justify-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur">Open your invitation <span aria-hidden="true">↓</span></div>
+                    <Link href="/i/akshat-wedding" className="mx-auto flex max-w-[240px] items-center justify-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/20">Open sample invitation <span aria-hidden="true">↗</span></Link>
                     <p className="mt-4 text-[9px] uppercase tracking-[0.24em] text-sky-100/45">A preview of your invitation experience</p>
                   </div>
                 </div>
