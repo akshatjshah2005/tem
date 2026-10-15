@@ -51,7 +51,7 @@ export default function MediaUploader({
       }
 
       if (file.size > maxSize) {
-        toast.error(`${file.name} exceeds 10MB limit`);
+        toast.error(`${file.name} exceeds the 25MB limit`);
         continue;
       }
 
@@ -106,10 +106,10 @@ export default function MediaUploader({
     <div className="space-y-6">
       {/* Upload Area */}
       <div
-        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+        className={`border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${
           dragOver
-            ? 'border-primary-500 bg-primary-50'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-sky-400 bg-sky-50'
+            : 'border-slate-200 bg-white hover:border-sky-300'
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -124,16 +124,16 @@ export default function MediaUploader({
           className="hidden"
         />
         <div className="text-4xl mb-4">📸</div>
-        <p className="text-gray-600 mb-2">
+        <p className="text-slate-700 mb-2">
           {uploading ? 'Uploading...' : 'Drag & drop files here, or click to select'}
         </p>
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-slate-500 mb-4">
           Supports: JPG, PNG, GIF, WebP, MP4 and WebM (max 25MB each)
         </p>
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700 disabled:opacity-50"
+          className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-sky-700 disabled:opacity-50"
         >
           {uploading ? 'Uploading...' : 'Select Files'}
         </button>
@@ -141,18 +141,18 @@ export default function MediaUploader({
 
       {/* Media Grid */}
       {media.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
+        <div className="rounded-2xl border border-dashed border-sky-200 bg-sky-50/50 py-12 text-center">
           <div className="text-4xl mb-4">🖼️</div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No media yet</h3>
-          <p className="text-gray-500">Upload images to use in your invitation</p>
+          <h3 className="mb-2 text-lg font-semibold text-slate-900">No media yet</h3>
+          <p className="text-slate-500">Upload images to use in your invitation</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {media.map((item, index) => (
             <div
               key={item.id}
-              className={`relative group rounded-lg overflow-hidden border-2 ${
-                item.isCover ? 'border-primary-500' : 'border-transparent'
+              className={`relative group rounded-2xl overflow-hidden border-2 ${
+                item.isCover ? 'border-sky-500' : 'border-transparent'
               }`}
             >
               {mediaIsImage(item) ? (
