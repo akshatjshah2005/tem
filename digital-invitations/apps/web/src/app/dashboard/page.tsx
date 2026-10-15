@@ -95,21 +95,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f4faff] text-slate-900">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+      <header className="sticky top-0 z-30 border-b border-sky-100 bg-white/90 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="flex min-h-[72px] items-center justify-between gap-4">
             <div className="flex items-center">
               <Link href="/dashboard" className="text-2xl font-bold text-primary-600">
                 Invitations
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {user.name}</span>
+            <div className="flex items-center gap-2 sm:gap-4">\n              <Link href="/templates" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">Explore themes</Link>
+              <span className="hidden text-sm text-slate-500 sm:inline">Welcome, <strong className="font-semibold text-slate-800">{user.name}</strong></span>
               <button
                 onClick={logout}
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900"
               >
                 Logout
               </button>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <StatCard title="Total Invitations" value={invitations.length} />
@@ -129,10 +129,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Actions */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-7 flex flex-col gap-4 rounded-[1.7rem] border border-sky-100 bg-gradient-to-r from-white via-white to-sky-50 p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">My Invitations</h2>
-            <p className="mt-1 text-sm text-gray-500">Create, personalize, and share your next celebration.</p>
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">My Invitations</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-500">Create, personalize, and share your next celebration.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -152,19 +152,19 @@ export default function DashboardPage() {
 
         {/* Invitations List */}
         {invitations.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+          <div className="rounded-[2rem] border border-sky-100 bg-white px-6 py-16 text-center shadow-sm shadow-sky-100/50 sm:px-12">
             <div className="text-6xl mb-4">💌</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No invitations yet</h3>
-            <p className="text-gray-600 mb-6">Create your first beautiful invitation</p>
+            <h3 className="mb-2 text-2xl font-semibold tracking-tight text-slate-950">No invitations yet</h3>
+            <p className="mb-7 text-slate-500">Create your first beautiful invitation</p>
             <Link
               href="/dashboard/create"
-              className="bg-primary-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-primary-700"
+              className="inline-flex rounded-full bg-sky-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700"
             >
               Create Invitation
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {invitations.map((invitation) => (
               <InvitationCard
                 key={invitation.id}
@@ -180,15 +180,15 @@ export default function DashboardPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="mt-8 flex justify-center gap-2">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
               <button
                 key={p}
                 onClick={() => setPage(p)}
-                className={`px-4 py-2 rounded-md ${
+                className={`rounded-full px-4 py-2.5 text-sm font-bold transition ${
                   page === p
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                    ? 'bg-sky-600 text-white shadow-md shadow-sky-200'
+                    : 'border border-slate-200 bg-white text-slate-600 hover:bg-sky-50'
                 }`}
               >
                 {p}
@@ -203,9 +203,9 @@ export default function DashboardPage() {
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h3 className="text-sm font-medium text-gray-500">{title}</h3>
-      <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+    <div className="rounded-2xl border border-sky-100 bg-white p-6 shadow-sm shadow-sky-100/50">
+      <h3 className="text-sm font-semibold text-slate-500">{title}</h3>
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{value}</p>
     </div>
   );
 }
@@ -231,8 +231,8 @@ function InvitationCard({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-      <div className="h-40 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
+    <div className="group overflow-hidden rounded-[1.6rem] border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-100/70">
+      <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-sky-100 via-white to-indigo-100">
         {invitation.template?.thumbnailUrl ? (
           <img
             src={invitation.template.thumbnailUrl}
@@ -243,9 +243,9 @@ function InvitationCard({
           <span className="text-4xl">💌</span>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-5">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-gray-900 truncate">{invitation.name}</h3>
+          <h3 className="truncate font-bold text-slate-900">{invitation.name}</h3>
           <span
             className={`px-2 py-1 rounded-full text-xs font-medium ${
               statusColors[invitation.status] || 'bg-gray-100 text-gray-800'
@@ -254,40 +254,40 @@ function InvitationCard({
             {invitation.status}
           </span>
         </div>
-        <p className="text-sm text-gray-500 mb-2">
+        <p className="mb-2 text-sm text-slate-500">
           {invitation.template?.name || 'No template'}
         </p>
-        <div className="flex items-center text-sm text-gray-600 space-x-4 mb-4">
+        <div className="mb-5 flex flex-wrap items-center gap-4 text-sm text-slate-500">
           <span>👥 {invitation._count.guests} guests</span>
           <span>📅 {invitation._count.events} events</span>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex gap-2">
           <button
             onClick={onEdit}
-            className="flex-1 bg-primary-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
+            className="flex-1 rounded-full bg-sky-600 px-3 py-2.5 text-sm font-bold text-white transition hover:bg-sky-700"
           >
             Edit
           </button>
           <button
             onClick={onView}
-            className="flex-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200"
+            className="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50"
           >
             View
           </button>
           <div className="relative group">
-            <button className="bg-gray-100 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200">
+            <button className="rounded-full border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-sky-50">
               ⋮
             </button>
-            <div className="absolute right-0 mt-1 w-40 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+            <div className="invisible absolute right-0 z-20 mt-2 w-40 rounded-2xl border border-slate-100 bg-white p-1 opacity-0 shadow-xl transition-all group-hover:visible group-hover:opacity-100">
               <button
                 onClick={onDuplicate}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-sky-50"
               >
                 Duplicate
               </button>
               <button
                 onClick={onDelete}
-                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-rose-600 hover:bg-rose-50"
               >
                 Delete
               </button>
