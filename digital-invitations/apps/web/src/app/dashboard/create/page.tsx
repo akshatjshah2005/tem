@@ -130,27 +130,27 @@ export default function CreateInvitationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f4faff] text-slate-900">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
+      <header className="sticky top-0 z-30 border-b border-sky-100 bg-white/90 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="flex min-h-[72px] items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Link href="/dashboard" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800">
                 ← Back to Dashboard
               </Link>
               <span className="text-gray-300">|</span>
-              <h1 className="text-lg font-semibold text-gray-900">Create New Invitation</h1>
+              <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Your invitation studio</p><h1 className="mt-0.5 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">Create a new invitation</h1></div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Progress Steps */}
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-center mb-8">
+      <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-12">
+        <div className="mb-8 flex items-center justify-center rounded-2xl border border-sky-100 bg-white/80 px-3 py-5 shadow-sm sm:mb-10 sm:px-6">
           <StepIndicator number={1} title="Name" active={step === 1} completed={step > 1} />
-          <div className="w-12 h-px bg-gray-300 mx-2"></div>
+          <div className="mx-3 h-px w-6 bg-sky-200 sm:mx-4 sm:w-14"></div>
           <StepIndicator number={2} title="Category" active={step === 2} completed={step > 2} />
           <div className="w-12 h-px bg-gray-300 mx-2"></div>
           <StepIndicator number={3} title="Template" active={step === 3} completed={step > 3} />
@@ -158,10 +158,10 @@ export default function CreateInvitationPage() {
 
         {/* Step 1: Name */}
         {step === 1 && (
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Name Your Invitation</h2>
+          <div className="rounded-[1.8rem] border border-sky-100 bg-white p-6 shadow-[0_18px_60px_-34px_rgba(2,132,199,0.28)] sm:p-9">
+            <h2 className="mb-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Name Your Invitation</h2>
             <div className="max-w-md">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Invitation Name
               </label>
               <input
@@ -169,9 +169,9 @@ export default function CreateInvitationPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g., Akshat & Priya Wedding"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
               />
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-3 text-sm leading-6 text-slate-500">
                 This will be used to create your invitation URL
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function CreateInvitationPage() {
               <button
                 onClick={() => setStep(formData.categorySlug && formData.templateId ? 3 : 2)}
                 disabled={!formData.name.trim()}
-                className="bg-primary-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Next →
               </button>
@@ -190,8 +190,8 @@ export default function CreateInvitationPage() {
         {/* Step 2: Category */}
         {step === 2 && (
           <div className="bg-white rounded-lg shadow-sm p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Select Category</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="mb-7"><h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">What are you celebrating?</h2><p className="mt-2 text-sm leading-6 text-slate-500">Choose an occasion to find themes and ceremony details that fit.</p></div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => (
                 <button
                   key={category.id}
@@ -206,10 +206,10 @@ export default function CreateInvitationPage() {
                     setStep(3);
                     fetchTemplates(category.slug);
                   }}
-                    className={`p-4 border-2 rounded-lg text-left hover:border-primary-500 transition-colors ${
+                    className={`rounded-2xl border-2 p-5 text-left transition-all hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-lg hover:shadow-sky-100 ${
                       formData.categoryId === category.id
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200'
+                        ? 'border-sky-500 bg-sky-50 shadow-md shadow-sky-100'
+                        : 'border-slate-200 bg-white'
                     }`}
                 >
                   <span className="text-2xl mb-2 block">{category.icon}</span>
@@ -221,7 +221,7 @@ export default function CreateInvitationPage() {
             <div className="mt-6 flex justify-between">
               <button
                 onClick={() => setStep(1)}
-                className="text-gray-600 hover:text-gray-900"
+                className="rounded-full px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-800"
               >
                 ← Back
               </button>
@@ -232,13 +232,13 @@ export default function CreateInvitationPage() {
         {/* Step 3: Template */}
         {step === 3 && (
           <div className="bg-white rounded-lg shadow-sm p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Choose Template</h2>
+            <div className="mb-7"><h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Choose your visual theme</h2><p className="mt-2 text-sm leading-6 text-slate-500">Pick a starting point. You can personalize the invitation details next.</p></div>
             {templates.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500">No templates available in this category</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 {templates.map((template) => (
                   <TemplateCard
                     key={template.id}
@@ -252,7 +252,7 @@ export default function CreateInvitationPage() {
             <div className="mt-6 flex justify-between">
               <button
                 onClick={() => setStep(2)}
-                className="text-gray-600 hover:text-gray-900"
+                className="rounded-full px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-800"
               >
                 ← Back
               </button>
@@ -285,17 +285,17 @@ function StepIndicator({
   return (
     <div className="flex items-center">
       <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+        className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition ${
           completed
-            ? 'bg-primary-600 text-white'
+            ? 'bg-sky-600 text-white shadow-md shadow-sky-200'
             : active
             ? 'bg-primary-600 text-white'
-            : 'bg-gray-200 text-gray-600'
+            : 'bg-slate-100 text-slate-500'
         }`}
       >
         {completed ? '✓' : number}
       </div>
-      <span className={`ml-2 text-sm font-medium ${active ? 'text-primary-600' : 'text-gray-500'}`}>
+      <span className={`ml-2 hidden text-sm font-semibold sm:inline ${active ? 'text-sky-700' : 'text-slate-400'}`}>
         {title}
       </span>
     </div>
@@ -316,22 +316,22 @@ function TemplateCard({
   return (
     <button
       onClick={onSelect}
-      className={`border-2 rounded-lg overflow-hidden text-left transition-all ${
-        selected ? 'border-primary-500 ring-2 ring-primary-200' : 'border-gray-200 hover:border-gray-300'
+      className={`group overflow-hidden rounded-2xl border-2 bg-white text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg ${
+        selected ? 'border-sky-500 ring-4 ring-sky-100' : 'border-slate-200 hover:border-sky-300'
       }`}
     >
-      <div className="h-32 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
+      <div className="flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br from-sky-100 via-white to-indigo-100">
         {template.thumbnailUrl ? (
           <img src={template.thumbnailUrl} alt={template.name} className="w-full h-full object-cover" />
         ) : (
           <span className="text-4xl">🎨</span>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-5">
         <div className="flex justify-between items-start">
           <h3 className="font-medium text-gray-900">{template.name}</h3>
           {template.isPremium && (
-            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Premium</span>
+            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800">Premium</span>
           )}
         </div>
         <p className="text-sm text-gray-500 mt-1">{template.category.name}</p>
@@ -349,7 +349,7 @@ function TemplateCard({
 
 function FeatureBadge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+    <span className="rounded-full bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-800">
       {children}
     </span>
   );
