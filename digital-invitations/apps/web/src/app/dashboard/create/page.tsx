@@ -135,12 +135,14 @@ export default function CreateInvitationPage() {
       <header className="sticky top-0 z-30 border-b border-sky-100 bg-white/90 shadow-sm backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <div className="flex min-h-[72px] items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800">
-                ← Back to Dashboard
+            <div className="flex min-w-0 items-center gap-3">
+              <Link href="/" className="inline-flex shrink-0 items-center gap-2 font-bold text-slate-900">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 text-white">i</span>
+                <span className="hidden sm:inline">invitations<span className="text-sky-600">.</span></span>
               </Link>
               <span className="hidden h-7 w-px bg-slate-200 sm:block" aria-hidden="true" />
-              <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Your invitation studio</p><h1 className="mt-0.5 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">Create a new invitation</h1></div>
+              <Link href="/dashboard" className="shrink-0 rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800">← Dashboard</Link>
+              <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Your invitation studio</p><h1 className="mt-0.5 truncate text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">Create a new invitation</h1></div>
             </div>
           </div>
         </div>
