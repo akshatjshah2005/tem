@@ -106,7 +106,8 @@ export default function DashboardPage() {
                 <span className="text-xl">invitations<span className="text-sky-600">.</span></span>
               </Link>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">\n              <Link href="/templates" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">Explore themes</Link>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Link href="/templates" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">Explore themes</Link>
               <span className="hidden text-sm text-slate-500 sm:inline">Welcome, <strong className="font-semibold text-slate-800">{user.name}</strong></span>
               <button
                 onClick={logout}
