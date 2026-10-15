@@ -139,7 +139,7 @@ export default function CreateInvitationPage() {
               <Link href="/dashboard" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800">
                 ← Back to Dashboard
               </Link>
-              <span className="text-gray-300">|</span>
+              <span className="hidden h-7 w-px bg-slate-200 sm:block" aria-hidden="true" />
               <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Your invitation studio</p><h1 className="mt-0.5 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">Create a new invitation</h1></div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function CreateInvitationPage() {
           <StepIndicator number={1} title="Name" active={step === 1} completed={step > 1} />
           <div className="mx-3 h-px w-6 bg-sky-200 sm:mx-4 sm:w-14"></div>
           <StepIndicator number={2} title="Category" active={step === 2} completed={step > 2} />
-          <div className="w-12 h-px bg-gray-300 mx-2"></div>
+          <div className="mx-3 h-px w-5 bg-sky-200 sm:mx-4 sm:w-12"></div>
           <StepIndicator number={3} title="Template" active={step === 3} completed={step > 3} />
         </div>
 
@@ -175,7 +175,7 @@ export default function CreateInvitationPage() {
                 This will be used to create your invitation URL
               </p>
             </div>
-            <div className="mt-6 flex justify-end">
+            <div className="mt-7 flex justify-end">
               <button
                 onClick={() => setStep(formData.categorySlug && formData.templateId ? 3 : 2)}
                 disabled={!formData.name.trim()}
@@ -213,12 +213,12 @@ export default function CreateInvitationPage() {
                     }`}
                 >
                   <span className="text-2xl mb-2 block">{category.icon}</span>
-                  <h3 className="font-medium text-gray-900">{category.name}</h3>
-                  <p className="text-sm text-gray-500">{category._count.templates} templates</p>
+                  <h3 className="font-semibold text-slate-900">{category.name}</h3>
+                  <p className="mt-1 text-sm text-slate-500">{category._count.templates} themes</p>
                 </button>
               ))}
             </div>
-            <div className="mt-6 flex justify-between">
+            <div className="mt-7 flex items-center justify-between">
               <button
                 onClick={() => setStep(1)}
                 className="rounded-full px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-800"
@@ -235,7 +235,7 @@ export default function CreateInvitationPage() {
             <div className="mb-7"><h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Choose your visual theme</h2><p className="mt-2 text-sm leading-6 text-slate-500">Pick a starting point. You can personalize the invitation details next.</p></div>
             {templates.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">No templates available in this category</p>
+                <p className="text-slate-500">No themes are available in this category yet.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -249,7 +249,7 @@ export default function CreateInvitationPage() {
                 ))}
               </div>
             )}
-            <div className="mt-6 flex justify-between">
+            <div className="mt-7 flex items-center justify-between">
               <button
                 onClick={() => setStep(2)}
                 className="rounded-full px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-800"
@@ -259,7 +259,7 @@ export default function CreateInvitationPage() {
               <button
                 onClick={handleCreate}
                 disabled={creating}
-                className="bg-primary-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-primary-700 disabled:opacity-50"
+                className="rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700 disabled:opacity-50"
               >
                 {creating ? 'Creating...' : 'Create Invitation'}
               </button>
@@ -324,17 +324,17 @@ function TemplateCard({
         {template.thumbnailUrl ? (
           <img src={template.thumbnailUrl} alt={template.name} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-4xl">🎨</span>
+          <span className="font-serif text-4xl text-sky-700">✦</span>
         )}
       </div>
       <div className="p-5">
         <div className="flex justify-between items-start">
-          <h3 className="font-medium text-gray-900">{template.name}</h3>
+          <h3 className="font-semibold text-slate-900">{template.name}</h3>
           {template.isPremium && (
             <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800">Premium</span>
           )}
         </div>
-        <p className="text-sm text-gray-500 mt-1">{template.category.name}</p>
+        <p className="mt-1 text-sm text-slate-500">{template.category.name}</p>
         <div className="flex flex-wrap gap-2 mt-3">
           {features?.multipleEvents && <FeatureBadge>Events</FeatureBadge>}
           {features?.gallery && <FeatureBadge>Gallery</FeatureBadge>}
