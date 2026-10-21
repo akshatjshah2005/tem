@@ -130,7 +130,7 @@ export default function TemplatesPage() {
       <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
           <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900">
-            <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">i</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">u</span>
             <span className="text-xl">uptemp<span className="text-sky-600">.</span></span>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
@@ -214,7 +214,7 @@ export default function TemplatesPage() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-7 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-          <Link href="/" className="font-bold text-slate-900">invitations<span className="text-sky-600">.</span></Link>
+          <Link href="/" className="font-bold text-slate-900">uptemp<span className="text-sky-600">.</span></Link>
           <div className="flex flex-wrap gap-5"><Link href="/" className="hover:text-sky-700">Home</Link><Link href="/#features" className="hover:text-sky-700">Features</Link><Link href="/#how-it-works" className="hover:text-sky-700">How it works</Link><Link href="/dashboard" className="hover:text-sky-700">My invitations</Link></div>
           <span>Designed for meaningful moments.</span>
         </div>
