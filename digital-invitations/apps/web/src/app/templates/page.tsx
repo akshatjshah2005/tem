@@ -131,7 +131,7 @@ export default function TemplatesPage() {
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
           <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900">
             <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">i</span>
-            <span className="text-xl">invitations<span className="text-sky-600">.</span></span>
+            <span className="text-xl">uptemp<span className="text-sky-600">.</span></span>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
             <Link href="/" className="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 sm:inline-flex">Home</Link>
