@@ -8,8 +8,8 @@ import { AuthProvider } from '@/hooks/useAuth';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Invitations — Cinematic Digital Invitations',
-  description: 'Create cinematic digital invitations for weddings and celebrations. Customize your theme, add every event, and share a personal link with your guests.',
+  title: 'Uptemp — Cinematic Digital Invitations',
+  description: 'Uptemp helps you create cinematic digital invitations for weddings and celebrations, personalize guest links, and share every event in one beautiful place.',
 };
 
 export default function RootLayout({
