@@ -100,6 +100,7 @@ export default function RegisterPage() {
             >
               Sign in
             </Link>
+            <span className="mx-2 text-slate-300">·</span><Link href="/features" className="font-semibold text-sky-700 hover:text-sky-900">Explore features</Link>
           </p>
         </div>
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
