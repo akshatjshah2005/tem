@@ -135,6 +135,7 @@ export default function TemplatesPage() {
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
             <Link href="/" className="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 sm:inline-flex">Home</Link>
+            <Link href="/features" className="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">All features</Link>
             <Link href="/dashboard" className="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 sm:inline-flex">My invitations</Link>
             <Link href="/login" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 sm:px-4">Log in</Link>
             <Link href="/register?next=%2Fdashboard%2Fcreate" className="rounded-full bg-sky-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-sky-200/70 transition hover:bg-sky-700 sm:px-5">Create invitation ↗</Link>
@@ -215,7 +216,7 @@ export default function TemplatesPage() {
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-7 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
           <Link href="/" className="font-bold text-slate-900">uptemp<span className="text-sky-600">.</span></Link>
-          <div className="flex flex-wrap gap-5"><Link href="/" className="hover:text-sky-700">Home</Link><Link href="/#features" className="hover:text-sky-700">Features</Link><Link href="/#how-it-works" className="hover:text-sky-700">How it works</Link><Link href="/dashboard" className="hover:text-sky-700">My invitations</Link></div>
+          <div className="flex flex-wrap gap-5"><Link href="/" className="hover:text-sky-700">Home</Link><Link href="/features" className="hover:text-sky-700">All features</Link><Link href="/#how-it-works" className="hover:text-sky-700">How it works</Link><Link href="/dashboard" className="hover:text-sky-700">My invitations</Link></div>
           <span>Designed for meaningful moments.</span>
         </div>
       </footer>
