@@ -27,7 +27,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} ${inter.variable}`}>
+      <body className={inter.variable}>
         <AuthProvider>
           <Toaster position="top-right" />
           {children}
