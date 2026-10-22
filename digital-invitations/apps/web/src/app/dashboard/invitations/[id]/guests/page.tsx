@@ -181,7 +181,7 @@ export default function GuestManagementPage() {
   };
 
   const handleExportCsv = () => {
-    const escapeCell = (value: unknown) => `\"${String(value ?? '').replace(/\"/g, '\"\"')}\"`;
+    const escapeCell = (value: unknown) => '"' + String(value ?? '').replace(/"/g, '""') + '"';
     const rows = [
       ['Name', 'Mobile', 'Email', 'Group', 'Assigned events', 'RSVP status', 'RSVP guests', 'Personalized link'],
       ...filteredGuests.map((guest) => [
@@ -195,7 +195,7 @@ export default function GuestManagementPage() {
         guest.personalizedLink || '',
       ]),
     ];
-    const csv = '\\uFEFF' + rows.map((row) => row.map(escapeCell).join(',')).join('\\r\\n');
+    const csv = '\uFEFF' + rows.map((row) => row.map(escapeCell).join(',')).join('\r\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
