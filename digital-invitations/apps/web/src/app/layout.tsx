@@ -8,8 +8,8 @@ import { AuthProvider } from '@/hooks/useAuth';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Uptemp — Cinematic Digital Invitations',
-  description: 'Create beautiful digital invitations with customizable themes, guest-specific links, event management, WhatsApp sharing, RSVP and analytics.',
+  title: 'Uptemp — Elegant Digital Invitations',
+  description: 'Create elegant digital invitations with personalized details, event management, guest sharing and RSVP tools.',
 };
 
 export default function RootLayout({
