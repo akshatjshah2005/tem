@@ -55,6 +55,7 @@ export default function LoginPage() {
             <Link href={`/register?next=${encodeURIComponent(nextPath)}`} className="font-semibold text-sky-700 transition hover:text-sky-900">
               create a new account
             </Link>
+            <span className="mx-2 text-slate-300">·</span><Link href="/features" className="font-semibold text-sky-700 hover:text-sky-900">Explore features</Link>
           </p>
         </div>
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
