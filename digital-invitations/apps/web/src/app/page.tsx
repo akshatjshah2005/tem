@@ -9,6 +9,22 @@ const occasions = [
   { icon: '❋', title: 'Every celebration', note: 'Your moment, your way' },
 ];
 
+const platformAreas = [
+  ['01', 'Infrastructure & setup', 'Reliable app foundation, database and deployment'],
+  ['02', 'Accounts & dashboard', 'Secure sign-in, profile and invitation workspace'],
+  ['03', 'Template library', 'Categories, search, previews and template selection'],
+  ['04', 'Invitation editor', 'Text, colors, media, sections and live preview'],
+  ['05', 'Events & media', 'Ceremonies, venues, maps, photos and galleries'],
+  ['06', 'Guest management', 'Guest list, import, assignment, filters and groups'],
+  ['07', 'Personalized links', 'Unique guest links, names and assigned events'],
+  ['08', 'WhatsApp sharing', 'Message templates, previews and share flows'],
+  ['09', 'Admin workspace', 'Users, invitations, templates and platform controls'],
+  ['10', 'Publishing & security', 'Publish controls, public pages and access safeguards'],
+  ['11', 'Testing & deployment', 'Build checks, E2E testing, monitoring and backups'],
+  ['12', 'Future roadmap', 'Premium plans, AI, marketplace and video features'],
+  ['13', 'RSVP & analytics', 'Responses, guest insights, QR codes and advanced gallery'],
+];
+
 const features = [
   { n: '01', icon: '✦', title: 'A little film, not another card', body: 'Create an invitation that unfolds like a story, with a cinematic feel designed for the phone in every guest’s hand.' },
   { n: '02', icon: '◈', title: 'Every event in one place', body: 'Bring ceremonies, timings, venues and directions together in one easy-to-share invitation.' },
@@ -70,7 +86,7 @@ export default function Home() {
           <Brand />
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/templates" className="text-sm font-semibold text-slate-600 transition hover:text-sky-700">Explore templates</Link>
-            <a href="#features" className="text-sm font-semibold text-slate-600 transition hover:text-sky-700">Features</a>
+            <Link href="/features" className="text-sm font-semibold text-slate-600 transition hover:text-sky-700">All features</Link>
             <a href="#how-it-works" className="text-sm font-semibold text-slate-600 transition hover:text-sky-700">How it works</a>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -135,6 +151,20 @@ export default function Home() {
         </div>
       </section>
 
+
+      <section className="bg-white py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-sky-700">The complete platform</p><h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.045em] text-slate-950 sm:text-4xl">More than a beautiful invite. The whole journey.</h2><p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">From the first design choice to guest responses, Uptemp is planned across 13 connected product areas.</p></div>
+            <Link href="/features" className="group inline-flex w-fit items-center text-sm font-bold text-sky-700 hover:text-sky-900">Explore all 13 phases <Arrow /></Link>
+          </div>
+          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {platformAreas.map(([number,title,body]) => <Link key={number} href="/features" className="group flex gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-lg hover:shadow-sky-100/60 sm:p-5"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sm font-extrabold text-sky-700 group-hover:bg-sky-600 group-hover:text-white">{number}</span><span><strong className="block text-sm font-bold text-slate-900">{title}</strong><span className="mt-1 block text-xs leading-5 text-slate-500">{body}</span></span></Link>)}
+          </div>
+          <p className="mt-5 text-xs leading-5 text-slate-500">Some advanced items are still planned or require testing. <Link href="/features" className="font-bold text-sky-700 underline underline-offset-4">See feature status and details.</Link></p>
+        </div>
+      </section>
+
       <section className="px-5 pb-16 sm:px-8 sm:pb-20 lg:px-10">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0b2b4d] via-[#075985] to-[#2563eb] px-6 py-12 text-center text-white shadow-2xl shadow-sky-200/60 sm:px-12 sm:py-16">
           <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/15" /><div className="pointer-events-none absolute -right-8 -top-12 h-48 w-48 rounded-full border border-white/15" />
@@ -143,7 +173,7 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10"><Brand compact /><p className="text-xs text-slate-500">Thoughtful invitations for moments that matter.</p><div className="flex gap-5 text-sm font-semibold text-slate-500"><Link href="/templates" className="hover:text-sky-700">Templates</Link><Link href="/login" className="hover:text-sky-700">Log in</Link><Link href="/register" className="hover:text-sky-700">Create account</Link></div></div>
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10"><Brand compact /><p className="text-xs text-slate-500">Thoughtful invitations for moments that matter.</p><div className="flex gap-5 text-sm font-semibold text-slate-500"><Link href="/templates" className="hover:text-sky-700">Templates</Link><Link href="/features" className="hover:text-sky-700">Features</Link><Link href="/login" className="hover:text-sky-700">Log in</Link><Link href="/register" className="hover:text-sky-700">Create account</Link></div></div>
       </footer>
     </main>
   );
