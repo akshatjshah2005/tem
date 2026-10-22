@@ -36,6 +36,7 @@ html {
 body {
   color: rgb(var(--foreground-rgb));
   background: var(--uptemp-canvas);
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -45,6 +46,8 @@ body {
 button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { text-underline-offset: 0.2em; }
+
+.font-serif { font-family: 'Playfair Display', Georgia, serif; }
 
 :focus-visible {
   outline: 3px solid #d97706;
