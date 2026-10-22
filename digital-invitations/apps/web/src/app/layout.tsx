@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'Uptemp — Cinematic Digital Invitations',
-  description: 'Uptemp helps you create cinematic digital invitations for weddings and celebrations, personalize guest links, and share every event in one beautiful place.',
+  description: 'Create beautiful digital invitations with customizable themes, guest-specific links, event management, WhatsApp sharing, RSVP and analytics.',
 };
 
 export default function RootLayout({
