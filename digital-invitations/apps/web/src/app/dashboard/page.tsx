@@ -102,12 +102,13 @@ export default function DashboardPage() {
           <div className="flex min-h-[72px] items-center justify-between gap-4">
             <div className="flex items-center">
               <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900">
-                <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">i</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-[13px] bg-gradient-to-br from-sky-400 to-blue-600 text-lg text-white">u</span>
                 <span className="text-xl">uptemp<span className="text-sky-600">.</span></span>
               </Link>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <Link href="/templates" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 sm:inline-flex">Explore themes</Link>
+              <Link href="/features" className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50 lg:inline-flex">All features</Link>
               <span className="hidden text-sm text-slate-500 sm:inline">Welcome, <strong className="font-semibold text-slate-800">{user.name}</strong></span>
               <button
                 onClick={logout}
