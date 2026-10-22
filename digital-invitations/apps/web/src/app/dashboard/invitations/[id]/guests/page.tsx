@@ -219,20 +219,20 @@ export default function GuestManagementPage() {
   };
 
   const getWhatsAppUrl = (guest: Guest) => {
-    const digits = guest.mobile.replace(/\\D/g, '');
+    const digits = guest.mobile.replace(/\D/g, '');
     const phone = digits.length === 10 ? `91${digits}` : digits;
     const invitationLink = guest.personalizedLink || (invitation ? `${window.location.origin}/i/${invitation.slug}` : window.location.origin);
     const message = whatsAppMessage
-      .replace(/\\{guest_name\\}/gi, guest.name)
-      .replace(/\\{invitation_name\\}/gi, invitation?.name || 'our celebration')
-      .replace(/\\{invitation_link\\}/gi, invitationLink);
+      .replace(/\{guest_name\}/gi, guest.name)
+      .replace(/\{invitation_name\}/gi, invitation?.name || 'our celebration')
+      .replace(/\{invitation_link\}/gi, invitationLink);
     return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   };
 
   const handleOpenWhatsApp = () => {
     const guest = whatsAppQueue[whatsAppIndex];
     if (!guest) return;
-    const digits = guest.mobile.replace(/\\D/g, '');
+    const digits = guest.mobile.replace(/\D/g, '');
     if (digits.length < 10) {
       toast.error('This guest phone number looks invalid. Edit it before continuing.');
       return;
