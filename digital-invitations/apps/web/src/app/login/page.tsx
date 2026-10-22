@@ -44,8 +44,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8 rounded-[2rem] border border-white/80 bg-white/95 p-7 shadow-[0_24px_80px_-32px_rgba(2,132,199,0.28)] backdrop-blur sm:p-10">
         <div>
           <Link href="/" className="mx-auto inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-gradient-to-br from-sky-400 to-blue-600 text-xl text-white shadow-md shadow-sky-200">i</span>
-            <span className="text-xl">invitations<span className="text-sky-600">.</span></span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-gradient-to-br from-sky-400 to-blue-600 text-xl text-white shadow-md shadow-sky-200">u</span>
+            <span className="text-xl">uptemp<span className="text-sky-600">.</span></span>
           </Link>
           <h2 className="mt-7 text-3xl font-semibold tracking-tight text-slate-950">
             Sign in to your account
@@ -55,6 +55,7 @@ export default function LoginPage() {
             <Link href={`/register?next=${encodeURIComponent(nextPath)}`} className="font-semibold text-sky-700 transition hover:text-sky-900">
               create a new account
             </Link>
+            <span className="mx-2 text-slate-300">·</span><Link href="/features" className="font-semibold text-sky-700 hover:text-sky-900">Explore features</Link>
           </p>
         </div>
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>

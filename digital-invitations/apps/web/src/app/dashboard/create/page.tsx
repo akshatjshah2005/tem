@@ -138,7 +138,7 @@ export default function CreateInvitationPage() {
             <div className="flex min-w-0 items-center gap-3">
               <Link href="/" className="inline-flex shrink-0 items-center gap-2 font-bold text-slate-900">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 text-white">i</span>
-                <span className="hidden sm:inline">invitations<span className="text-sky-600">.</span></span>
+                <span className="hidden sm:inline">uptemp<span className="text-sky-600">.</span></span>
               </Link>
               <span className="hidden h-7 w-px bg-slate-200 sm:block" aria-hidden="true" />
               <Link href="/dashboard" className="shrink-0 rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800">← Dashboard</Link>

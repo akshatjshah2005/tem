@@ -57,6 +57,9 @@ export default function GuestManagementPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterGroup, setFilterGroup] = useState('');
   const [importing, setImporting] = useState(false);
+  const [whatsAppQueue, setWhatsAppQueue] = useState<Guest[]>([]);
+  const [whatsAppIndex, setWhatsAppIndex] = useState(0);
+  const [whatsAppMessage, setWhatsAppMessage] = useState('Hi {guest_name}! You are invited to {invitation_name}. Please find your invitation here: {invitation_link}');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -177,14 +180,64 @@ export default function GuestManagementPage() {
     toast.success('Link copied to clipboard');
   };
 
+  const handleExportCsv = () => {
+    const escapeCell = (value: unknown) => '"' + String(value ?? '').replace(/"/g, '""') + '"';
+    const rows = [
+      ['Name', 'Mobile', 'Email', 'Group', 'Assigned events', 'RSVP status', 'RSVP guests', 'Personalized link'],
+      ...filteredGuests.map((guest) => [
+        guest.name,
+        guest.mobile,
+        guest.email || '',
+        guest.groupName || '',
+        (guest.guestEvents || []).map((item) => item.event.name).join('; '),
+        guest.rsvp?.response || 'PENDING',
+        guest.rsvp?.guestsCount ?? '',
+        guest.personalizedLink || '',
+      ]),
+    ];
+    const csv = '\uFEFF' + rows.map((row) => row.map(escapeCell).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${(invitation?.name || 'invitation').replace(/[^a-z0-9-_]+/gi, '-').toLowerCase()}-guests.csv`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${filteredGuests.length} guest${filteredGuests.length === 1 ? '' : 's'}`);
+  };
+
   const handleBulkWhatsApp = () => {
-    const selectedGuests = guests.filter((g) => filterGroup ? g.groupName === filterGroup : true);
+    const selectedGuests = filteredGuests.filter((guest) => Boolean(guest.mobile));
     if (selectedGuests.length === 0) {
-      toast.error('No guests to message');
+      toast.error('No guests with phone numbers match these filters.');
       return;
     }
-    // TODO: Open bulk WhatsApp modal
-    toast.success(`Ready to send to ${selectedGuests.length} guests`);
+    setWhatsAppQueue(selectedGuests);
+    setWhatsAppIndex(0);
+  };
+
+  const getWhatsAppUrl = (guest: Guest) => {
+    const digits = guest.mobile.replace(/\D/g, '');
+    const phone = digits.length === 10 ? `91${digits}` : digits;
+    const invitationLink = guest.personalizedLink || (invitation ? `${window.location.origin}/i/${invitation.slug}` : window.location.origin);
+    const message = whatsAppMessage
+      .replace(/\{guest_name\}/gi, guest.name)
+      .replace(/\{invitation_name\}/gi, invitation?.name || 'our celebration')
+      .replace(/\{invitation_link\}/gi, invitationLink);
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  };
+
+  const handleOpenWhatsApp = () => {
+    const guest = whatsAppQueue[whatsAppIndex];
+    if (!guest) return;
+    const digits = guest.mobile.replace(/\D/g, '');
+    if (digits.length < 10) {
+      toast.error('This guest phone number looks invalid. Edit it before continuing.');
+      return;
+    }
+    window.open(getWhatsAppUrl(guest), '_blank', 'noopener,noreferrer');
   };
 
   const filteredGuests = guests.filter((guest) => {
@@ -451,6 +504,36 @@ export default function GuestManagementPage() {
           </div>
         )}
       </main>
+
+      {whatsAppQueue.length > 0 && whatsAppIndex < whatsAppQueue.length && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="dialog" aria-modal="true" aria-labelledby="whatsapp-queue-title">
+          <div className="w-full max-w-xl rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">WhatsApp sharing queue</p>
+                <h2 id="whatsapp-queue-title" className="mt-1 text-xl font-bold text-slate-900">Send invitations one by one</h2>
+                <p className="mt-1 text-sm text-slate-500">{whatsAppIndex + 1} of {whatsAppQueue.length} guests. WhatsApp opens for review; you must press Send there.</p>
+              </div>
+              <button onClick={() => setWhatsAppQueue([])} className="rounded-lg px-3 py-1 text-slate-500 hover:bg-slate-100" aria-label="Close sharing queue">✕</button>
+            </div>
+            <div className="mt-5 rounded-xl border border-sky-100 bg-sky-50/70 p-4">
+              <p className="font-semibold text-slate-900">{whatsAppQueue[whatsAppIndex].name}</p>
+              <p className="mt-1 text-sm text-slate-600">{whatsAppQueue[whatsAppIndex].mobile}</p>
+              <p className="mt-1 text-xs text-slate-500">Group: {whatsAppQueue[whatsAppIndex].groupName || 'Not assigned'}</p>
+            </div>
+            <label htmlFor="whatsapp-message-template" className="mt-5 block text-sm font-semibold text-slate-800">Message template</label>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Use {'{guest_name}'}, {'{invitation_name}'}, and {'{invitation_link}'} to personalize each message.</p>
+            <textarea id="whatsapp-message-template" rows={5} value={whatsAppMessage} onChange={(event) => setWhatsAppMessage(event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 p-3 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100" />
+            <div className="mt-5 flex flex-wrap justify-between gap-3">
+              <button onClick={() => setWhatsAppQueue([])} className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Close queue</button>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={handleOpenWhatsApp} className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700">Open WhatsApp ↗</button>
+                <button onClick={() => { if (whatsAppIndex + 1 >= whatsAppQueue.length) { setWhatsAppQueue([]); toast.success('Sharing queue completed.'); } else { setWhatsAppIndex((index) => index + 1); } }} className="rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-sky-700">{whatsAppIndex + 1 === whatsAppQueue.length ? 'Finish' : 'Next guest →'}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Guest Form Modal */}
       {showGuestForm && (
