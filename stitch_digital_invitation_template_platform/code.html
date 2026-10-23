@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Uptemp | Modern Digital Invitations for Every Celebration</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with form plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "on-surface": "#131b2e",
+            "error": "#ba1a1a",
+            "secondary-fixed": "#ffdcc3",
+            "surface-dim": "#d2d9f4",
+            "on-secondary-fixed": "#2f1500",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed-variant": "#920028",
+            "on-primary-container": "#8683ba",
+            "on-primary-fixed-variant": "#444173",
+            "inverse-primary": "#c4c1fb",
+            "primary": "#070235",
+            "background": "#faf8ff",
+            "on-tertiary-container": "#ff395b",
+            "primary-fixed-dim": "#c4c1fb",
+            "tertiary-container": "#4c0010",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "outline": "#787680",
+            "secondary": "#904d00",
+            "primary-container": "#1e1b4b",
+            "primary-fixed": "#e3dfff",
+            "surface": "#faf8ff",
+            "tertiary": "#210004",
+            "surface-container": "#eaedff",
+            "on-primary-fixed": "#181445",
+            "surface-container-low": "#f2f3ff",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#ffdada",
+            "on-secondary-container": "#663500",
+            "on-tertiary-fixed": "#40000c",
+            "on-background": "#131b2e",
+            "inverse-surface": "#283044",
+            "surface-container-high": "#e2e7ff",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c8c5d0",
+            "surface-bright": "#faf8ff",
+            "surface-container-highest": "#dae2fd",
+            "surface-tint": "#5b598c",
+            "on-secondary-fixed-variant": "#6e3900",
+            "secondary-container": "#fe932c",
+            "secondary-fixed-dim": "#ffb77d",
+            "inverse-on-surface": "#eef0ff",
+            "on-surface-variant": "#47464f",
+            "surface-variant": "#dae2fd"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-tablet": "2.5rem",
+            "gutter-sm": "1rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "margin-desktop": "4rem",
+            "gutter-lg": "2rem",
+            "space-3xl": "6rem",
+            "space-2xl": "4rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Playfair Display"],
+            "display-xl-mobile": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "display-xl": ["Playfair Display"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-caps": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "display-xl-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "display-xl": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+    .shadow-luxury {
+      box-shadow: 0 16px 36px -8px rgba(7, 2, 53, 0.08), 0 4px 12px rgba(7, 2, 53, 0.03);
+    }
+    .shadow-luxury-hover:hover {
+      box-shadow: 0 24px 44px -8px rgba(7, 2, 53, 0.14), 0 6px 16px rgba(7, 2, 53, 0.04);
+      transform: translateY(-4px);
+    }
+    .gold-shimmer {
+      background: linear-gradient(135deg, #FFFDF8 0%, #FFF5EB 50%, #FAF0E4 100%);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TOP APP BAR (from Shared Component JSON: TopNavBar) -->
+<header class="sticky top-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-tablet lg:px-margin-desktop py-space-sm max-w-[1280px] mx-auto">
+<!-- Brand Logo -->
+<a class="flex items-center gap-2 text-headline-sm font-headline-sm font-bold text-primary tracking-tight" href="#">
+<span class="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</span>
+<div class="flex flex-col">
+<span class="leading-none">Uptemp</span>
+<span class="text-[10px] tracking-wider uppercase font-semibold text-secondary">Digital Invitations</span>
+</div>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-lg font-label-lg transition-colors" href="#templates">Templates</a>
+<a class="text-on-surface-variant hover:text-primary font-medium transition-colors text-label-lg font-label-lg" href="#features">Features</a>
+<a class="text-on-surface-variant hover:text-primary font-medium transition-colors text-label-lg font-label-lg" href="#pricing">Pricing</a>
+<a class="text-on-surface-variant hover:text-primary font-medium transition-colors text-label-lg font-label-lg" href="#about">About</a>
+<a class="text-on-surface-variant hover:text-primary font-medium transition-colors text-label-lg font-label-lg" href="#how-it-works">How It Works</a>
+</nav>
+<!-- Search & Trailing CTA Actions -->
+<div class="flex items-center gap-3">
+<div class="hidden lg:flex items-center bg-surface-container-low rounded-full px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant text-body-sm">
+<span class="material-symbols-outlined text-sm mr-2 text-outline">search</span>
+<input class="bg-transparent border-0 p-0 text-sm focus:ring-0 focus:outline-none w-36 text-on-surface placeholder:text-outline" placeholder="Search templates..." type="text"/>
+<kbd class="text-[10px] bg-surface-container-lowest px-1.5 py-0.5 rounded text-outline border border-outline-variant/50">⌘K</kbd>
+</div>
+<a class="text-on-surface font-semibold text-label-lg font-label-lg hover:text-primary px-3 py-2 rounded-full transition-colors" href="#login">Login</a>
+<a class="bg-primary hover:bg-primary-container text-on-primary font-semibold text-label-lg font-label-lg px-5 py-2.5 rounded-full shadow-sm active:scale-[0.98] transition-all duration-150 inline-flex items-center gap-1.5" href="#create">
+<span>Get Started</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<main>
+<!-- HERO SECTION -->
+<section class="relative overflow-hidden pt-12 pb-20 lg:pt-16 lg:pb-28">
+<!-- Ambient light background accents -->
+<div class="absolute top-0 right-1/4 -z-10 w-[600px] h-[600px] bg-secondary-fixed/40 rounded-full blur-3xl opacity-50"></div>
+<div class="absolute -top-20 left-10 -z-10 w-[500px] h-[500px] bg-primary-fixed/40 rounded-full blur-3xl opacity-60"></div>
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Hero Copy Left (7 cols) -->
+<div class="lg:col-span-7 flex flex-col items-start text-left">
+<!-- Badge -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary-fixed/50 border border-secondary/20 mb-6 text-on-secondary-fixed">
+<span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+<span class="text-label-caps font-label-caps uppercase tracking-wider font-bold">MADE FOR YOUR SPECIAL MOMENTS</span>
+</div>
+<!-- Headline -->
+<h1 class="font-headline-lg lg:font-display-xl text-headline-lg lg:text-display-xl text-primary font-bold tracking-tight mb-6">
+              Turn Your Moments <br class="hidden sm:inline"/>
+              Into Beautiful <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-secondary">Digital Invitations</span>
+</h1>
+<!-- Subtitle -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-8 leading-relaxed">
+              Create stunning digital invitations for weddings, birthdays, engagements, and special celebrations. Add your story, customize music &amp; photos, and share with your loved ones in an elegant interactive link.
+            </p>
+<!-- CTA Cluster -->
+<div class="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-12">
+<a class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-primary text-on-primary hover:bg-primary-container font-label-lg text-label-lg font-bold shadow-luxury active:scale-[0.98] transition-all flex items-center justify-center gap-2" href="#create">
+<span>Create Your Invitation</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-surface-container-lowest border border-outline-variant/60 text-primary hover:bg-surface-container-low font-label-lg text-label-lg font-semibold active:scale-[0.98] transition-all flex items-center justify-center gap-2" href="#templates">
+<span>Explore Templates</span>
+</a>
+</div>
+<!-- Trust Metrics Counter -->
+<div class="grid grid-cols-4 gap-4 pt-6 border-t border-outline-variant/30 w-full max-w-lg">
+<div>
+<p class="font-headline-sm text-headline-sm text-primary font-bold">10+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Templates</p>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary font-bold">5+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Occasions</p>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary font-bold">50+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Happy Families</p>
+</div>
+<div>
+<div class="flex items-center gap-0.5">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">4.9</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rated by Users</p>
+</div>
+</div>
+</div>
+<!-- Hero Visual Right: Realistic Double Smartphone Stage (5 cols) -->
+<div class="lg:col-span-5 relative flex justify-center items-center">
+<!-- Floating Feature Pills with Glassmorphism -->
+<div class="absolute -top-4 -left-6 z-20 glass-card px-3.5 py-2 rounded-2xl shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80 animate-bounce duration-1000">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">photo_library</span>
+<span class="text-label-md font-label-md font-semibold text-primary">Add Photos &amp; Videos</span>
+</div>
+<div class="absolute top-28 -left-12 z-20 glass-card px-3.5 py-2 rounded-2xl shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="text-label-md font-label-md font-semibold text-primary">Edit Text &amp; Colors</span>
+</div>
+<div class="absolute bottom-28 -left-8 z-20 glass-card px-3.5 py-2 rounded-2xl shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-tertiary-container text-sm" style="font-variation-settings: 'FILL' 1;">music_note</span>
+<span class="text-label-md font-label-md font-semibold text-primary">Choose Music</span>
+</div>
+<div class="absolute -bottom-4 left-6 z-20 glass-card px-3.5 py-2 rounded-2xl shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-secondary text-sm">visibility</span>
+<span class="text-label-md font-label-md font-semibold text-primary">Live Preview</span>
+</div>
+<!-- Floating Right Utility Badges -->
+<div class="absolute top-8 -right-8 z-20 hidden sm:flex flex-col gap-3">
+<div class="glass-card px-3.5 py-2 rounded-full shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-xs text-primary">draw</span>
+<span class="text-label-caps font-label-caps font-bold text-on-surface">Easy Customization</span>
+</div>
+<div class="glass-card px-3.5 py-2 rounded-full shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-xs text-primary">link</span>
+<span class="text-label-caps font-label-caps font-bold text-on-surface">Personalized Links</span>
+</div>
+<div class="glass-card px-3.5 py-2 rounded-full shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-xs text-secondary">mark_chat_unread</span>
+<span class="text-label-caps font-label-caps font-bold text-on-surface">Share on WhatsApp</span>
+</div>
+<div class="glass-card px-3.5 py-2 rounded-full shadow-luxury flex items-center gap-2 border border-surface-container-lowest/80">
+<span class="material-symbols-outlined text-xs text-primary">insights</span>
+<span class="text-label-caps font-label-caps font-bold text-on-surface">Track RSVPs</span>
+</div>
+</div>
+<!-- Device Mockup Stack -->
+<div class="relative w-full max-w-[340px] sm:max-w-[420px] h-[580px] flex items-center justify-center">
+<!-- Back Device (Secondary screen) -->
+<div class="absolute right-0 top-6 w-[230px] sm:w-[260px] h-[500px] bg-surface-container-lowest rounded-[38px] p-2.5 shadow-2xl border-[5px] border-slate-800 rotate-6 transform transition-all duration-300">
+<div class="w-full h-full rounded-[30px] overflow-hidden bg-surface-container-low flex flex-col p-4 text-center relative">
+<div class="w-16 h-3.5 bg-slate-800 rounded-full mx-auto mb-3"></div>
+<span class="text-label-caps font-label-caps text-secondary font-bold tracking-widest uppercase">Event Details</span>
+<p class="font-headline-md text-headline-md text-primary font-serif mt-2">Wedding &amp; Sangeet</p>
+<div class="mt-4 bg-surface-container-lowest p-3 rounded-2xl shadow-sm text-left border border-outline-variant/30">
+<p class="text-label-md font-label-md font-bold text-primary">The Grand Palace</p>
+<p class="text-body-sm text-body-sm text-on-surface-variant">14 Feb 2026 • 7:00 PM</p>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-secondary mt-1">
+<span class="material-symbols-outlined text-xs">location_on</span> View Google Maps
+                    </span>
+</div>
+<div class="mt-4 rounded-xl overflow-hidden shadow-sm h-36 relative">
+<img class="w-full h-full object-cover" data-alt="Romantic Indian couple holding hands in scenic pre-wedding photoshoot at sunset garden with golden soft light and regal ceremonial decor in warm rose and gold palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOOMwxl_NXnMgo8aviuWUzBdcXTdPs7yoS6PAGhV_nbP96w00B3ugcFS4b6DuKIPIRdFBL0CZqAhx50Rl-JJVD3rRduJElJhV8colzVLoAZOOQN-GSF4Ido52XdI8wpGBBZClc1Cfkp8VK7kUd3EcC-8_508rl_lIuX_ukjr-fAhG8BJkP4qTULq2iDVrxavK661DapYy-EsxB4UsOQQbA__qPw-uLaSLIeCu8vW81xwJm_PJBX8oz"/>
+</div>
+<div class="mt-auto py-2">
+<span class="text-label-caps font-label-caps text-outline font-semibold">Uptemp Interactive Guestbook</span>
+</div>
+</div>
+</div>
+<!-- Front Device (Primary wedding invite) -->
+<div class="absolute left-2 sm:left-4 top-0 w-[240px] sm:w-[280px] h-[540px] bg-surface-container-lowest rounded-[42px] p-3 shadow-luxury border-[6px] border-primary z-10 -rotate-2 transform transition-all hover:rotate-0 duration-300">
+<div class="w-full h-full rounded-[32px] overflow-hidden gold-shimmer flex flex-col border border-secondary/20 relative p-4 text-center">
+<!-- Dynamic Island Notch -->
+<div class="w-20 h-4 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-slate-900 ml-auto mr-3"></div>
+</div>
+<!-- Ornate Border Motif -->
+<div class="border border-secondary/30 rounded-2xl p-4 h-full flex flex-col justify-between items-center relative">
+<div class="text-label-caps font-label-caps tracking-widest text-secondary font-semibold uppercase">
+                      Together With Our Families
+                    </div>
+<div class="my-auto py-2">
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary tracking-tight">Akshat</h2>
+<span class="font-serif italic text-secondary text-2xl font-light">&amp;</span>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary tracking-tight">Priya</h2>
+</div>
+<div class="space-y-1">
+<p class="text-[11px] uppercase tracking-wider text-on-surface-variant font-medium">Invite you to celebrate</p>
+<p class="text-label-md font-label-md font-bold text-primary">Saturday, 14 Feb 2026</p>
+<p class="text-[11px] text-on-surface-variant">The Grand Palace, Ahmedabad</p>
+</div>
+<div class="w-full pt-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</div>
+<span class="text-[10px] text-outline uppercase tracking-wider mt-1 block">Scroll to open</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TEMPLATES SHOWCASE SECTION -->
+<section class="py-space-2xl lg:py-space-3xl bg-surface-container-lowest border-y border-outline-variant/30" id="templates">
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+<div>
+<div class="inline-flex items-center gap-1.5 text-secondary text-label-caps font-label-caps uppercase font-bold tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm">category</span>
+<span>BEAUTIFUL TEMPLATES</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary">
+              Choose a Template for Your Special Occasion
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Modern, elegant and fully customizable interactive websites for every milestone.
+            </p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center gap-3">
+<a class="text-primary hover:text-primary-container font-label-lg text-label-lg font-bold inline-flex items-center gap-1.5 group" href="#all-templates">
+<span>View All Templates</span>
+<span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Filter Category Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold whitespace-nowrap shadow-sm">All</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">Hindu</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">South Indian Traditional</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">Sikh / Anand Karaj</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">Modern Minimal</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">Islamic / Nikah</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium whitespace-nowrap transition-colors">Birthday &amp; Baby Shower</button>
+</div>
+<!-- 8 Detailed Template Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1: Royal Wedding -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-gradient-to-b from-[#FFFDF8] to-[#FFF5EB] p-5 flex flex-col justify-between text-center overflow-hidden border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">Premium</span>
+<span class="text-label-md font-label-md font-bold text-primary">₹499</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-secondary text-2xl mb-1" style="font-variation-settings: 'FILL' 1;">spa</span>
+<p class="font-serif text-headline-sm font-semibold text-primary">Akshat &amp; Priya</p>
+<p class="text-[11px] text-on-surface-variant tracking-wider mt-1 uppercase font-medium">Royal Palace Wedding</p>
+</div>
+<!-- Action Overlay on Hover -->
+<div class="absolute inset-0 bg-primary/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Royal Wedding</h3>
+<p class="text-body-sm text-body-sm text-outline">Gold floral &amp; regal blush</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 2: Modern Minimal -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-[#0E131F] p-5 flex flex-col justify-between text-center overflow-hidden text-on-primary border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-200">Cinematic</span>
+<span class="text-label-md font-label-md font-bold text-on-primary">₹299</span>
+</div>
+<div class="my-auto py-4">
+<p class="text-[11px] tracking-widest text-secondary-fixed uppercase">Save The Date</p>
+<p class="font-serif text-headline-sm font-semibold text-white mt-1">Kabir &amp; Tara</p>
+<p class="text-[11px] text-slate-400 mt-2">14 · 02 · 2027</p>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/90 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Modern Minimal</h3>
+<p class="text-body-sm text-body-sm text-outline">Film grain &amp; quiet luxury</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 3: Floral Classic -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-gradient-to-b from-[#FFF7F7] to-[#FDF2F2] p-5 flex flex-col justify-between text-center overflow-hidden border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">Engagement</span>
+<span class="text-label-md font-label-md font-bold text-primary">₹499</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-tertiary text-2xl mb-1">local_florist</span>
+<p class="font-serif text-headline-sm font-semibold text-primary">Riya &amp; Arjun</p>
+<p class="text-[11px] text-tertiary tracking-wider mt-1 uppercase font-medium">Rose &amp; Botanical</p>
+</div>
+<div class="absolute inset-0 bg-primary/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Floral Classic</h3>
+<p class="text-body-sm text-body-sm text-outline">Garden engagement rings</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 4: South Indian Traditional -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-[#3B1214] p-5 flex flex-col justify-between text-center overflow-hidden text-on-primary border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">Muhurtham</span>
+<span class="text-label-md font-label-md font-bold text-secondary-fixed">₹499</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-secondary-fixed text-2xl mb-1" style="font-variation-settings: 'FILL' 1;">temple_hindu</span>
+<p class="font-serif text-headline-sm font-semibold text-secondary-fixed">Arjun &amp; Ananya</p>
+<p class="text-[11px] text-secondary-fixed/80 mt-1 uppercase tracking-wider">Temple Gold &amp; Kolam</p>
+</div>
+<div class="absolute inset-0 bg-primary/90 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">South Indian Traditional</h3>
+<p class="text-body-sm text-body-sm text-outline">Tamil, Telugu, Kannada rites</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 5: Baby Shower / Birthday -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-gradient-to-b from-[#F3F8FF] to-[#E5F0FF] p-5 flex flex-col justify-between text-center overflow-hidden border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed">Kids / Baby</span>
+<span class="text-label-md font-label-md font-bold text-primary">₹299</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-primary text-3xl mb-1">toys</span>
+<p class="font-serif text-headline-sm font-semibold text-primary">Aarav Turns One</p>
+<p class="text-[11px] text-on-surface-variant mt-1 uppercase">Pastel Teddy &amp; Balloons</p>
+</div>
+<div class="absolute inset-0 bg-primary/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Baby's First Birthday</h3>
+<p class="text-body-sm text-body-sm text-outline">Playful &amp; joyful celebration</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 6: Festival & Diwali -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-[#0E3526] p-5 flex flex-col justify-between text-center overflow-hidden text-on-primary border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">Festival</span>
+<span class="text-label-md font-label-md font-bold text-secondary-fixed">₹299</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">flare</span>
+<p class="font-serif text-headline-sm font-semibold text-secondary-fixed">Diwali Celebration</p>
+<p class="text-[11px] text-secondary-fixed/80 mt-1 uppercase">Emerald &amp; Gold Diya</p>
+</div>
+<div class="absolute inset-0 bg-primary/90 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Diwali &amp; Pooja Gala</h3>
+<p class="text-body-sm text-body-sm text-outline">Warm diya lanterns &amp; sweets</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 7: Elegant Bridal Shower -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-gradient-to-b from-[#FDF9F3] to-[#F5ECE0] p-5 flex flex-col justify-between text-center overflow-hidden border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">Shower</span>
+<span class="text-label-md font-label-md font-bold text-primary">₹499</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-secondary text-2xl mb-1">celebration</span>
+<p class="font-serif text-headline-sm font-semibold text-primary">Meera's Shower</p>
+<p class="text-[11px] text-on-surface-variant mt-1 uppercase">Brunch &amp; Champagne</p>
+</div>
+<div class="absolute inset-0 bg-primary/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Bridal Shower &amp; Brunch</h3>
+<p class="text-body-sm text-body-sm text-outline">Eucalyptus &amp; prosecco vibes</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+<!-- Card 8: 50th Milestone Birthday -->
+<div class="group bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col">
+<div class="relative aspect-[4/5] bg-[#29171C] p-5 flex flex-col justify-between text-center overflow-hidden text-on-primary border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full z-10">
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">Milestone</span>
+<span class="text-label-md font-label-md font-bold text-secondary-fixed">₹299</span>
+</div>
+<div class="my-auto py-4">
+<span class="material-symbols-outlined text-secondary-fixed text-2xl mb-1">star</span>
+<p class="font-serif text-headline-sm font-semibold text-secondary-fixed">50th Birthday</p>
+<p class="text-[11px] text-secondary-fixed/70 mt-1 uppercase">A Life Well Celebrated</p>
+</div>
+<div class="absolute inset-0 bg-primary/90 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-4">
+<button class="w-full py-2.5 rounded-full bg-on-primary text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">View Demo</button>
+<button class="w-full py-2.5 rounded-full bg-secondary text-on-primary font-label-md text-label-md font-bold hover:bg-on-secondary-fixed-variant transition-colors">Use Template</button>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-serif font-bold text-on-surface text-base">Milestone Jubilees</h3>
+<p class="text-body-sm text-body-sm text-outline">Rich maroon &amp; velvet foil</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-lg">arrow_outward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 'EVERYTHING YOU NEED IN ONE PLACE' FEATURE BENTO GRID -->
+<section class="py-space-2xl lg:py-space-3xl" id="features">
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 text-secondary text-label-caps font-label-caps uppercase font-bold tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm">workspace_premium</span>
+<span>WHY UPTEMP</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary">
+            Everything You Need in One Place
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+            From seamless self-creation to effortless WhatsApp sharing and live guest management.
+          </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Feature 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/30 shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary mb-6 shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">palette</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold mb-3">Easy Customization</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Edit text, photos, background music, fonts, and ceremony schedules with a zero-friction live preview that refreshes instantaneously.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20">
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-primary hover:text-secondary transition-colors" href="#create">
+<span>Start Creating</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/30 shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed mb-6 shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold mb-3">Guest Management</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Add guest lists, import easily, and generate personalized greeting links like "Dear Ravi Uncle &amp; family" with dietary and headcount tracking.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20">
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-primary hover:text-secondary transition-colors" href="#create">
+<span>Manage Guests</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/30 shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed mb-6 shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold mb-3">Share Instantly</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Send via WhatsApp in one tap with rich cards, custom preview text, or download print-ready QR codes for your physical invitations and venue stands.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20">
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-primary hover:text-secondary transition-colors" href="#create">
+<span>Share Now</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Feature 4 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/30 shadow-luxury shadow-luxury-hover transition-all duration-300 flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed mb-6 shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold mb-3">RSVP &amp; Analytics</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Watch sweet heartfelt messages roll in on the live Blessing Wall. Monitor views, music plays, and event attendance confirmations in real time.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20">
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-primary hover:text-secondary transition-colors" href="#create">
+<span>View Analytics</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Comprehensive Feature Checklist (Included on Every Plan) -->
+<div class="mt-16 bg-surface-container-low rounded-3xl p-8 lg:p-12 border border-outline-variant/30">
+<div class="max-w-xl mx-auto text-center mb-8">
+<span class="text-label-caps font-label-caps text-secondary font-bold uppercase tracking-wider">INCLUDED IN ALL PLANS</span>
+<h3 class="font-headline-md text-headline-md font-serif text-primary mt-1">Built for effortless elegance</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Every invitation link includes these premium core features with zero hidden charges.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-on-surface">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Animated intro</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cinematic opening with your names &amp; date</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Bride &amp; groom portraits</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">High-res uploads displayed gracefully</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Directions &amp; Maps</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">One-tap Google Maps directions</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Live Countdown</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Live timer down to the exact ceremony hour</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Blessing wall</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Guests leave wishes that show instantly</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Live stream button</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">YouTube Live or Zoom for NRI loved ones</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Edit anytime</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Change timings or details on the fly</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">check_circle</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">1-year hosting</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Live for a full 365 days after the event</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4 SIMPLE STEPS WORKFLOW SECTION -->
+<section class="py-space-2xl lg:py-space-3xl bg-surface-container-lowest border-y border-outline-variant/30" id="how-it-works">
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+<div>
+<div class="inline-flex items-center gap-1.5 text-secondary text-label-caps font-label-caps uppercase font-bold tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm">timeline</span>
+<span>HOW IT WORKS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary">
+              Create Your Invitation in 4 Simple Steps
+            </h2>
+</div>
+<a class="mt-4 md:mt-0 px-6 py-2.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-bold hover:bg-primary-container transition-all shadow-sm" href="#create">
+            Get Started Now →
+          </a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+<!-- Step 1 -->
+<div class="flex flex-col items-start bg-surface-container-low p-6 rounded-3xl border border-outline-variant/30">
+<div class="flex items-center justify-between w-full mb-6">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">1</div>
+<span class="material-symbols-outlined text-outline text-xl">style</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary font-bold mb-2">Choose Template</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Pick from our collection of royal wedding, minimal modern, or festival stationery designs.
+            </p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-start bg-surface-container-low p-6 rounded-3xl border border-outline-variant/30">
+<div class="flex items-center justify-between w-full mb-6">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">2</div>
+<span class="material-symbols-outlined text-outline text-xl">auto_fix_high</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary font-bold mb-2">Customize</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Add your couple story, dates, ceremony timings, Google Maps links, and favorite songs.
+            </p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-start bg-surface-container-low p-6 rounded-3xl border border-outline-variant/30">
+<div class="flex items-center justify-between w-full mb-6">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">3</div>
+<span class="material-symbols-outlined text-outline text-xl">share</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary font-bold mb-2">Share</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Get an instant personalized link ready for WhatsApp chats, Instagram bios, and QR codes.
+            </p>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-start bg-surface-container-low p-6 rounded-3xl border border-outline-variant/30">
+<div class="flex items-center justify-between w-full mb-6">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">4</div>
+<span class="material-symbols-outlined text-outline text-xl">favorite</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary font-bold mb-2">Track Responses</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Receive live RSVPs, heartfelt family blessings, and guest headcounts effortlessly.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- PRICING & PLANS SECTION (Pay Once, No Subscription) -->
+<section class="py-space-2xl lg:py-space-3xl" id="pricing">
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 text-secondary text-label-caps font-label-caps uppercase font-bold tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm">payments</span>
+<span>TRANSPARENT PRICING</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary">
+            Pay once. No subscription.
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+            Every plan has the full interactive invitation. Higher plans add photos, custom music, and high-definition video reels.
+          </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto">
+<!-- Plan 1: Link -->
+<div class="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/40 shadow-luxury flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-headline-md font-serif text-primary">Link</h3>
+<span class="text-label-caps font-label-caps px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant font-bold uppercase">Basic</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Everything you need to invite everyone beautifully.</p>
+<div class="flex items-baseline gap-1 mb-8">
+<span class="text-display-xl font-display-xl text-primary font-bold">₹299</span>
+<span class="text-body-sm text-outline font-medium">one-time</span>
+</div>
+<ul class="space-y-4 mb-8 text-on-surface text-body-sm">
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>The full animated invitation</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Bride &amp; groom portraits</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Unlimited event venues &amp; dates</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Edit anytime, free forever</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Live the moment you pay</span>
+</li>
+</ul>
+</div>
+<div>
+<a class="w-full py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold text-center block transition-all shadow-sm" href="#create?plan=link">
+                Start with Link
+              </a>
+<a class="text-center block text-label-caps font-label-caps text-outline hover:text-primary mt-3 font-semibold" href="#demo">
+                See a live example →
+              </a>
+</div>
+</div>
+<!-- Plan 2: Link + Photos & Music (Most Chosen) -->
+<div class="bg-surface-container-lowest rounded-3xl p-8 border-2 border-secondary shadow-luxury shadow-luxury-hover flex flex-col justify-between relative transform lg:-translate-y-2">
+<!-- Floating Badge -->
+<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-secondary text-on-primary font-label-caps text-label-caps uppercase tracking-wider font-extrabold px-4 py-1 rounded-full shadow-md">
+              Most Chosen
+            </div>
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-headline-md font-serif text-primary">Photos &amp; Music</h3>
+<span class="text-label-caps font-label-caps px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold uppercase">Popular</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Your gallery photos and your emotional wedding melody.</p>
+<div class="flex items-baseline gap-1 mb-8">
+<span class="text-display-xl font-display-xl text-primary font-bold">₹499</span>
+<span class="text-body-sm text-outline font-medium">one-time</span>
+</div>
+<ul class="space-y-4 mb-8 text-on-surface text-body-sm">
+<li class="flex items-center gap-2.5 font-semibold text-primary">
+<span class="material-symbols-outlined text-secondary text-base">check_circle</span>
+<span>Everything in Link</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Couple photo gallery (up to 20 pics)</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Royalty-free or custom uploaded music</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Interactive Blessing Wall for guest notes</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Live stream video integration</span>
+</li>
+</ul>
+</div>
+<div>
+<a class="w-full py-3.5 rounded-full bg-secondary hover:bg-on-secondary-fixed-variant text-on-primary font-label-md text-label-md font-bold text-center block transition-all shadow-md" href="#create?plan=photos">
+                Start with Photos &amp; Music
+              </a>
+<a class="text-center block text-label-caps font-label-caps text-secondary hover:underline mt-3 font-semibold" href="#demo">
+                See a live example →
+              </a>
+</div>
+</div>
+<!-- Plan 3: Link + Video -->
+<div class="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/40 shadow-luxury flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-headline-md font-serif text-primary">Link + Video</h3>
+<span class="text-label-caps font-label-caps px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant font-bold uppercase">Ultimate</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Your invitation as a video for WhatsApp status &amp; Insta reels.</p>
+<div class="flex items-baseline gap-1 mb-8">
+<span class="text-display-xl font-display-xl text-primary font-bold">₹799</span>
+<span class="text-body-sm text-outline font-medium">one-time</span>
+</div>
+<ul class="space-y-4 mb-8 text-on-surface text-body-sm">
+<li class="flex items-center gap-2.5 font-semibold text-primary">
+<span class="material-symbols-outlined text-secondary text-base">check_circle</span>
+<span>Everything in Photos &amp; Music</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>A 9:16 MP4 vertical reel video</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>Custom studio delivery in 72 hours</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>3 complimentary MP4 re-edits included</span>
+</li>
+<li class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base">check</span>
+<span>1-Year cloud hosting + QR code standee</span>
+</li>
+</ul>
+</div>
+<div>
+<a class="w-full py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold text-center block transition-all shadow-sm" href="#create?plan=video">
+                Start with Video
+              </a>
+<a class="text-center block text-label-caps font-label-caps text-outline hover:text-primary mt-3 font-semibold" href="#demo">
+                See a live example →
+              </a>
+</div>
+</div>
+</div>
+<!-- Addon Banner: Save the Date -->
+<div class="mt-12 bg-gradient-to-r from-surface-container-lowest to-surface-container-low rounded-3xl p-6 sm:p-8 border border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-6 max-w-5xl mx-auto shadow-sm">
+<div>
+<div class="inline-flex items-center gap-1.5 text-secondary text-label-caps font-label-caps font-bold uppercase mb-1">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>MONTHS AHEAD?</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-serif text-primary">Save the Date · ₹149</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl mt-1">
+              Names, date circled on a calendar, and countdown. Live in a minute. The same link upgrades to your full wedding invitation later, with what you paid credited!
+            </p>
+</div>
+<a class="px-6 py-3 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold whitespace-nowrap transition-all shadow-sm" href="#create?kind=save-the-date">
+            Create a Save the Date
+          </a>
+</div>
+</div>
+</section>
+<!-- FAQ SECTION (Clean Accordion) -->
+<section class="py-space-2xl lg:py-space-3xl bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="max-w-3xl mx-auto px-margin md:px-margin-tablet">
+<div class="text-center mb-12">
+<span class="text-label-caps font-label-caps text-secondary font-bold uppercase tracking-wider">FAQ</span>
+<h2 class="font-headline-lg text-headline-lg font-serif text-primary mt-1">
+            Questions families ask us
+          </h2>
+</div>
+<div class="space-y-4" id="faq-accordion">
+<!-- FAQ Item 1 -->
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/30 overflow-hidden">
+<button class="w-full p-5 text-left flex justify-between items-center font-headline-sm text-headline-sm text-primary font-bold text-base hover:text-secondary transition-colors" onclick="toggleFaq(this)">
+<span>Is it only for Indian weddings?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200">add</span>
+</button>
+<div class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/20">
+              No. It started with Indian weddings, so it handles multi-day events, live streams for family abroad, and blessing walls smoothly. But the Minimal and Modern designs suit couples anywhere in the world. Set your custom timezone (US, UK, UAE, Australia, etc.), share by WhatsApp or SMS, and pay with any international credit card.
+            </div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/30 overflow-hidden">
+<button class="w-full p-5 text-left flex justify-between items-center font-headline-sm text-headline-sm text-primary font-bold text-base hover:text-secondary transition-colors" onclick="toggleFaq(this)">
+<span>Can I send a Save the Date first?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200">add</span>
+</button>
+<div class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/20">
+              Yes. You can publish a single-screen Save the Date with a live countdown for just ₹149. Once your ceremony venues and schedules are finalized, simply upgrade from your edit panel: the exact same link transforms into the full interactive invitation, and your ₹149 is automatically credited.
+            </div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/30 overflow-hidden">
+<button class="w-full p-5 text-left flex justify-between items-center font-headline-sm text-headline-sm text-primary font-bold text-base hover:text-secondary transition-colors" onclick="toggleFaq(this)">
+<span>Is it really free to build and preview?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200">add</span>
+</button>
+<div class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/20">
+              Yes, 100% free! Pick any template, fill in your names and story, upload photos, and preview the full mobile experience right on your phone. You only pay a one-time fee when you are completely satisfied and ready to generate the public link for your guests.
+            </div>
+</div>
+<!-- FAQ Item 4 -->
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/30 overflow-hidden">
+<button class="w-full p-5 text-left flex justify-between items-center font-headline-sm text-headline-sm text-primary font-bold text-base hover:text-secondary transition-colors" onclick="toggleFaq(this)">
+<span>Do my guests need an app to open the invitation?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200">add</span>
+</button>
+<div class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/20">
+              No app is required! The invitation is a lightning-fast responsive website link. It opens instantly inside WhatsApp, Safari, Chrome, Instagram, or desktop browsers on iOS and Android devices without downloading anything.
+            </div>
+</div>
+<!-- FAQ Item 5 -->
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/30 overflow-hidden">
+<button class="w-full p-5 text-left flex justify-between items-center font-headline-sm text-headline-sm text-primary font-bold text-base hover:text-secondary transition-colors" onclick="toggleFaq(this)">
+<span>How long does it take to create?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200">add</span>
+</button>
+<div class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/20">
+              Only about 5 minutes! Our streamlined editor guides you through couple details, event schedules, and photos. Your invitation goes live the immediate moment you complete checkout.
+            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- CALL TO ACTION BANNER -->
+<section class="py-space-2xl bg-gradient-to-b from-surface-container-lowest to-surface-container-low">
+<div class="max-w-[1280px] mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop">
+<div class="bg-primary text-on-primary rounded-[36px] p-8 md:p-14 relative overflow-hidden shadow-2xl flex flex-col items-center text-center">
+<div class="relative z-10 max-w-2xl">
+<span class="text-label-caps font-label-caps text-secondary-fixed font-bold uppercase tracking-widest mb-3 inline-block">
+              START IN 5 MINUTES
+            </span>
+<h2 class="font-headline-lg lg:font-display-xl text-headline-lg lg:text-display-xl font-serif text-on-primary leading-tight mb-4">
+              Make Every Occasion Unforgettable
+            </h2>
+<p class="font-body-lg text-body-lg text-slate-300 mb-8 max-w-xl mx-auto">
+              Join thousands of happy families who shared their milestones with graceful digital invitations.
+            </p>
+<div class="flex flex-wrap items-center justify-center gap-4">
+<a class="px-8 py-4 rounded-full bg-secondary hover:bg-on-secondary-fixed-variant text-on-primary font-label-lg text-label-lg font-bold shadow-lg active:scale-[0.98] transition-all flex items-center gap-2" href="#create">
+<span>Create Your Invitation</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+<a class="px-8 py-4 rounded-full bg-on-primary/10 hover:bg-on-primary/20 text-on-primary font-label-lg text-label-lg font-semibold border border-white/20 transition-all" href="#templates">
+                Browse Gallery
+              </a>
+</div>
+<!-- Occasion Quick Links -->
+<div class="flex flex-wrap justify-center items-center gap-3 mt-10 text-label-md font-label-md text-slate-300">
+<span class="px-3 py-1 rounded-full bg-white/10">Weddings</span>
+<span class="px-3 py-1 rounded-full bg-white/10">Birthdays</span>
+<span class="px-3 py-1 rounded-full bg-white/10">Engagements</span>
+<span class="px-3 py-1 rounded-full bg-white/10">Baby Shower</span>
+<span class="px-3 py-1 rounded-full bg-white/10">Festivals</span>
+<span class="px-3 py-1 rounded-full bg-white/10">Anniversaries</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER (from Shared Component JSON: Footer) -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 text-on-surface">
+<div class="w-full px-margin-tablet lg:px-margin-desktop py-space-2xl max-w-[1280px] mx-auto flex flex-col gap-space-xl">
+<!-- Top Columns -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+<!-- Brand Summary (2 cols) -->
+<div class="col-span-2">
+<a class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight flex items-center gap-2" href="#">
+<span class="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</span>
+<span>Uptemp</span>
+</a>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-3 max-w-sm">
+            Animated digital invitations handcrafted for unforgettable Indian and global celebrations. Born for modern couples, ready in minutes, cherished forever.
+          </p>
+<div class="flex items-center gap-3 mt-5">
+<a class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">share</span>
+</a>
+<a class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+<a class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">chat</span>
+</a>
+</div>
+</div>
+<!-- Col: Product -->
+<div>
+<p class="font-label-md text-label-md font-bold text-primary uppercase tracking-wider mb-4">Product</p>
+<ul class="space-y-2.5">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#templates">Templates</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#save-the-date">Save the Date</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#love-story">How It Works</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#blessing-wall">Blessing Wall</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#pricing">Pricing</a></li>
+</ul>
+</div>
+<!-- Col: Invitations -->
+<div>
+<p class="font-label-md text-label-md font-bold text-primary uppercase tracking-wider mb-4">Invitations</p>
+<ul class="space-y-2.5">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Wedding Invitation</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Engagement Card</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Muhurtham &amp; Pooja</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">WhatsApp Invitation</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Reels Video Invite</a></li>
+</ul>
+</div>
+<!-- Col: Languages -->
+<div>
+<p class="font-label-md text-label-md font-bold text-primary uppercase tracking-wider mb-4">Languages</p>
+<ul class="space-y-2.5">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">English</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Hindi (हिन्दी)</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Tamil (தமிழ்)</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Telugu (తెలుగు)</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Kannada &amp; Malayalam</a></li>
+</ul>
+</div>
+<!-- Col: Worldwide NRI -->
+<div>
+<p class="font-label-md text-label-md font-bold text-primary uppercase tracking-wider mb-4">Worldwide</p>
+<ul class="space-y-2.5">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">India (All Metros)</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">USA &amp; Canada</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Dubai &amp; UAE</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">London &amp; UK</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#">Singapore &amp; Australia</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Line: Exact Shared Component Content -->
+<div class="pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4 text-body-sm font-body-sm text-on-surface-variant">
+<p>© 2026 Uptemp Digital Invitations. All rights reserved. Handcrafted for unforgettable celebrations.</p>
+<div class="flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#faq">FAQ</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#privacy">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#terms">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Accordion Toggle JavaScript -->
+<script>
+    function toggleFaq(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.material-symbols-outlined');
+      const isOpen = !content.classList.contains('hidden');
+      
+      if (isOpen) {
+        content.classList.add('hidden');
+        icon.textContent = 'add';
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.remove('hidden');
+        icon.textContent = 'close';
+        icon.style.transform = 'rotate(90deg)';
+      }
+    }
+  </script>
+</body></html>
