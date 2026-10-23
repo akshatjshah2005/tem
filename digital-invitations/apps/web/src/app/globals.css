@@ -4,19 +4,26 @@
 
 :root {
   color-scheme: light;
-  --foreground-rgb: 15, 23, 42;
-  --background-start-rgb: 245, 250, 255;
+  --foreground-rgb: 23, 21, 47;
+  --background-start-rgb: 253, 251, 249;
   --background-end-rgb: 255, 255, 255;
-  --uptemp-50: #f0f9ff;
-  --uptemp-100: #e0f2fe;
-  --uptemp-200: #bae6fd;
-  --uptemp-300: #7dd3fc;
-  --uptemp-400: #38bdf8;
-  --uptemp-500: #0ea5e9;
-  --uptemp-600: #0284c7;
-  --uptemp-700: #0369a1;
-  --uptemp-800: #075985;
-  --uptemp-900: #0c4a6e;
+  --uptemp-primary: #1e1b4b;
+  --uptemp-primary-strong: #070235;
+  --uptemp-gold: #d97706;
+  --uptemp-rose: #e11d48;
+  --uptemp-canvas: #fdfbf9;
+  --uptemp-surface: #ffffff;
+  --uptemp-line: rgba(30, 27, 75, 0.11);
+  --uptemp-50: #f5f3ff;
+  --uptemp-100: #ede9fe;
+  --uptemp-200: #ddd6fe;
+  --uptemp-300: #c4b5fd;
+  --uptemp-400: #a78bfa;
+  --uptemp-500: #8b5cf6;
+  --uptemp-600: #7c3aed;
+  --uptemp-700: #6d28d9;
+  --uptemp-800: #5b21b6;
+  --uptemp-900: #4c1d95;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +35,8 @@ html {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #ffffff;
+  background: var(--uptemp-canvas);
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -36,19 +44,19 @@ body {
 }
 
 button, input, select, textarea { font: inherit; }
-
 button, a { -webkit-tap-highlight-color: transparent; }
-
 a { text-underline-offset: 0.2em; }
 
+.font-serif { font-family: 'Playfair Display', Georgia, serif; }
+
 :focus-visible {
-  outline: 3px solid #38bdf8;
+  outline: 3px solid #d97706;
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #bae6fd;
-  color: #082f49;
+  background: #ffdcc3;
+  color: #1e1b4b;
 }
 
 @media (prefers-reduced-motion: reduce) {
