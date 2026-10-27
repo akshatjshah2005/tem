@@ -655,6 +655,7 @@ export default function InvitationEditorPage() {
             </div>
           )}
         </div>
+        </div>
         <aside className="hidden space-y-4 xl:sticky xl:top-24 xl:block">
           <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-sky-700">Live preview</p><h2 className="mt-1 text-sm font-bold text-slate-900">Guest view</h2></div><span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">Preview</span></div>
