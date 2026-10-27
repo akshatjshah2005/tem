@@ -401,54 +401,22 @@ export default function InvitationEditorPage() {
         </div>
       </header>
 
-      {/* Royal invitation workspace preview */}
-      <section className="border-b border-sky-200 bg-gradient-to-br from-[#f1f8ff] via-white to-sky-50">
-        <div className="mx-auto grid max-w-[1500px] gap-8 px-5 py-7 sm:px-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:px-10 lg:py-9">
-          <div>
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-700"><span>Uptemp Studio</span><span className="text-sky-400">/</span><span className="text-slate-500">Invitation editor</span></div>
-            <h2 className="mt-3 max-w-3xl font-serif text-3xl font-bold tracking-tight text-[#17324f] sm:text-4xl">Make every detail feel like <span className="italic text-sky-600">you.</span></h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">Personalize your invitation, arrange each celebration, add your gallery and prepare a polished guest experience. Your existing edits and save actions are preserved below.</p>
-            <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-              <span className="rounded-full border border-sky-200 bg-white px-3 py-2">✎ {invitation.template?.name || 'Invitation template'}</span>
-              <span className="rounded-full border border-sky-200 bg-white px-3 py-2">♧ {invitation.events.length} event{invitation.events.length === 1 ? '' : 's'}</span>
-              <span className="rounded-full border border-sky-200 bg-white px-3 py-2">♡ {invitation._count?.guests ?? 0} guests</span>
-            </div>
-          </div>
-          <div className="mx-auto w-full max-w-[300px] rounded-[2rem] border-[6px] border-[#17152f] bg-[#17152f] p-2 shadow-2xl shadow-indigo-950/20">
-            <div className="overflow-hidden rounded-[1.45rem] bg-[#f8fbff]">
-              <div className="flex items-center justify-between bg-white px-4 py-2 text-[9px] font-bold text-slate-500"><span>9:41</span><span>● ● ▰</span></div>
-              {invitation.media?.find((item) => item.isCover && mediaIsImage(item)) ? (
-                <div className="h-28 overflow-hidden"><img src={mediaDisplayUrl(invitation.media.find((item) => item.isCover && mediaIsImage(item))!)} alt="Invitation cover preview" className="h-full w-full object-cover" /></div>
-              ) : <div className="h-20 bg-gradient-to-br from-sky-100 via-white to-blue-100" /> }
-              <div className="px-4 pb-5 pt-2 text-center">
-                <span className="mx-auto grid h-8 w-8 place-items-center rounded-full border border-sky-500/40 font-serif text-sky-700">✦</span>
-                <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.2em] text-sky-800">Together with their families</p>
-                <h3 className="mt-2 break-words font-serif text-2xl font-bold leading-tight text-[#17324f]">{formData.name || invitation.name}</h3>
-                <p className="mt-2 line-clamp-3 text-[10px] leading-5 text-slate-600">{formData.description || invitation.description || 'A special celebration, shared with the people who matter most.'}</p>
-                <div className="mt-4 rounded-xl border border-sky-200/80 bg-white/80 p-3 text-left">
-                  <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-sky-800">Upcoming celebration</p>
-                  {invitation.events[0] ? <><p className="mt-1 font-serif text-sm font-bold text-[#17324f]">{invitation.events[0].name}</p><p className="mt-1 text-[9px] text-slate-500">{formatDateOnly(invitation.events[0].date)}{invitation.events[0].venueName ? ' · ' + invitation.events[0].venueName : ''}</p></> : <p className="mt-1 text-[10px] text-slate-500">Add your first event in the Events tab.</p>}
-                </div>
-                <div className="mt-3 rounded-full bg-[#1768a8] px-3 py-2 text-[10px] font-bold text-white">Celebrate with us ♡</div>
-              </div>
-            </div>
-            <p className="px-2 pb-1 pt-2 text-center text-[9px] font-bold uppercase tracking-[0.2em] text-white/70">Invitation preview</p>
-          </div>
-        </div>
-      </section>
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-5 py-7 sm:px-8 sm:py-10 lg:px-10">
-        {/* Tabs */}
-        <div className="mb-8 rounded-2xl border border-sky-200 bg-white px-3 shadow-sm sm:px-5">
-          <nav className="flex max-w-full gap-5 overflow-x-auto px-1 sm:gap-8">
+      <main className="mx-auto max-w-[1600px] px-3 py-4 sm:px-5 lg:px-6">
+        <div className="grid items-start gap-4 xl:grid-cols-[220px_minmax(0,1fr)_330px] lg:grid-cols-[190px_minmax(0,1fr)]">
+        <aside className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
+          <p className="px-3 pb-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Invitation studio</p>
+          <nav className="flex gap-2 overflow-x-auto xl:flex-col xl:overflow-visible">
+        <div className="mb-0 min-w-0 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm sm:p-6">
+          <nav className="flex gap-2 overflow-x-auto xl:flex-col xl:overflow-visible">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`whitespace-nowrap border-b-2 px-2 py-4 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${
+                className={`whitespace-nowrap rounded-xl border px-3 py-3 text-left text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${
                   activeTab === tab.id
-                    ? 'border-amber-500 text-sky-900'
-                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                    ? 'border-sky-200 bg-sky-50 text-sky-900'
+                    : 'border-transparent text-slate-500 hover:bg-sky-50 hover:text-sky-900'
                 }`}
               >
                 <span className="mr-2">{tab.icon}</span>
@@ -688,6 +656,21 @@ export default function InvitationEditorPage() {
               </div>
             </div>
           )}
+        </div>
+        <aside className="hidden space-y-4 xl:sticky xl:top-24 xl:block">
+          <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+            <div className="flex items-center justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-sky-700">Live preview</p><h2 className="mt-1 text-sm font-bold text-slate-900">Guest view</h2></div><span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">Preview</span></div>
+            <div className="mx-auto mt-4 w-full max-w-[270px] rounded-[2rem] border-[5px] border-slate-900 bg-slate-900 p-1.5 shadow-xl">
+              <div className="overflow-hidden rounded-[1.45rem] bg-[#f8fbff]">
+                <div className="flex items-center justify-between bg-white px-4 py-2 text-[9px] font-bold text-slate-500"><span>9:41</span><span>● ● ▰</span></div>
+                {invitation.media?.find((item) => item.isCover && mediaIsImage(item)) ? <div className="h-28 overflow-hidden"><img src={mediaDisplayUrl(invitation.media.find((item) => item.isCover && mediaIsImage(item))!)} alt="Invitation cover" className="h-full w-full object-cover" /></div> : <div className="h-24 bg-gradient-to-br from-sky-100 via-white to-blue-100" />}
+                <div className="px-4 pb-5 pt-3 text-center"><span className="mx-auto grid h-8 w-8 place-items-center rounded-full border border-sky-300 font-serif text-sky-700">✦</span><p className="mt-3 text-[8px] font-bold uppercase tracking-[0.18em] text-sky-700">Together with their families</p><h3 className="mt-2 break-words font-serif text-2xl font-bold leading-tight text-sky-950">{formData.name || invitation.name}</h3><p className="mt-2 line-clamp-3 text-[10px] leading-5 text-slate-600">{formData.description || invitation.description || 'A special celebration, shared with the people who matter most.'}</p><div className="mt-4 rounded-xl border border-sky-100 bg-white p-3 text-left"><p className="text-[8px] font-bold uppercase tracking-[0.16em] text-sky-700">Celebration details</p>{invitation.events[0] ? <><p className="mt-1 text-sm font-bold text-slate-900">{invitation.events[0].name}</p><p className="mt-1 text-[9px] text-slate-500">{formatDateOnly(invitation.events[0].date)}{invitation.events[0].venueName ? ' · ' + invitation.events[0].venueName : ''}</p></> : <p className="mt-1 text-[10px] text-slate-500">Add an event to see it here.</p>}</div><div className="mt-3 rounded-full bg-sky-700 px-3 py-2 text-[10px] font-bold text-white">Celebrate with us</div></div>
+              </div>
+            </div>
+            <Link href={`/dashboard/invitations/${invitation.id}/preview`} target="_blank" className="mt-4 block rounded-full border border-sky-200 px-4 py-2.5 text-center text-xs font-bold text-sky-800 transition hover:bg-sky-50">Open full preview ↗</Link>
+          </div>
+          <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Invitation status</p><div className="mt-2 flex items-center justify-between"><span className="text-sm font-semibold text-slate-800">{invitation.status === 'PUBLISHED' ? 'Published' : 'Draft'}</span><span className={`h-2 w-2 rounded-full ${invitation.status === 'PUBLISHED' ? 'bg-emerald-500' : 'bg-amber-400'}`} /></div><p className="mt-2 text-xs leading-5 text-slate-500">{invitation.events.length} events · {invitation._count?.guests ?? 0} guests · {invitation.media.length} media files</p></div>
+        </aside>
         </div>
       </main>
 
