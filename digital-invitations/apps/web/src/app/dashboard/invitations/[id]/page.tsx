@@ -407,8 +407,6 @@ export default function InvitationEditorPage() {
         <aside className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
           <p className="px-3 pb-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-sky-700">Invitation studio</p>
           <nav className="flex gap-2 overflow-x-auto xl:flex-col xl:overflow-visible">
-        <div className="mb-0 min-w-0 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm sm:p-6">
-          <nav className="flex gap-2 overflow-x-auto xl:flex-col xl:overflow-visible">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -424,8 +422,8 @@ export default function InvitationEditorPage() {
               </button>
             ))}
           </nav>
-        </div>
-
+        </aside>
+        <div className="mb-0 min-w-0 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm sm:p-6">
         {/* Tab Content */}
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           {/* Details Tab */}
