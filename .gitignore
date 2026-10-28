@@ -52,4 +52,10 @@ prisma/.env
 
 # pnpm
 .pnpm-store/
+<<<<<<< HEAD
 digital-invitations.zip
+=======
+
+digital-invitations.zip
+
+>>>>>>> origin/main

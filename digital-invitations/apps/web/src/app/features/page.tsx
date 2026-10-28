@@ -34,7 +34,7 @@ export default function FeaturesPage() {
             <span className="text-2xl font-extrabold tracking-[-0.06em]">uptemp<span className="text-sky-600">.</span></span>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-4">
-            <Link href="/templates" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50">Templates</Link>
+            <Link href="/create?template=royal-sandalwood" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50">Customizer</Link>
             <Link href="/login" className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-sky-50">Log in</Link>
             <Link href="/register?next=%2Fdashboard%2Fcreate" className="rounded-full bg-sky-600 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-sky-200 hover:bg-sky-700">Start creating</Link>
           </nav>
@@ -49,7 +49,7 @@ export default function FeaturesPage() {
             <h1 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-[-0.055em] text-slate-950 sm:text-6xl">Every part of your invitation journey, <span className="bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent">planned in one place.</span></h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">Explore Uptemp's 13-phase product plan—from account creation and design to guest links, publishing, RSVP and the future roadmap. We distinguish existing foundations from work that still needs implementation or testing.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/templates" className="rounded-full bg-sky-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-200 hover:bg-sky-700">Explore templates ↗</Link>
+              <Link href="/create?template=royal-sandalwood" className="rounded-full bg-sky-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-200 hover:bg-sky-700">Explore customizer ↗</Link>
               <Link href="/register?next=%2Fdashboard%2Fcreate" className="rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-bold text-slate-700 hover:border-sky-300 hover:bg-sky-50">Create an invitation</Link>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function FeaturesPage() {
           <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-sky-200">Build transparently</p>
           <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Designed for the full journey. Verified one feature at a time.</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-sky-100 sm:text-base">The visual design and feature inventory are the plan. Production readiness still depends on finishing missing requirements, connecting the API and database, and running end-to-end tests on real user flows.</p>
-          <div className="mt-7 flex flex-wrap gap-3"><Link href="/register?next=%2Fdashboard%2Fcreate" className="rounded-full bg-white px-6 py-3.5 text-sm font-bold text-sky-800 hover:bg-sky-50">Start an invitation ↗</Link><Link href="/templates" className="rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10">Browse themes</Link></div>
+          <div className="mt-7 flex flex-wrap gap-3"><Link href="/register?next=%2Fdashboard%2Fcreate" className="rounded-full bg-white px-6 py-3.5 text-sm font-bold text-sky-800 hover:bg-sky-50">Start an invitation ↗</Link><Link href="/create?template=royal-sandalwood" className="rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10">Launch customizer</Link></div>
         </div>
       </section>
 
