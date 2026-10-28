@@ -17,7 +17,7 @@ function normalizeMobile(raw: string): string {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { register } = useAuth();
+  const { register, demoLogin } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,17 +29,14 @@ export default function RegisterPage() {
 
   const validate = (): string | null => {
     if (formData.name.trim().length < 2) return 'Please enter your full name';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) return 'Please enter a valid email address';
+    if (!formData.email.trim() || formData.email.trim().length < 3) return 'Please enter an email address or username';
 
     const mobile = normalizeMobile(formData.mobile);
-    if (!/^[6-9]\d{9}$/.test(mobile)) {
-      return 'Please enter a valid 10-digit mobile number (it may start with 6-9)';
+    if (mobile.length > 0 && mobile.length < 8) {
+      return 'Please enter a valid mobile number';
     }
 
-    if (formData.password.length < 8) return 'Password must be at least 8 characters long';
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      return 'Password must include an uppercase letter, a lowercase letter and a number';
-    }
+    if (formData.password.length < 4) return 'Password must be at least 4 characters long';
 
     if (formData.password !== formData.confirmPassword) return 'Passwords do not match';
     return null;
@@ -128,13 +125,13 @@ export default function RegisterPage() {
               <input
                 id="email"
                 name="email"
-                type="email"
-                autoComplete="email"
+                type="text"
+                autoComplete="username"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="mt-2 block w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
-                placeholder="Enter your email"
+                placeholder="Enter your email or username (e.g. ak@123)"
               />
             </div>
             <div>
@@ -172,7 +169,7 @@ export default function RegisterPage() {
                 placeholder="Create a password"
               />
               <p className="mt-2 text-xs leading-5 text-slate-500">
-                At least 8 characters with an uppercase letter, a lowercase letter and a number.
+                Minimum 4 characters.
               </p>
             </div>
             <div>
@@ -193,13 +190,25 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-3">
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full items-center justify-center rounded-full bg-sky-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
+              className="group relative flex w-full items-center justify-center rounded-full bg-[#123b5d] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/20 transition hover:-translate-y-0.5 hover:bg-sky-800 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? 'Creating account…' : 'Create your workspace  ↗'}
+              {loading ? 'Creating account…' : 'Create your free account  ↗'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                demoLogin('akshat@uptemp.in', 'Akshat Shah');
+                const candidate = new URLSearchParams(window.location.search).get('next');
+                router.push(candidate || '/dashboard');
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-sky-200 bg-sky-50/80 px-5 py-3 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-sky-950"
+            >
+              <span>⚡</span> 1-Click Instant Demo Login (Akshat Shah)
             </button>
           </div>
         </form>
