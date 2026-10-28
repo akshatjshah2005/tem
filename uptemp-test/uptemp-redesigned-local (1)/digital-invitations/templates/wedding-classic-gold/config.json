@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "name": "Modern Editorial",
+  "slug": "wedding-classic-gold",
+  "description": "A contemporary editorial invitation with crisp typography, generous whitespace and a restrained blue-neutral palette.",
+  "version": "1.1.0",
+  "isPremium": false,
+  "features": {
+    "multipleEvents": true,
+    "gallery": true,
+    "guestPersonalization": true,
+    "guestEventFiltering": true,
+    "map": true,
+    "countdown": true,
+    "rsvp": true,
+    "music": false
+  },
+  "variables": {
+    "bride_name": {
+      "type": "text",
+      "required": true,
+      "default": ""
+    },
+    "groom_name": {
+      "type": "text",
+      "required": true,
+      "default": ""
+    },
+    "family_name": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "guest_name": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "event_name": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "event_date": {
+      "type": "date",
+      "required": false,
+      "default": ""
+    },
+    "event_time": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "venue_name": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "venue_address": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "invitation_message": {
+      "type": "textarea",
+      "required": false,
+      "default": ""
+    },
+    "hero_eyebrow": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "closing_line": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "hashtag": {
+      "type": "text",
+      "required": false,
+      "default": ""
+    },
+    "cover_image": {
+      "type": "image",
+      "required": false,
+      "default": ""
+    },
+    "rsvp_note": {
+      "type": "textarea",
+      "required": false,
+      "default": ""
+    }
+  },
+  "editableFields": {
+    "bride_name": {
+      "type": "text",
+      "label": "Bride Name",
+      "required": true,
+      "editable": true,
+      "placeholder": "e.g. Priya",
+      "maxLength": 60
+    },
+    "groom_name": {
+      "type": "text",
+      "label": "Groom Name",
+      "required": true,
+      "editable": true,
+      "placeholder": "e.g. Akshat",
+      "maxLength": 60
+    },
+    "family_name": {
+      "type": "text",
+      "label": "Family Name",
+      "required": false,
+      "editable": true,
+      "placeholder": "e.g. Shah Family",
+      "maxLength": 80
+    },
+    "hero_eyebrow": {
+      "type": "text",
+      "label": "Hero Eyebrow Text",
+      "required": false,
+      "editable": true,
+      "placeholder": "Together with their families",
+      "maxLength": 80
+    },
+    "invitation_message": {
+      "type": "textarea",
+      "label": "Invitation Message",
+      "required": false,
+      "editable": true,
+      "rows": 4,
+      "maxLength": 600,
+      "placeholder": "We joyfully invite you to share in our happiness..."
+    },
+    "closing_line": {
+      "type": "text",
+      "label": "Closing Line",
+      "required": false,
+      "editable": true,
+      "placeholder": "With love",
+      "maxLength": 60
+    },
+    "hashtag": {
+      "type": "text",
+      "label": "Wedding Hashtag",
+      "required": false,
+      "editable": true,
+      "placeholder": "#AkshatWedsPriya",
+      "maxLength": 60
+    },
+    "rsvp_note": {
+      "type": "textarea",
+      "label": "RSVP Note",
+      "required": false,
+      "editable": true,
+      "rows": 2,
+      "maxLength": 240,
+      "placeholder": "Kindly respond at your earliest convenience"
+    },
+    "cover_image": {
+      "type": "url",
+      "label": "Cover Image URL",
+      "required": false,
+      "editable": true,
+      "placeholder": "https://..."
+    }
+  },
+  "config": {
+    "schemaVersion": 1,
+    "impl": "wedding",
+    "variant": "editorial",
+    "design": {
+      "palette": {
+        "paper": "#f4f8fc",
+        "surface": "#ffffff",
+        "ink": "#1e3448",
+        "muted": "#74879a",
+        "gold": "#8bbfe4",
+        "goldDeep": "#366f9b",
+        "goldSoft": "#dcecf8",
+        "heroText": "#ffffff",
+        "heroOverlay": "linear-gradient(180deg, rgba(18,43,65,0.08) 0%, rgba(18,43,65,0.80) 100%)"
+      },
+      "typography": {
+        "script": "'Great Vibes', 'Snell Roundhand', cursive",
+        "serif": "'Cormorant Garamond', Georgia, 'Times New Roman', serif",
+        "sans": "var(--font-inter), system-ui, -apple-system, sans-serif"
+      },
+      "copy": {
+        "heroEyebrow": "A modern invitation",
+        "heroInvitationLine": "beautifully considered, personally yours",
+        "coupleNamesLabel": "",
+        "guestLead": "You are cordially invited to celebrate the wedding of",
+        "messageHeading": "Invitation",
+        "invitationMessage": "We joyfully invite you to share in our happiness as we begin our forever together. Your gracious presence will make our celebration complete.",
+        "countdownLabel": "The celebration begins in",
+        "eventsHeading": "Celebrations",
+        "eventsLead": "We would be delighted by your presence at each of these moments",
+        "galleryHeading": "Moments",
+        "galleryLead": "A little glimpse of our story so far",
+        "rsvpHeading": "Will you join us?",
+        "rsvpNote": "Kindly respond at your earliest convenience so we can welcome you properly.",
+        "rsvpAcceptLabel": "Joyfully Accept",
+        "rsvpDeclineLabel": "Regretfully Decline",
+        "closingLine": "With love",
+        "shareHeading": "Share this invitation",
+        "noticeText": "This is a general view of the invitation. The host may have prepared a personalized version just for you.",
+        "noEventsText": "Event details will be announced shortly.",
+        "footerText": "Created with Digital Invitation Platform"
+      }
+    },
+    "sections": [
+      {
+        "id": "hero",
+        "type": "hero",
+        "enabled": true,
+        "eyebrow": "{{heroEyebrow}}",
+        "showDate": true,
+        "showScrollCue": true
+      },
+      {
+        "id": "guest",
+        "type": "guest_greeting",
+        "enabled": true,
+        "lead": "{{guestLead}}"
+      },
+      {
+        "id": "message",
+        "type": "message",
+        "enabled": true,
+        "heading": "{{messageHeading}}",
+        "text": "{{invitationMessage}}"
+      },
+      {
+        "id": "countdown",
+        "type": "countdown",
+        "enabled": true,
+        "label": "{{countdownLabel}}"
+      },
+      {
+        "id": "events",
+        "type": "event_list",
+        "enabled": true,
+        "heading": "{{eventsHeading}}",
+        "lead": "{{eventsLead}}",
+        "layout": "timeline",
+        "showMap": true,
+        "showDressCode": true,
+        "showDescription": true
+      },
+      {
+        "id": "gallery",
+        "type": "gallery",
+        "enabled": true,
+        "heading": "{{galleryHeading}}",
+        "lead": "{{galleryLead}}",
+        "columns": 2,
+        "maxImages": 12
+      },
+      {
+        "id": "notice",
+        "type": "personalization_notice",
+        "enabled": true,
+        "text": "{{noticeText}}"
+      },
+      {
+        "id": "rsvp",
+        "type": "rsvp",
+        "enabled": true,
+        "heading": "{{rsvpHeading}}",
+        "note": "{{rsvpNote}}"
+      },
+      {
+        "id": "closing",
+        "type": "closing",
+        "enabled": true,
+        "lead": "{{closingLine}}"
+      }
+    ]
+  }
+}
