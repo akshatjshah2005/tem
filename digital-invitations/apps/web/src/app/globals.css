@@ -48,6 +48,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 a { text-underline-offset: 0.2em; }
 
 .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+.font-script { font-family: 'Great Vibes', cursive; }
+.font-marcellus { font-family: 'Marcellus', Georgia, serif; }
+.font-cinzel { font-family: 'Cinzel', serif; }
 
 :focus-visible {
   outline: 3px solid #318dd0;

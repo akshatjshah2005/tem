@@ -52,3 +52,6 @@ prisma/.env
 
 # pnpm
 .pnpm-store/
+
+digital-invitations.zip
+

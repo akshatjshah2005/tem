@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
   const [nextPath, setNextPath] = useState('/dashboard');
 
   useEffect(() => {
@@ -67,13 +67,13 @@ export default function LoginPage() {
               <input
                 id="email"
                 name="email"
-                type="email"
-                autoComplete="email"
+                type="text"
+                autoComplete="username"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="mt-2 block w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
-                placeholder="Enter your email"
+                placeholder="Enter your email or username (e.g. ak@123)"
               />
             </div>
             <div>
@@ -94,13 +94,24 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-3">
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full items-center justify-center rounded-full bg-sky-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
+              className="group relative flex w-full items-center justify-center rounded-full bg-[#123b5d] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-950/20 transition hover:-translate-y-0.5 hover:bg-sky-800 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Signing in…' : 'Sign in to your workspace  ↗'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                demoLogin('akshat@uptemp.in', 'Akshat Shah');
+                router.push(nextPath);
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-sky-200 bg-sky-50/80 px-5 py-3 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-sky-950"
+            >
+              <span>⚡</span> 1-Click Instant Demo Login (Akshat Shah)
             </button>
           </div>
         </form>
