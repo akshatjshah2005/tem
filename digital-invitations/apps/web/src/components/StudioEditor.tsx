@@ -50,11 +50,144 @@ export interface ThemeStyle {
   isDark: boolean;
 }
 
+export interface PresetMoment {
+  id: string;
+  title: string;
+  tag: string;
+  url: string;
+}
+
+export interface WeddingSongItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  tag: string;
+  emoji: string;
+  bpm: number;
+}
+
+const PRESET_MOMENTS: PresetMoment[] = [
+  {
+    id: 'm-1',
+    title: 'Royal Mandap & Palace Arches',
+    tag: 'Heritage Vivah',
+    url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 'm-2',
+    title: 'Sangeet Night & Fairy Lights',
+    tag: 'Celebration Glam',
+    url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 'm-3',
+    title: 'Golden Sunset & Beach Vows',
+    tag: 'Romantic Pastel',
+    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 'm-4',
+    title: 'Haldi & Marigold Phoolon Ki Holi',
+    tag: 'Vibrant Traditional',
+    url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 'm-5',
+    title: 'The Ring Ceremony & Diyas',
+    tag: 'Sacred Muhurtham',
+    url: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 'm-6',
+    title: 'Udaipur Lake Palace Romance',
+    tag: 'Royal Lake View',
+    url: 'https://images.unsplash.com/photo-1519225424909-66170d473489?auto=format&fit=crop&w=800&q=80',
+  },
+];
+
+const WISHLYS_WEDDING_SONGS: WeddingSongItem[] = [
+  {
+    id: 'song-1',
+    title: 'Shenhai Instrumental (Mangal Vadya)',
+    subtitle: 'Classic Auspicious Shehnai & Sitar Harmony',
+    tag: 'Most Popular ⭐',
+    emoji: '🎺',
+    bpm: 75,
+  },
+  {
+    id: 'song-2',
+    title: 'Kudmayi / Din Shagna Da',
+    subtitle: 'Emotional Acoustic Flute & Bridal Walk Melody',
+    tag: 'Bridal Entry',
+    emoji: '🪈',
+    bpm: 82,
+  },
+  {
+    id: 'song-3',
+    title: 'Kesariya & Raataan Lambiyan',
+    subtitle: 'Romantic Violin Strings & Piano Romance',
+    tag: 'Couple Theme',
+    emoji: '🎻',
+    bpm: 90,
+  },
+  {
+    id: 'song-4',
+    title: 'Madhanya (Traditional Babul)',
+    subtitle: 'Soulful Sitar, Tanpura & Shehnai Vidai Raga',
+    tag: 'Emotional Heritage',
+    emoji: '🪕',
+    bpm: 68,
+  },
+  {
+    id: 'song-5',
+    title: 'Ganesh Vandana & Vedic Mantras',
+    subtitle: 'Sacred Sanskrit Chants for Auspicious Beginning',
+    tag: 'Divine Blessings',
+    emoji: '🪔',
+    bpm: 60,
+  },
+  {
+    id: 'song-6',
+    title: 'Dholak Sangeet & Ghungroo Beats',
+    subtitle: 'Festive Punjabi & Rajasthani Folk Beats',
+    tag: 'Sangeet Party',
+    emoji: '🥁',
+    bpm: 115,
+  },
+  {
+    id: 'song-7',
+    title: 'Jashn-E-Bahara (Palace Symphony)',
+    subtitle: 'Grand Mughal Court Sitar & Flute Orchestration',
+    tag: 'Regal Luxury',
+    emoji: '🎼',
+    bpm: 80,
+  },
+];
+
 const THEMES: ThemeStyle[] = [
+  {
+    id: 'royal-sandalwood',
+    name: 'Royal Sandalwood (Vivaah Mandap)',
+    badge: 'Wishlys Signature ⭐',
+    fontFamily: "'Playfair Display', serif",
+    colors: ['#0d233a', '#fdf8ee', '#d4a259'],
+    outerBg: 'from-[#fbf7ee] via-[#fffbf2] to-[#f4ebe0]',
+    phoneBg: 'bg-gradient-to-b from-[#fdf9f2] via-[#fffdf9] to-[#fbf5ea]',
+    cardBg: 'bg-gradient-to-br from-[#ffffff] via-[#fffcf7] to-[#fcf5e8]',
+    cardBorder: 'border-amber-200/80',
+    headerAccent: 'text-[#8a4d19]',
+    titleColor: 'text-[#1a2d42]',
+    subtextColor: 'text-slate-600',
+    badgeBg: 'bg-amber-100/80 text-amber-900 border-amber-200',
+    bannerGradient: 'from-[#d9a862] via-[#b9843e] to-[#8c5922]',
+    primaryButton: 'bg-[#123b5d] hover:bg-sky-800 text-white',
+    mandalaColor: 'border-amber-400/40',
+    isDark: false,
+  },
   {
     id: 'cinematic-couple',
     name: 'Cinematic Couple (Film Editorial)',
-    badge: 'ShareMyInvite Viral ⭐',
+    badge: 'Modern Video Suite',
     fontFamily: "'Playfair Display', serif",
     colors: ['#0f172a', '#f8fafc', '#38bdf8'],
     outerBg: 'from-[#0b1329] via-[#0f172a] to-[#020617]',
@@ -71,9 +204,28 @@ const THEMES: ThemeStyle[] = [
     isDark: true,
   },
   {
+    id: 'sanskara-ivory',
+    name: 'Sanskara Ivory (Pastel Floral)',
+    badge: 'Soft Rose & Gold Foil',
+    fontFamily: "'Great Vibes', cursive",
+    colors: ['#3b1828', '#fff7f9', '#d4889c'],
+    outerBg: 'from-[#fff1f5] via-[#fff8fa] to-[#fee8ef]',
+    phoneBg: 'bg-gradient-to-b from-[#fff7f9] via-[#ffffff] to-[#fdeef3]',
+    cardBg: 'bg-white',
+    cardBorder: 'border-rose-200',
+    headerAccent: 'text-rose-700',
+    titleColor: 'text-[#421b2b]',
+    subtextColor: 'text-slate-600',
+    badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+    bannerGradient: 'from-[#e28ea4] via-[#cc6d88] to-[#993b58]',
+    primaryButton: 'bg-rose-600 hover:bg-rose-700 text-white',
+    mandalaColor: 'border-rose-300/40',
+    isDark: false,
+  },
+  {
     id: 'haldi-marigold-urli',
     name: 'Haldi Marigold & Brass Urli',
-    badge: 'Canva & Pinterest Viral ⭐',
+    badge: 'Vibrant Traditional',
     fontFamily: "'Playfair Display', serif",
     colors: ['#4d3200', '#fffbeb', '#f59e0b'],
     outerBg: 'from-[#fff7cc] via-[#fffbeb] to-[#fef3c7]',
@@ -109,66 +261,9 @@ const THEMES: ThemeStyle[] = [
     isDark: true,
   },
   {
-    id: 'kankotri-ganesh-vandana',
-    name: 'Kankotri & Ganesh Vandana',
-    badge: 'Shubh Muhurat Gujarati/Hindi',
-    fontFamily: "'Playfair Display', serif",
-    colors: ['#7f1d1d', '#fff7ed', '#c2410c'],
-    outerBg: 'from-[#fff1f2] via-[#fef2f2] to-[#ffedd5]',
-    phoneBg: 'bg-gradient-to-b from-[#fff7ed] via-[#fffbf5] to-[#fef3c7]',
-    cardBg: 'bg-[#fffcf7]',
-    cardBorder: 'border-orange-300',
-    headerAccent: 'text-red-700',
-    titleColor: 'text-red-950',
-    subtextColor: 'text-slate-700',
-    badgeBg: 'bg-red-100 text-red-900 border-red-300',
-    bannerGradient: 'from-[#c2410c] via-[#b91c1c] to-[#7f1d1d]',
-    primaryButton: 'bg-red-700 hover:bg-red-800 text-white',
-    mandalaColor: 'border-red-400/50',
-    isDark: false,
-  },
-  {
-    id: 'love-story-polaroid',
-    name: 'Love Story & Secret Passcode',
-    badge: 'Interactive Timeline',
-    fontFamily: "'Playfair Display', serif",
-    colors: ['#4c0519', '#fff1f2', '#f43f5e'],
-    outerBg: 'from-[#fff1f2] via-[#ffe4e6] to-[#fecdd3]',
-    phoneBg: 'bg-gradient-to-b from-[#fff1f2] via-[#fff5f6] to-[#fce7f3]',
-    cardBg: 'bg-white',
-    cardBorder: 'border-pink-300',
-    headerAccent: 'text-pink-700',
-    titleColor: 'text-pink-950',
-    subtextColor: 'text-slate-700',
-    badgeBg: 'bg-pink-100 text-pink-900 border-pink-200',
-    bannerGradient: 'from-[#f43f5e] via-[#e11d48] to-[#be123c]',
-    primaryButton: 'bg-pink-600 hover:bg-pink-700 text-white',
-    mandalaColor: 'border-pink-400/40',
-    isDark: false,
-  },
-  {
-    id: 'royal-sandalwood',
-    name: 'Royal Sandalwood',
-    badge: 'Royal & Classic',
-    fontFamily: "'Playfair Display', serif",
-    colors: ['#0d233a', '#fdf8ee', '#d4a259'],
-    outerBg: 'from-[#fbf7ee] via-[#fffbf2] to-[#f4ebe0]',
-    phoneBg: 'bg-gradient-to-b from-[#fdf9f2] via-[#fffdf9] to-[#fbf5ea]',
-    cardBg: 'bg-gradient-to-br from-[#ffffff] via-[#fffcf7] to-[#fcf5e8]',
-    cardBorder: 'border-amber-200/80',
-    headerAccent: 'text-[#8a4d19]',
-    titleColor: 'text-[#1a2d42]',
-    subtextColor: 'text-slate-600',
-    badgeBg: 'bg-amber-100/80 text-amber-900 border-amber-200',
-    bannerGradient: 'from-[#d9a862] via-[#b9843e] to-[#8c5922]',
-    primaryButton: 'bg-[#123b5d] hover:bg-sky-800 text-white',
-    mandalaColor: 'border-amber-400/40',
-    isDark: false,
-  },
-  {
     id: 'crimson-gold',
     name: 'Crimson & Gold (Shubh Vivah)',
-    badge: 'Traditional Hindu',
+    badge: 'Vedic Hindu Classic',
     fontFamily: "'Cinzel', serif",
     colors: ['#540914', '#fff5f5', '#e6a64c'],
     outerBg: 'from-[#540914] via-[#7d1424] to-[#3a060d]',
@@ -185,66 +280,9 @@ const THEMES: ThemeStyle[] = [
     isDark: false,
   },
   {
-    id: 'midnight-sapphire',
-    name: 'Midnight Sapphire',
-    badge: 'Modern Luxury',
-    fontFamily: "'Marcellus', serif",
-    colors: ['#071326', '#142547', '#4da1ea'],
-    outerBg: 'from-[#071326] via-[#0d2144] to-[#040c19]',
-    phoneBg: 'bg-gradient-to-b from-[#09152a] via-[#0e203f] to-[#061021]',
-    cardBg: 'bg-slate-900/85 backdrop-blur-md',
-    cardBorder: 'border-sky-500/30',
-    headerAccent: 'text-sky-300',
-    titleColor: 'text-white',
-    subtextColor: 'text-slate-300',
-    badgeBg: 'bg-sky-950/80 text-sky-200 border-sky-600/40',
-    bannerGradient: 'from-[#0d2a54] via-[#1a4a8d] to-[#081a36]',
-    primaryButton: 'bg-sky-600 hover:bg-sky-500 text-white',
-    mandalaColor: 'border-sky-300/30',
-    isDark: true,
-  },
-  {
-    id: 'emerald-heritage',
-    name: 'Emerald Heritage',
-    badge: 'Mughal & Regal',
-    fontFamily: "'Playfair Display', serif",
-    colors: ['#0a2e20', '#f5fbf7', '#c99e46'],
-    outerBg: 'from-[#0c3324] via-[#164733] to-[#072418]',
-    phoneBg: 'bg-gradient-to-b from-[#f5fbf7] via-[#fafdfb] to-[#edf7f2]',
-    cardBg: 'bg-white',
-    cardBorder: 'border-emerald-200',
-    headerAccent: 'text-[#0d4f37]',
-    titleColor: 'text-[#0a2e20]',
-    subtextColor: 'text-slate-600',
-    badgeBg: 'bg-emerald-100 text-emerald-950 border-emerald-200',
-    bannerGradient: 'from-[#0e4732] via-[#1a6649] to-[#0a3324]',
-    primaryButton: 'bg-[#0d4f37] hover:bg-[#093927] text-white',
-    mandalaColor: 'border-emerald-400/40',
-    isDark: false,
-  },
-  {
-    id: 'blush-romance',
-    name: 'Blush & Rose Romance',
-    badge: 'Soft Pastel Garden',
-    fontFamily: "'Great Vibes', cursive",
-    colors: ['#4a1d29', '#fff5f7', '#d97b93'],
-    outerBg: 'from-[#fff0f3] via-[#fffafe] to-[#fce4eb]',
-    phoneBg: 'bg-gradient-to-b from-[#fff5f7] via-[#fffbfd] to-[#fdeef3]',
-    cardBg: 'bg-white/90',
-    cardBorder: 'border-rose-200',
-    headerAccent: 'text-rose-700',
-    titleColor: 'text-rose-950',
-    subtextColor: 'text-slate-600',
-    badgeBg: 'bg-rose-100/90 text-rose-900 border-rose-200',
-    bannerGradient: 'from-[#e0899f] via-[#c96a84] to-[#9e435b]',
-    primaryButton: 'bg-rose-600 hover:bg-rose-700 text-white',
-    mandalaColor: 'border-rose-300/40',
-    isDark: false,
-  },
-  {
     id: 'minimal-zen',
-    name: 'Minimal Zen Elegance',
-    badge: 'Editorial & Modern',
+    name: 'Minimal Zen (Editorial White)',
+    badge: 'Clean Modern Luxury',
     fontFamily: "'Marcellus', serif",
     colors: ['#12233b', '#f4f8fc', '#2b78c9'],
     outerBg: 'from-[#eef5fc] via-[#f7fafe] to-[#e6f0fa]',
@@ -342,11 +380,11 @@ const DEFAULT_GUESTS: GuestItem[] = [
   },
   {
     id: 'g-3',
-    name: 'Rahul Mehta (College Friend)',
-    category: 'Close Friends',
-    passes: 1,
+    name: 'Rahul Mehta & Friends',
+    category: 'Friends',
+    passes: 2,
     phone: '+91 98252 54321',
-    salutation: 'Hey Rahul, get ready for unforgettable celebrations and crazy memories!',
+    salutation: 'Hey Rahul! Gear up for the most happening Sangeet and after-party celebrations!',
     customWhatsAppText: '',
     assignedEventIds: ['ev-2', 'ev-3'],
     slug: 'rahul-m',
@@ -390,16 +428,17 @@ export default function StudioEditor() {
       }
     }
   }, [templateParam]);
+
   const [inviteTitle, setInviteTitle] = useState('Akshat & Priya Wedding Invite');
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
-  const [activeTab, setActiveTab] = useState<'events' | 'story' | 'themes' | 'guests' | 'gallery'>('events');
+  const [activeTab, setActiveTab] = useState<'events' | 'story' | 'themes' | 'guests' | 'gallery' | 'settings'>('events');
   const [previewMode, setPreviewMode] = useState<'live' | 'rsvp'>('live');
 
   // Full Screen Preview Modal
   const [showFullPreview, setShowFullPreview] = useState(false);
 
-  // Audio State & Web Audio Synthesizer
+  // Audio State & Web Audio Synthesizer (Wishlys Wedding Suite)
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioVolume, setAudioVolume] = useState(0.5);
   const [audioTrack, setAudioTrack] = useState('Shenhai Instrumental (Mangal Vadya)');
@@ -416,6 +455,10 @@ export default function StudioEditor() {
     'With divine grace and heavenly blessings of our elders, we solicit your presence and blessings.'
   );
 
+  // Photo Gallery State
+  const [coverPhoto, setCoverPhoto] = useState('');
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+
   // Events & Guest state
   const [events, setEvents] = useState<CeremonyEvent[]>(DEFAULT_EVENTS);
   const [guests, setGuests] = useState<GuestItem[]>(DEFAULT_GUESTS);
@@ -426,6 +469,15 @@ export default function StudioEditor() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [showAddGuestModal, setShowAddGuestModal] = useState(false);
   const [newGuestData, setNewGuestData] = useState({ name: '', passes: 2, phone: '', category: 'VIP Family' });
+
+  // Settings State
+  const [customSlug, setCustomSlug] = useState('akshat-priya');
+  const [musicAutoplay, setMusicAutoplay] = useState(true);
+  const [rsvpCutoffDate, setRsvpCutoffDate] = useState('2026-02-05');
+  const [requirePasscode, setRequirePasscode] = useState(false);
+  const [passcodePin, setPasscodePin] = useState('1402');
+  const [showWaxSealReveal, setShowWaxSealReveal] = useState(false);
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
 
   // RSVP Form Interactive State
   const [rsvpAttending, setRsvpAttending] = useState<boolean | null>(true);
@@ -438,7 +490,7 @@ export default function StudioEditor() {
   const [timeLeft, setTimeLeft] = useState({ days: 48, hours: 14, mins: 26, secs: 35 });
   const [zoomLevel, setZoomLevel] = useState<number>(100);
 
-  // Live Stream & Blessing Wall (ShareMyInvite Cinematic Features)
+  // Live Stream & Blessing Wall
   const [liveStreamUrl, setLiveStreamUrl] = useState('https://youtube.com/live/demo-stream');
   const [showLiveStream, setShowLiveStream] = useState(true);
   const [blessingWishes, setBlessingWishes] = useState<string[]>([
@@ -473,7 +525,7 @@ export default function StudioEditor() {
     );
   };
 
-  // Toggle assigned event for current guest
+  // Toggle assigned event for current guest - REACTIVE FIX!
   const toggleGuestEvent = (eventId: string) => {
     const assigned = currentGuest.assignedEventIds || [];
     const updated = assigned.includes(eventId)
@@ -482,26 +534,25 @@ export default function StudioEditor() {
     updateCurrentGuest('assignedEventIds', updated);
   };
 
-  // Visible events for this simulated guest
+  // Visible events for this simulated guest (controlled by assignedEventIds)
   const guestVisibleEvents = useMemo(() => {
-    return events.filter(
-      (ev) =>
-        ev.visibleToAll ||
-        (currentGuest.assignedEventIds && currentGuest.assignedEventIds.includes(ev.id))
-    );
+    if (!currentGuest.assignedEventIds || currentGuest.assignedEventIds.length === 0) {
+      return [];
+    }
+    return events.filter((ev) => currentGuest.assignedEventIds.includes(ev.id));
   }, [events, currentGuest]);
 
   // Dynamic, REAL working URL on current host
   const shareableUrl = useMemo(() => {
     if (typeof window !== 'undefined') {
       const origin = window.location.origin;
-      const slug = `${groomName}-${brideName}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const slug = customSlug || `${groomName}-${brideName}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       return `${origin}/i/${slug}?guest=${currentGuest.slug}`;
     }
-    return `http://localhost:3002/i/akshat-katerina?guest=${currentGuest.slug}`;
-  }, [groomName, brideName, currentGuest]);
+    return `http://localhost:3000/i/akshat-priya?guest=${currentGuest.slug}`;
+  }, [customSlug, groomName, brideName, currentGuest]);
 
-  // WhatsApp Message Draft: If user wrote custom text, use it; otherwise compute dynamic template
+  // WhatsApp Message Draft
   const computedWhatsAppText = useMemo(() => {
     if (currentGuest.customWhatsAppText && currentGuest.customWhatsAppText.trim()) {
       return currentGuest.customWhatsAppText;
@@ -510,7 +561,7 @@ export default function StudioEditor() {
     return `Namaste ${guestFirstName}! 🙏 ${groomName} & ${brideName} are tying the knot on Feb 14! View our live invitation, ceremonies & directions here:\n${shareableUrl}`;
   }, [currentGuest, groomName, brideName, shareableUrl]);
 
-  // Web Audio Shenhai / Festive Harmony Generator
+  // Web Audio Festive Raga Synthesizer
   const toggleMusic = () => {
     if (isPlayingMusic) {
       stopSynthesizer();
@@ -519,7 +570,7 @@ export default function StudioEditor() {
     } else {
       startSynthesizer();
       setIsPlayingMusic(true);
-      toast.success('♫ Shenhai & Tanpura Celebration Melody Playing!');
+      toast.success(`♫ Playing: ${audioTrack}`);
     }
   };
 
@@ -531,86 +582,60 @@ export default function StudioEditor() {
       audioCtxRef.current = ctx;
 
       const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(audioVolume * 0.25, ctx.currentTime);
+      masterGain.gain.setValueAtTime(audioVolume, ctx.currentTime);
       masterGain.connect(ctx.destination);
 
-      // Create Indian Tanpura Drone (Sa & Pa harmonic base: D3 ~ 146.8Hz, A3 ~ 220Hz, D4 ~ 293.6Hz)
-      const baseFreqs = [146.83, 220.0, 293.66];
-      const nodes: any[] = [];
+      // Distinct raga harmonies based on selected track
+      let freqs = [220, 277.18, 329.63, 440]; // Shehnai Bhairavi / Mangal Vadya
+      if (audioTrack.includes('Flute') || audioTrack.includes('Kudmayi')) {
+        freqs = [261.63, 329.63, 392.0, 523.25]; // Soft Yaman / Romantic
+      } else if (audioTrack.includes('Kesariya') || audioTrack.includes('Violin')) {
+        freqs = [293.66, 369.99, 440.0, 587.33]; // Romance D Major
+      } else if (audioTrack.includes('Dholak') || audioTrack.includes('Sangeet')) {
+        freqs = [146.83, 220.0, 293.66, 440.0]; // Energetic Dholak
+      }
 
-      baseFreqs.forEach((freq, idx) => {
+      const oscs = freqs.map((f, i) => {
         const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = idx === 1 ? 'sawtooth' : 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        const g = ctx.createGain();
+        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(f, ctx.currentTime);
 
-        // Gentle tremolo/vibrato
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
-        lfo.frequency.setValueAtTime(idx + 1, ctx.currentTime);
+        lfo.frequency.setValueAtTime(4.5 + i * 0.4, ctx.currentTime);
         lfoGain.gain.setValueAtTime(2.5, ctx.currentTime);
-        lfo.connect(osc.frequency);
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
         lfo.start();
 
-        gain.gain.setValueAtTime(0.08 / (idx + 1), ctx.currentTime);
-        osc.connect(gain);
-        gain.connect(masterGain);
+        g.gain.setValueAtTime(0.06, ctx.currentTime);
+        osc.connect(g);
+        g.connect(masterGain);
         osc.start();
-        nodes.push(osc, lfo);
+        return osc;
       });
 
-      // Melodic notes sequence (Bhairavi / Kalyan wedding ragas)
-      const ragaNotes = [293.66, 329.63, 369.99, 440.0, 493.88, 587.33];
-      let step = 0;
-      const melodyTimer = setInterval(() => {
-        if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
-          clearInterval(melodyTimer);
-          return;
-        }
-        const noteOsc = ctx.createOscillator();
-        const noteGain = ctx.createGain();
-        noteOsc.type = 'sawtooth';
-        const noteFreq = ragaNotes[step % ragaNotes.length];
-        step++;
-        noteOsc.frequency.setValueAtTime(noteFreq, ctx.currentTime);
-
-        noteGain.gain.setValueAtTime(0.001, ctx.currentTime);
-        noteGain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.1);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-
-        noteOsc.connect(noteGain);
-        noteGain.connect(masterGain);
-        noteOsc.start();
-        noteOsc.stop(ctx.currentTime + 1.3);
-      }, 700);
-
-      oscillatorNodesRef.current = nodes;
+      oscillatorNodesRef.current = oscs;
     } catch {
       // Audio fallback
     }
   };
 
   const stopSynthesizer = () => {
-    if (audioCtxRef.current) {
-      try {
+    try {
+      oscillatorNodesRef.current.forEach((osc) => {
+        try {
+          osc.stop();
+          osc.disconnect();
+        } catch {}
+      });
+      oscillatorNodesRef.current = [];
+      if (audioCtxRef.current) {
         audioCtxRef.current.close();
-      } catch {}
-      audioCtxRef.current = null;
-    }
-    oscillatorNodesRef.current = [];
-  };
-
-  useEffect(() => {
-    return () => {
-      stopSynthesizer();
-    };
-  }, []);
-
-  // Events management
-  const toggleEventExpand = (id: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, expanded: !e.expanded } : e))
-    );
+        audioCtxRef.current = null;
+      }
+    } catch {}
   };
 
   const updateEvent = (id: string, field: keyof CeremonyEvent, value: any) => {
@@ -619,13 +644,19 @@ export default function StudioEditor() {
     );
   };
 
+  const toggleEventExpand = (id: string) => {
+    setEvents((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, expanded: !e.expanded } : e))
+    );
+  };
+
   const addEvent = () => {
     const newId = `ev-${Date.now()}`;
     const newEv: CeremonyEvent = {
       id: newId,
-      name: 'Haldi & Floral Ceremony',
-      categoryTag: 'AUSPICIOUS FUNCTION',
-      date: 'Feb 13, 2026',
+      name: 'Haldi & Phoolon Ki Holi',
+      categoryTag: 'PRE-WEDDING RITUAL',
+      date: 'Feb 12, 2026',
       time: '11:00 AM',
       venue: 'Palace Courtyard & Poolside',
       dressCode: 'Haldi Yellow / Mustard Silk',
@@ -633,7 +664,9 @@ export default function StudioEditor() {
       expanded: true,
     };
     setEvents((prev) => [...prev, newEv]);
-    toast.success('Ceremony added! Added to guest pass allocations.');
+    // Also auto-assign to current guest
+    updateCurrentGuest('assignedEventIds', [...(currentGuest.assignedEventIds || []), newId]);
+    toast.success('Ceremony added! Assigned to guest schedule.');
   };
 
   const removeEvent = (id: string) => {
@@ -646,13 +679,28 @@ export default function StudioEditor() {
   };
 
   const copyWhatsApp = () => {
-    navigator.clipboard.writeText(computedWhatsAppText);
-    toast.success('WhatsApp text copied to clipboard! 📋');
+    try {
+      navigator.clipboard.writeText(computedWhatsAppText);
+      toast.success('WhatsApp text copied to clipboard! 📋');
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = computedWhatsAppText;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      toast.success('WhatsApp text copied to clipboard! 📋');
+    }
   };
 
   const sendWhatsApp = () => {
+    const cleanPhone = currentGuest.phone ? currentGuest.phone.replace(/[^0-9]/g, '') : '';
     const encoded = encodeURIComponent(computedWhatsAppText);
-    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    const url = cleanPhone
+      ? `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encoded}`
+      : `https://api.whatsapp.com/send?text=${encoded}`;
+    window.open(url, '_blank');
+    toast.success(`Opening WhatsApp for ${currentGuest.name}...`);
   };
 
   const handleAddGuest = (e: React.FormEvent) => {
@@ -687,10 +735,26 @@ export default function StudioEditor() {
     toast.success('Guest removed from simulator.');
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (ev.target?.result) {
+        const url = ev.target.result as string;
+        setCoverPhoto(url);
+        setGalleryImages((prev) => [url, ...prev]);
+        toast.success('Photo uploaded and set as invitation cover! 📸');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
-    <div className="flex h-screen flex-col bg-[#f8fbff] text-slate-800 antialiased overflow-hidden selection:bg-sky-100">
-      {/* 1. TOP HEADER (matching Image 2) */}
-      <header className="flex h-16 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-4 sm:px-6 shadow-sm z-30">
+    <div className="flex h-screen flex-col bg-[#f8fbff] text-slate-800 antialiased overflow-hidden selection:bg-sky-100 font-sans">
+      {/* 1. TOP HEADER */}
+      <header className="flex h-15 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-4 sm:px-6 shadow-xs z-30">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
@@ -708,130 +772,74 @@ export default function StudioEditor() {
                 onBlur={() => setIsEditingTitle(false)}
                 onChange={(e) => setInviteTitle(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
-                className="rounded-lg border border-sky-300 px-2 py-1 font-serif text-base sm:text-lg font-bold text-slate-900 outline-none focus:ring-2 focus:ring-sky-200"
+                className="rounded border border-sky-400 bg-white px-2 py-0.5 font-serif text-base font-bold text-slate-900 outline-none"
               />
             ) : (
-              <div
+              <h1
                 onClick={() => setIsEditingTitle(true)}
-                className="group flex cursor-pointer items-center gap-2"
-                title="Click to rename"
+                className="cursor-pointer font-serif text-base sm:text-lg font-bold text-slate-900 hover:text-sky-700 flex items-center gap-1.5"
+                title="Click to edit invitation title"
               >
-                <h1 className="font-serif text-base sm:text-lg font-bold text-slate-900 group-hover:text-sky-700 transition">
-                  {inviteTitle}
-                </h1>
-                <span className="text-slate-400 group-hover:text-sky-600 text-xs">✏️</span>
-              </div>
+                <span>{inviteTitle}</span>
+                <span className="text-xs text-slate-400">✏️</span>
+              </h1>
             )}
 
-            {/* THEME SWITCHER DROPDOWN (Real instant theme change!) */}
-            <div className="relative group">
-              <button
-                type="button"
-                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-sky-50 border border-sky-200 px-3 py-1 text-xs font-bold text-sky-800 hover:bg-sky-100 transition"
-              >
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                {currentTheme.name} ▾
-              </button>
-
-              <div className="invisible group-hover:visible absolute left-0 top-full mt-1.5 w-72 rounded-2xl border border-sky-100 bg-white p-2.5 shadow-2xl z-50 transition-all opacity-0 group-hover:opacity-100">
-                <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                  Select Aesthetic Wedding Theme
-                </p>
-                {THEMES.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => {
-                      setCurrentTheme(t);
-                      toast.success(`Theme switched to: ${t.name}`);
-                    }}
-                    className={`flex items-center justify-between w-full rounded-xl px-3 py-2 text-xs font-semibold transition ${
-                      currentTheme.id === t.id
-                        ? 'bg-sky-50 text-sky-950 font-bold border border-sky-200'
-                        : 'text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex -space-x-1">
-                        {t.colors.map((c, i) => (
-                          <span
-                            key={i}
-                            className="h-3.5 w-3.5 rounded-full border border-white"
-                            style={{ backgroundColor: c }}
-                          />
-                        ))}
-                      </div>
-                      <span className="truncate max-w-[140px]">{t.name}</span>
-                    </div>
-                    <span className="text-[10px] opacity-60">{t.badge}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              {currentTheme.name}
+            </span>
           </div>
         </div>
 
-        {/* Center device toggle & Undo/Redo */}
-        <div className="hidden md:flex items-center gap-3">
-          <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-xs font-semibold text-slate-600">
+        {/* View mode toggle + Publish button */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center rounded-xl bg-slate-100 p-1 text-xs font-semibold">
             <button
-              onClick={() => {
-                setViewMode('mobile');
-                toast('Switched to Mobile View (iPhone Frame)');
-              }}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1 transition ${
-                viewMode === 'mobile' ? 'bg-white text-slate-900 shadow-sm font-bold' : 'hover:text-slate-900'
+              onClick={() => setViewMode('mobile')}
+              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 transition ${
+                viewMode === 'mobile' ? 'bg-white text-sky-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span>📱</span> Mobile
             </button>
             <button
-              onClick={() => {
-                setViewMode('desktop');
-                toast('Switched to Wide Desktop Browser View');
-              }}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1 transition ${
-                viewMode === 'desktop' ? 'bg-white text-slate-900 shadow-sm font-bold' : 'hover:text-slate-900'
+              onClick={() => setViewMode('desktop')}
+              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 transition ${
+                viewMode === 'desktop' ? 'bg-white text-sky-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span>💻</span> Desktop
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            <span>☁️</span> All changes saved
-          </div>
-        </div>
-
-        {/* Right Action buttons */}
-        <div className="flex items-center gap-2">
-          {/* Full Preview Modal Button */}
           <button
             onClick={() => setShowFullPreview(true)}
-            className="flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:border-sky-300"
+            className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition"
           >
-            <span>👁️</span> Preview
+            <span>👁️</span> Full Screen
           </button>
 
           <button
             onClick={() => setShowShareModal(true)}
-            className="flex items-center gap-1.5 rounded-full bg-[#123b5d] px-5 py-2 text-xs font-bold text-white shadow-md shadow-sky-950/20 transition hover:-translate-y-0.5 hover:bg-sky-800"
+            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-1.5 text-xs font-bold text-white shadow-md shadow-sky-500/20 hover:opacity-95 transition"
           >
             <span>🚀</span> Publish & Share
           </button>
         </div>
       </header>
 
-      {/* 2. MAIN 3-COLUMN WORKSPACE (matching Image 2) */}
+      {/* 2. THREE-COLUMN WORKSPACE BODY */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left vertical slim icon bar */}
-        <nav className="flex w-16 shrink-0 flex-col items-center justify-between border-r border-sky-100 bg-white py-4 z-20">
-          <div className="flex flex-col items-center gap-4">
+        {/* LEFT NAV ICONS COLUMN */}
+        <nav className="flex w-16 shrink-0 flex-col items-center justify-between border-r border-slate-200/90 bg-white py-4 z-20">
+          <div className="flex flex-col items-center gap-3">
             <button
               onClick={() => setActiveTab('events')}
               title="Ceremonies & Events"
               className={`relative flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'events'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-sm'
+                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -847,7 +855,7 @@ export default function StudioEditor() {
               title="Couple Story & Blessings"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'story'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-sm'
+                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -857,10 +865,10 @@ export default function StudioEditor() {
 
             <button
               onClick={() => setActiveTab('themes')}
-              title="Theme, Fonts & Music"
+              title="Themes, Cards & Music"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'themes'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-sm'
+                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -870,10 +878,10 @@ export default function StudioEditor() {
 
             <button
               onClick={() => setActiveTab('guests')}
-              title="Guest Personalization & Excel"
+              title="Guest Personalization"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'guests'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-sm'
+                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -883,10 +891,10 @@ export default function StudioEditor() {
 
             <button
               onClick={() => setActiveTab('gallery')}
-              title="Photo Gallery"
+              title="Photo Gallery & Moments"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'gallery'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-sm'
+                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
                   : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -895,174 +903,87 @@ export default function StudioEditor() {
             </button>
           </div>
 
+          {/* Settings Tab Button at Bottom */}
           <button
-            onClick={() => toast('Platform Settings: 100% Free Lifetime Tier Active · Unlimited Guests')}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition"
-            title="Settings"
+            onClick={() => setActiveTab('settings')}
+            className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
+              activeTab === 'settings'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-800'
+            }`}
+            title="Invitation Settings & Rules"
           >
-            ⚙️
+            <span className="text-lg">⚙️</span>
+            <span className="text-[9px] font-bold">Settings</span>
           </button>
         </nav>
 
-        {/* Left Editing Workspace Panel */}
-        <aside className="w-[380px] xl:w-[420px] shrink-0 border-r border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar">
-          {/* Header */}
+        {/* LEFT EDITING WORKSPACE PANEL */}
+        <aside className="w-[360px] xl:w-[400px] shrink-0 border-r border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar">
           <div className="flex items-center justify-between mb-2">
             <div>
               <h2 className="text-base sm:text-lg font-bold text-slate-900">
                 {activeTab === 'events' && 'Ceremonies & Events'}
                 {activeTab === 'story' && 'Couple Story & Blessing'}
-                {activeTab === 'themes' && 'Aesthetic Themes & Audio'}
-                {activeTab === 'guests' && 'Guest List & Personalization'}
+                {activeTab === 'themes' && 'Aesthetic Themes & Music'}
+                {activeTab === 'guests' && 'Guest List & Passes'}
                 {activeTab === 'gallery' && 'Couple Photos & Media'}
+                {activeTab === 'settings' && 'Invitation Settings & Rules'}
               </h2>
               <p className="text-xs text-slate-500">
-                {activeTab === 'events' && 'Schedule & locations for guests'}
-                {activeTab === 'story' && 'Names, invocation and family blessings'}
-                {activeTab === 'themes' && 'Color palettes, typography and music'}
-                {activeTab === 'guests' && 'Assign events and generate custom links'}
-                {activeTab === 'gallery' && 'High resolution images for the invite'}
+                {activeTab === 'events' && 'Schedule, venues & directions for guests'}
+                {activeTab === 'story' && 'Invocation, elder blessings & parents'}
+                {activeTab === 'themes' && 'Wishlys card templates & audio tracks'}
+                {activeTab === 'guests' && 'Personalized passes & greetings'}
+                {activeTab === 'gallery' && 'Set pre-wedding moments and cover photo'}
+                {activeTab === 'settings' && 'Configure custom slug, music autoplay & PIN passcode'}
               </p>
             </div>
             {activeTab === 'events' && (
               <button
+                type="button"
                 onClick={addEvent}
-                className="flex items-center gap-1 rounded-full bg-[#123b5d] px-3.5 py-1.5 text-xs font-bold text-white shadow hover:bg-sky-800 transition"
+                className="flex items-center gap-1 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 hover:bg-sky-100 transition border border-sky-200"
               >
-                + Add Event
-              </button>
-            )}
-            {activeTab === 'guests' && (
-              <button
-                onClick={() => setShowAddGuestModal(true)}
-                className="flex items-center gap-1 rounded-full bg-[#123b5d] px-3.5 py-1.5 text-xs font-bold text-white shadow hover:bg-sky-800 transition"
-              >
-                + Add Guest
+                <span>+</span> Add Event
               </button>
             )}
           </div>
 
-          {/* Sub-tabs pills */}
-          <div className="flex gap-2 border-b border-sky-100 pb-3 mb-4 text-xs font-bold">
-            <button
-              onClick={() => setActiveTab('events')}
-              className={`pb-1 transition border-b-2 ${
-                activeTab === 'events'
-                  ? 'border-sky-600 text-sky-800'
-                  : 'border-transparent text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              Active Events ({events.length})
-            </button>
-            <button
-              onClick={() => setActiveTab('story')}
-              className={`pb-1 transition border-b-2 ${
-                activeTab === 'story'
-                  ? 'border-sky-600 text-sky-800'
-                  : 'border-transparent text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              Couple Story
-            </button>
-            <button
-              onClick={() => setActiveTab('themes')}
-              className={`pb-1 transition border-b-2 ${
-                activeTab === 'themes'
-                  ? 'border-sky-600 text-sky-800'
-                  : 'border-transparent text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              Theme & Music
-            </button>
-          </div>
+          <hr className="my-3 border-slate-100" />
 
           {/* TAB CONTENT: EVENTS */}
           {activeTab === 'events' && (
             <div className="space-y-4">
-              {/* Aesthetic theme preview strip matching Image 2 */}
-              <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-3.5">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-800">
-                    AESTHETIC THEME
-                  </span>
-                  <span className="text-xs font-bold text-slate-700">{currentTheme.name}</span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    {THEMES.map((theme) => (
-                      <button
-                        key={theme.id}
-                        onClick={() => {
-                          setCurrentTheme(theme);
-                          toast.success(`Theme: ${theme.name}`);
-                        }}
-                        className={`h-7 w-7 rounded-full border-2 transition ${
-                          currentTheme.id === theme.id
-                            ? 'border-slate-800 scale-110 shadow'
-                            : 'border-transparent hover:scale-105'
-                        }`}
-                        style={{ backgroundColor: theme.colors[2] }}
-                        title={theme.name}
-                      />
-                    ))}
-                  </div>
-
-                  {/* REAL PLAYABLE AUDIO BUTTON */}
-                  <button
-                    onClick={toggleMusic}
-                    className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold border transition ${
-                      isPlayingMusic
-                        ? 'bg-amber-100 text-amber-900 border-amber-400 shadow-sm'
-                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>{isPlayingMusic ? '🔊' : '♫'}</span>
-                    <span className="truncate max-w-[110px] text-[11px] font-bold">
-                      {isPlayingMusic ? 'Playing Shenhai' : 'Shenhai Preview'}
-                    </span>
-                    {isPlayingMusic && (
-                      <span className="flex items-center gap-0.5 ml-1">
-                        <span className="h-2 w-0.5 bg-amber-600 animate-pulse" />
-                        <span className="h-3 w-0.5 bg-amber-600 animate-pulse delay-75" />
-                        <span className="h-1.5 w-0.5 bg-amber-600 animate-pulse delay-150" />
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Event Accordion Cards matching Image 2 */}
               <div className="space-y-3">
-                {events.map((ev, index) => (
+                {events.map((ev, idx) => (
                   <div
                     key={ev.id}
-                    className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm transition hover:border-sky-200"
+                    className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden transition"
                   >
                     <div
                       onClick={() => toggleEventExpand(ev.id)}
-                      className="flex cursor-pointer items-center justify-between"
+                      className="flex cursor-pointer items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/70"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100 text-amber-900 font-bold text-xs">
-                          {index + 1}
+                      <div className="flex items-center gap-2">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-100 font-bold text-sky-800 text-xs">
+                          {idx + 1}
                         </span>
                         <div>
-                          <h3 className="text-sm font-bold text-slate-900 leading-tight">
-                            {ev.name}
-                          </h3>
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                            {ev.categoryTag || 'WEDDING CELEBRATION'}
+                          <p className="font-bold text-xs text-slate-900">{ev.name}</p>
+                          <p className="text-[10px] text-slate-400">
+                            {ev.date} • {ev.time}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             removeEvent(ev.id);
                           }}
-                          className="text-slate-300 hover:text-rose-500 text-xs px-1"
-                          title="Delete Event"
+                          className="text-slate-400 hover:text-rose-600 text-xs px-1"
                         >
                           ✕
                         </button>
@@ -1070,87 +991,54 @@ export default function StudioEditor() {
                       </div>
                     </div>
 
-                    {/* Expanded Event Details Form */}
                     {ev.expanded && (
-                      <div className="mt-4 space-y-3 pt-3 border-t border-slate-100 text-xs">
+                      <div className="p-3.5 space-y-2.5 text-xs border-t border-slate-100">
                         <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                            Ceremony Title
-                          </label>
+                          <label className="block text-[10px] font-bold text-slate-500 mb-1">Ceremony Name</label>
                           <input
                             type="text"
                             value={ev.name}
                             onChange={(e) => updateEvent(ev.id, 'name', e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 outline-none focus:bg-white focus:border-sky-400"
                           />
                         </div>
-
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                              Date
-                            </label>
+                            <label className="block text-[10px] font-bold text-slate-500 mb-1">Date</label>
                             <input
                               type="text"
                               value={ev.date}
                               onChange={(e) => updateEvent(ev.id, 'date', e.target.value)}
-                              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 outline-none"
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                              Auspicious Time
-                            </label>
+                            <label className="block text-[10px] font-bold text-slate-500 mb-1">Time</label>
                             <input
                               type="text"
                               value={ev.time}
                               onChange={(e) => updateEvent(ev.id, 'time', e.target.value)}
-                              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 outline-none"
                             />
                           </div>
                         </div>
-
                         <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                            Venue & Mandapam
-                          </label>
+                          <label className="block text-[10px] font-bold text-slate-500 mb-1">Venue / Location</label>
                           <input
                             type="text"
                             value={ev.venue}
                             onChange={(e) => updateEvent(ev.id, 'venue', e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 outline-none"
                           />
                         </div>
-
                         <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                            Dress Code
-                          </label>
+                          <label className="block text-[10px] font-bold text-slate-500 mb-1">Dress Code</label>
                           <input
                             type="text"
                             value={ev.dressCode}
                             onChange={(e) => updateEvent(ev.id, 'dressCode', e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 outline-none"
                           />
-                        </div>
-
-                        <div className="flex items-center justify-between rounded-xl bg-slate-50 p-2.5 border border-slate-100">
-                          <span className="text-[11px] font-bold text-slate-700">
-                            Visible to all guests
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => updateEvent(ev.id, 'visibleToAll', !ev.visibleToAll)}
-                            className={`h-5 w-10 rounded-full transition relative ${
-                              ev.visibleToAll ? 'bg-sky-600' : 'bg-slate-300'
-                            }`}
-                          >
-                            <span
-                              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition ${
-                                ev.visibleToAll ? 'right-0.5' : 'left-0.5'
-                              }`}
-                            />
-                          </button>
                         </div>
                       </div>
                     )}
@@ -1159,7 +1047,7 @@ export default function StudioEditor() {
               </div>
 
               {/* Family & Host Details Accordion */}
-              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs">
                 <div
                   onClick={() => setFamilyDetailsOpen(!familyDetailsOpen)}
                   className="flex cursor-pointer items-center justify-between"
@@ -1169,61 +1057,56 @@ export default function StudioEditor() {
                 </div>
 
                 {familyDetailsOpen && (
-                  <div className="mt-4 space-y-3 pt-3 border-t border-slate-100 text-xs">
+                  <div className="mt-3 space-y-3 pt-3 border-t border-slate-100 text-xs">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Groom Parents
-                      </label>
+                      <label className="block text-[10px] font-bold text-slate-600 mb-1">Groom Parents</label>
                       <input
                         type="text"
                         value={groomParents}
                         onChange={(e) => setGroomParents(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-800 outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Bride Parents
-                      </label>
+                      <label className="block text-[10px] font-bold text-slate-600 mb-1">Bride Parents</label>
                       <input
                         type="text"
                         value={brideParents}
                         onChange={(e) => setBrideParents(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-800 outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Host Blessing Message
-                      </label>
+                      <label className="block text-[10px] font-bold text-slate-600 mb-1">Host Blessing Message</label>
                       <textarea
                         rows={2}
                         value={hostBlessing}
                         onChange={(e) => setHostBlessing(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400 resize-none"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-800 outline-none resize-none"
                       />
                     </div>
                   </div>
                 )}
               </div>
-              {/* Virtual Attendance & Live Stream Setting */}
-              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+
+              {/* Virtual Attendance / Live Stream Setting */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                      <span>🔴</span> Live Stream & Virtual Attendance
+                      <span>🔴</span> Virtual Attendance (Live Stream)
                     </h3>
                     <p className="text-[11px] text-slate-500">Allow distant guests to join virtually</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowLiveStream(!showLiveStream)}
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${
                       showLiveStream ? 'bg-sky-600' : 'bg-slate-300'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
                         showLiveStream ? 'translate-x-4' : 'translate-x-0.5'
                       }`}
                     />
@@ -1231,7 +1114,7 @@ export default function StudioEditor() {
                 </div>
                 {showLiveStream && (
                   <div className="mt-3 pt-3 border-t border-slate-100">
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                    <label className="block text-[10px] font-bold text-slate-600 mb-1">
                       YouTube / Zoom Live Broadcast URL
                     </label>
                     <input
@@ -1239,11 +1122,8 @@ export default function StudioEditor() {
                       value={liveStreamUrl}
                       onChange={(e) => setLiveStreamUrl(e.target.value)}
                       placeholder="https://youtube.com/live/your-event-id"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none focus:bg-white focus:border-sky-400 font-mono"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none font-mono"
                     />
-                    <p className="text-[10px] text-slate-400 mt-1">
-                      Guests can tap "Join Live Broadcast" directly on their invitation screen.
-                    </p>
                   </div>
                 )}
               </div>
@@ -1282,62 +1162,92 @@ export default function StudioEditor() {
                   type="text"
                   value={godBlessing}
                   onChange={(e) => setGodBlessing(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400 font-serif"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-serif text-center font-bold text-slate-900 outline-none"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Groom Name
-                  </label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Groom Name</label>
                   <input
                     type="text"
                     value={groomName}
                     onChange={(e) => setGroomName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400 font-bold"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Bride Name
-                  </label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Bride Name</label>
                   <input
                     type="text"
                     value={brideName}
                     onChange={(e) => setBrideName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400 font-bold"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 outline-none"
                   />
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-3">
-                <p className="text-[11px] font-bold text-sky-900 mb-1">Couple Portrait Theme Art</p>
-                <p className="text-[10px] text-slate-500 mb-2">
-                  Automatically adapts to your selected color palette with warm palatial lighting.
-                </p>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="h-12 w-12 rounded-xl flex items-center justify-center text-xl shadow"
-                    style={{ backgroundColor: currentTheme.colors[2] }}
-                  >
-                    👑
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-800 text-[11px]">{currentTheme.name} Artwork</p>
-                    <p className="text-[10px] text-emerald-600 font-semibold">✓ High-Res Scaled</p>
-                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB CONTENT: THEMES & AUDIO */}
+          {/* TAB CONTENT: THEMES & WISHLYS SONGS */}
           {activeTab === 'themes' && (
             <div className="space-y-4 text-xs">
+              {/* Wishlys Wedding Music Selector */}
+              <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-amber-950 text-xs flex items-center gap-1.5">
+                      <span>🎵</span> Festive Wedding Music Suite
+                    </h3>
+                    <p className="text-[10px] text-amber-800/80">Signature ragas and romantic melodies</p>
+                  </div>
+                  <button
+                    onClick={toggleMusic}
+                    className={`px-3 py-1 text-xs font-bold rounded-full transition ${
+                      isPlayingMusic ? 'bg-amber-600 text-white shadow-xs' : 'bg-white border border-amber-300 text-amber-900'
+                    }`}
+                  >
+                    {isPlayingMusic ? '⏸ Pause' : '▶ Play Song'}
+                  </button>
+                </div>
+
+                <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                  {WISHLYS_WEDDING_SONGS.map((song) => (
+                    <div
+                      key={song.id}
+                      onClick={() => {
+                        setAudioTrack(song.title);
+                        if (isPlayingMusic) {
+                          stopSynthesizer();
+                          startSynthesizer();
+                        }
+                        toast.success(`Selected track: ${song.title}`);
+                      }}
+                      className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition ${
+                        audioTrack === song.title
+                          ? 'border-amber-500 bg-white shadow-xs ring-1 ring-amber-300'
+                          : 'border-amber-100 bg-white/70 hover:bg-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{song.emoji}</span>
+                        <div>
+                          <p className="font-bold text-[11px] text-slate-900">{song.title}</p>
+                          <p className="text-[9px] text-slate-500 truncate">{song.subtitle}</p>
+                        </div>
+                      </div>
+                      <span className="text-[9px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                        {song.tag}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Theme Cards */}
               <div>
                 <label className="block text-[11px] font-bold text-slate-600 mb-2">
-                  Curated Aesthetic Palettes (Live Preview updates)
+                  Wishlys Wedding Theme Collection
                 </label>
                 <div className="space-y-2">
                   {THEMES.map((theme) => (
@@ -1345,11 +1255,11 @@ export default function StudioEditor() {
                       key={theme.id}
                       onClick={() => {
                         setCurrentTheme(theme);
-                        toast.success(`Active Palette: ${theme.name}`);
+                        toast.success(`Theme updated to ${theme.name}`);
                       }}
                       className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${
                         currentTheme.id === theme.id
-                          ? 'border-sky-500 bg-sky-50/80 shadow-sm ring-2 ring-sky-200'
+                          ? 'border-sky-500 bg-sky-50/80 shadow-xs ring-2 ring-sky-200'
                           : 'border-slate-200 hover:bg-slate-50'
                       }`}
                     >
@@ -1358,63 +1268,190 @@ export default function StudioEditor() {
                           {theme.colors.map((c, i) => (
                             <span
                               key={i}
-                              className="h-6 w-6 rounded-full border border-white shadow-sm"
+                              className="h-6 w-6 rounded-full border border-white shadow-xs"
                               style={{ backgroundColor: c }}
                             />
                           ))}
                         </div>
                         <div>
-                          <span className="font-bold text-slate-800 block">{theme.name}</span>
-                          <span className="text-[10px] text-slate-500 font-serif">{theme.badge}</span>
+                          <span className="font-bold text-slate-800 block text-xs">{theme.name}</span>
+                          <span className="text-[10px] text-slate-500">{theme.badge}</span>
                         </div>
                       </div>
-                      <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-semibold text-slate-600">
                         {theme.isDark ? '🌙 Dark' : '☀️ Light'}
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
+          )}
 
-              {/* Music Player Control */}
-              <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-amber-950 text-xs">Audio Soundtrack</span>
-                  <button
-                    onClick={toggleMusic}
-                    className={`px-3 py-1 text-xs font-bold rounded-full transition ${
-                      isPlayingMusic ? 'bg-amber-600 text-white shadow' : 'bg-white border border-amber-300 text-amber-900'
+          {/* TAB CONTENT: GUESTS */}
+          {activeTab === 'guests' && (
+            <div className="space-y-4 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-slate-700">Guests in Simulator ({guests.length})</span>
+                <button
+                  type="button"
+                  onClick={() => setShowAddGuestModal(true)}
+                  className="rounded-full bg-sky-600 px-3 py-1 font-bold text-white hover:bg-sky-700"
+                >
+                  + Add Guest
+                </button>
+              </div>
+
+              <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                {guests.map((g) => (
+                  <div
+                    key={g.id}
+                    onClick={() => setSelectedGuestId(g.id)}
+                    className={`cursor-pointer rounded-xl border p-3 transition ${
+                      selectedGuestId === g.id
+                        ? 'border-sky-500 bg-sky-50/90 shadow-xs ring-1 ring-sky-300'
+                        : 'border-slate-200 bg-white hover:bg-slate-50'
                     }`}
                   >
-                    {isPlayingMusic ? '⏹ Stop Music' : '▶ Play Music'}
+                    <div className="flex items-center justify-between">
+                      <p className="font-bold text-slate-900">{g.name}</p>
+                      <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-bold text-sky-800">
+                        {g.passes} Passes
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-0.5 truncate">{g.salutation}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB CONTENT: GALLERY (WORKABLE REAL PHOTO MOMENTS) */}
+          {activeTab === 'gallery' && (
+            <div className="space-y-4 text-xs">
+              {/* File Upload Area */}
+              <div className="rounded-2xl border-2 border-dashed border-sky-300 bg-sky-50/60 p-5 text-center">
+                <span className="text-3xl block mb-1">📸</span>
+                <p className="font-bold text-slate-800">Upload Pre-Wedding Photos</p>
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Choose your pre-wedding shoot pictures to display inside the invitation.
+                </p>
+                <label className="mt-3 inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-[#123b5d] px-4 py-2 text-white font-bold text-xs hover:bg-sky-900 transition shadow-xs">
+                  <span>📁</span> Choose Local Photos
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+                </label>
+              </div>
+
+              {/* Active Cover Photo Indicator */}
+              {coverPhoto && (
+                <div className="rounded-2xl border border-sky-200 bg-white p-3 shadow-xs">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] uppercase font-bold text-slate-400">Active Invitation Cover</span>
+                    <span className="rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-bold px-2 py-0.5">Live on Invite</span>
+                  </div>
+                  <div className="relative h-28 w-full rounded-xl overflow-hidden">
+                    <img src={coverPhoto} alt="Cover" className="h-full w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCoverPhoto('');
+                        toast('Reset cover photo to theme mandala banner');
+                      }}
+                      className="absolute top-2 right-2 rounded-full bg-black/60 text-white px-2 py-0.5 text-[10px] hover:bg-black/80"
+                    >
+                      ✕ Reset to Theme
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Curated Pre-Wedding Moments */}
+              <div>
+                <p className="font-bold text-slate-800 text-xs mb-2 flex items-center justify-between">
+                  <span>✨ Curated Wedding Moments</span>
+                  <span className="text-[10px] text-slate-400">Click to set as cover</span>
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {PRESET_MOMENTS.map((moment) => (
+                    <div
+                      key={moment.id}
+                      onClick={() => {
+                        setCoverPhoto(moment.url);
+                        toast.success(`Set "${moment.title}" as invitation cover photo!`);
+                      }}
+                      className={`group relative cursor-pointer overflow-hidden rounded-xl border-2 transition ${
+                        coverPhoto === moment.url
+                          ? 'border-sky-500 shadow-md ring-2 ring-sky-300'
+                          : 'border-slate-200 hover:border-sky-300'
+                      }`}
+                    >
+                      <div className="h-20 w-full overflow-hidden bg-slate-100">
+                        <img
+                          src={moment.url}
+                          alt={moment.title}
+                          className="h-full w-full object-cover group-hover:scale-105 transition duration-300"
+                        />
+                      </div>
+                      <div className="p-1.5 bg-white text-left">
+                        <p className="font-bold text-[10px] text-slate-800 truncate">{moment.title}</p>
+                        <p className="text-[9px] text-slate-400">{moment.tag}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB CONTENT: SETTINGS (WORKABLE CUSTOM SLUG, AUTOPLAY & RULES) */}
+          {activeTab === 'settings' && (
+            <div className="space-y-4 text-xs">
+              {/* 1. Custom URL Slug */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Custom Invitation Link (Slug)
+                </label>
+                <div className="flex rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+                  <span className="px-2.5 py-2 text-[10px] font-mono text-slate-500 bg-slate-100 border-r border-slate-200">
+                    uptemp.com/i/
+                  </span>
+                  <input
+                    type="text"
+                    value={customSlug}
+                    onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, ''))}
+                    className="flex-1 px-2.5 py-2 text-xs font-mono text-slate-800 bg-transparent outline-none"
+                  />
+                </div>
+                <p className="text-[10px] text-emerald-600 mt-1 font-semibold">✓ Link is available and 100% free forever</p>
+              </div>
+
+              {/* 2. Festive Audio Autoplay & Volume */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-slate-800">Autoplay Festive Music</p>
+                    <p className="text-[10px] text-slate-500">Music starts playing when guests open the link</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMusicAutoplay(!musicAutoplay);
+                      toast.success(musicAutoplay ? 'Music autoplay disabled' : 'Music autoplay enabled!');
+                    }}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${musicAutoplay ? 'bg-sky-600' : 'bg-slate-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${musicAutoplay ? 'translate-x-4' : 'translate-x-0.5'}`} />
                   </button>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 mb-1">
-                    Select Soundtrack Raga
-                  </label>
-                  <select
-                    value={audioTrack}
-                    onChange={(e) => {
-                      setAudioTrack(e.target.value);
-                      if (isPlayingMusic) {
-                        stopSynthesizer();
-                        startSynthesizer();
-                      }
-                    }}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 outline-none text-xs"
-                  >
-                    <option>Shenhai Instrumental (Mangal Vadya)</option>
-                    <option>Royal Sitar & Tanpura Harmony</option>
-                    <option>Acoustic Strings - Romantic Prelude</option>
-                    <option>Temple Chimes & Auspicious Flute</option>
-                  </select>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-                    <span>Volume</span>
+                  <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
+                    <span>Default Volume</span>
                     <span>{Math.round(audioVolume * 100)}%</span>
                   </div>
                   <input
@@ -1424,147 +1461,150 @@ export default function StudioEditor() {
                     step="0.05"
                     value={audioVolume}
                     onChange={(e) => setAudioVolume(parseFloat(e.target.value))}
-                    className="w-full accent-amber-600 cursor-pointer"
+                    className="w-full accent-sky-600"
                   />
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* TAB CONTENT: GUESTS */}
-          {activeTab === 'guests' && (
-            <div className="space-y-4 text-xs">
-              <div className="flex items-center justify-between bg-sky-50 p-3 rounded-xl border border-sky-100">
+              {/* 3. RSVP Cutoff & Rules */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs space-y-3">
+                <h4 className="font-bold text-slate-800">RSVP & Guest Rules</h4>
                 <div>
-                  <p className="font-bold text-sky-950">Guest Personalization System</p>
-                  <p className="text-[10px] text-slate-500">Each guest receives a custom salutation & allocated ceremonies</p>
+                  <label className="block text-[10px] font-bold text-slate-500 mb-1">RSVP Cutoff Deadline</label>
+                  <input
+                    type="date"
+                    value={rsvpCutoffDate}
+                    onChange={(e) => setRsvpCutoffDate(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-800 outline-none"
+                  />
                 </div>
-                <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 text-[10px] font-bold">
-                  ACTIVE
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                {guests.map((g) => (
-                  <div
-                    key={g.id}
-                    onClick={() => setSelectedGuestId(g.id)}
-                    className={`cursor-pointer rounded-xl border p-3 transition ${
-                      selectedGuestId === g.id
-                        ? 'border-sky-500 bg-sky-50/70 shadow-sm ring-1 ring-sky-300'
-                        : 'border-slate-200 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-900">{g.name}</span>
-                      <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">
-                        {g.passes} Passes
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 mt-1 line-clamp-1 italic">
-                      "{g.salutation}"
-                    </p>
+                <div className="flex items-center justify-between pt-1">
+                  <div>
+                    <p className="font-bold text-slate-700">Dietary Preferences</p>
+                    <p className="text-[10px] text-slate-500">Vegetarian, Jain Vegetarian, and Vegan selectors</p>
                   </div>
-                ))}
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Active</span>
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* TAB CONTENT: GALLERY */}
-          {activeTab === 'gallery' && (
-            <div className="space-y-4 text-xs">
-              <div className="rounded-2xl border-2 border-dashed border-sky-200 bg-sky-50/50 p-6 text-center">
-                <span className="text-3xl block mb-2">📸</span>
-                <p className="font-bold text-slate-800">Upload Pre-Wedding Moments</p>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Drag and drop JPG or PNG photos. Unlimited storage included free forever.
-                </p>
+              {/* 4. Privacy Passcode Lock */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-slate-800">Private Passcode Lock</p>
+                    <p className="text-[10px] text-slate-500">Require guests to enter 4-digit PIN</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setRequirePasscode(!requirePasscode)}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${requirePasscode ? 'bg-sky-600' : 'bg-slate-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${requirePasscode ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                  </button>
+                </div>
+
+                {requirePasscode && (
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 mb-1">4-Digit Security PIN</label>
+                    <input
+                      type="text"
+                      maxLength={4}
+                      value={passcodePin}
+                      onChange={(e) => setPasscodePin(e.target.value.replace(/[^0-9]/g, ''))}
+                      className="w-32 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-center font-mono font-bold text-base tracking-widest text-slate-800"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* 5. Wishlys Wax Seal Reveal Animation */}
+              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs flex items-center justify-between">
+                <div>
+                  <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <span>💌</span> Wax Seal Envelope Reveal (Wishlys Style)
+                  </p>
+                  <p className="text-[10px] text-slate-500">Royal wax seal monogram envelope reveal on entry</p>
+                </div>
                 <button
                   type="button"
-                  onClick={() => toast.success('Photo added to couple gallery!')}
-                  className="mt-3 rounded-full bg-[#123b5d] px-4 py-2 text-white font-bold text-xs"
+                  onClick={() => {
+                    const next = !showWaxSealReveal;
+                    setShowWaxSealReveal(next);
+                    if (next) setIsEnvelopeOpen(false);
+                    toast.success(next ? 'Wax seal envelope reveal enabled!' : 'Standard card reveal');
+                  }}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${showWaxSealReveal ? 'bg-sky-600' : 'bg-slate-300'}`}
                 >
-                  Choose Images
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${showWaxSealReveal ? 'translate-x-4' : 'translate-x-0.5'}`} />
                 </button>
               </div>
             </div>
           )}
-
-          {/* Compact Celebration Sound / Shenhai Bar */}
-          <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50/70 p-3.5 shadow-sm">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
-                <span>🎵</span> Festive Music Preview
-              </span>
-              <button
-                type="button"
-                onClick={toggleMusic}
-                className={`rounded-full px-3 py-1 text-[10px] font-bold transition ${
-                  isPlayingMusic
-                    ? 'bg-amber-500 text-white shadow'
-                    : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                {isPlayingMusic ? '⏸ Pause' : '▶ Play Shenhai'}
-              </button>
-            </div>
-            <p className="text-[10px] text-slate-500 leading-snug">
-              Track: <span className="font-semibold text-slate-700">{audioTrack}</span> · Auto-plays when guests open the invite.
-            </p>
-          </div>
-
-          {/* Studio Pro Tip card */}
-          <div className="mt-3.5 rounded-xl bg-slate-50 border border-slate-200/90 p-3 text-[11px] text-slate-600">
-            <p className="font-bold text-slate-800 mb-0.5 flex items-center gap-1">
-              <span>💡</span> Studio Pro Tip
-            </p>
-            <p className="leading-relaxed">
-              Every detail updates live in the center phone preview. Use the Right Panel to test guest passes, custom greetings & instant WhatsApp sharing.
-            </p>
-          </div>
         </aside>
 
-        {/* Center Live Phone / Desktop Mockup Preview (Balanced Designer Canvas Workbench) */}
-        <main className="relative flex-1 overflow-y-auto bg-[#eaeff5] bg-[radial-gradient(#c5d3e3_1.2px,transparent_1.2px)] [background-size:22px_22px] p-6 lg:p-8 flex flex-col items-center custom-scrollbar">
-          {/* Top Preview Switcher Pill */}
-          <div className="sticky top-2 z-20 mb-5 inline-flex items-center rounded-full border border-slate-300/80 bg-white/95 px-2 py-1 shadow-md shadow-slate-900/10 backdrop-blur">
-            <button
-              onClick={() => setPreviewMode('live')}
-              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition ${
-                previewMode === 'live' ? 'bg-emerald-500 text-white shadow' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
-              Live Preview Mode
-            </button>
-            <button
-              onClick={() => setPreviewMode('rsvp')}
-              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition ${
-                previewMode === 'rsvp' ? 'bg-sky-600 text-white shadow' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>🔀</span> Test Interactive RSVP
-            </button>
+        {/* 3. CENTER PREVIEW CANVAS (ONE CLEAN SIZE IN THE MIDDLE - EXACT MATCH TO PHOTO 3!) */}
+        <main className="relative flex-1 overflow-hidden bg-[#eaeff5] bg-[radial-gradient(#c5d3e3_1.2px,transparent_1.2px)] [background-size:22px_22px] px-4 py-3 sm:px-6 flex flex-col items-center justify-start select-none">
+          {/* Top Controls Bar: Switcher + Compact Zoom Toolbar (No floating zoom blocking the phone!) */}
+          <div className="z-20 mb-3 flex items-center justify-between gap-3 w-full max-w-[420px]">
+            {/* Live vs RSVP Mode Switcher */}
+            <div className="inline-flex items-center rounded-full border border-slate-300/80 bg-white/95 p-1 shadow-xs backdrop-blur">
+              <button
+                onClick={() => setPreviewMode('live')}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
+                  previewMode === 'live' ? 'bg-emerald-500 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+                Live Preview Mode
+              </button>
+              <button
+                onClick={() => setPreviewMode('rsvp')}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
+                  previewMode === 'rsvp' ? 'bg-sky-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <span>🔀</span> Test Interactive RSVP
+              </button>
+            </div>
+
+            {/* Compact Zoom Controls (No overlap with phone!) */}
+            <div className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-xs">
+              <button
+                onClick={() => setZoomLevel((z) => Math.max(70, z - 10))}
+                className="hover:text-sky-600 px-1"
+                title="Zoom out"
+              >
+                -
+              </button>
+              <span className="font-mono text-[10px] w-7 text-center">{zoomLevel}%</span>
+              <button
+                onClick={() => setZoomLevel((z) => Math.min(130, z + 10))}
+                className="hover:text-sky-600 px-1"
+                title="Zoom in"
+              >
+                +
+              </button>
+            </div>
           </div>
 
-          {/* VIEW MODE CONTAINER: MOBILE VS DESKTOP WITH REAL ZOOM */}
+          {/* VIEW MODE CONTAINER: FULL PHONE IN ONE SIZE WITHOUT MAIN OVERFLOWING */}
           <div
             style={{
               transform: `scale(${zoomLevel / 100})`,
               transformOrigin: 'top center',
               transition: 'transform 0.15s ease-out',
             }}
-            className="w-full flex justify-center py-2 transition-all pb-24"
+            className="flex justify-center items-start transition-all"
           >
             {viewMode === 'mobile' ? (
-              /* REALISTIC SLEEK iPHONE 16 PRO FRAME */
-              <div className="relative w-[360px] sm:w-[380px] h-[750px] rounded-[52px] border-[10px] border-slate-900 bg-slate-900 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] ring-1 ring-slate-800 flex flex-col overflow-hidden shrink-0">
-                {/* Fixed Dedicated Top Status Bar with Dynamic Island - NOTCH NEVER CUTS CONTENT */}
-                <div className={`relative z-30 shrink-0 flex items-center justify-between px-6 pt-2.5 pb-2 border-b border-black/5 select-none ${currentTheme.phoneBg}`}>
+              /* EXACT REALISTIC iPHONE 16 PRO FRAME IN ONE CLEAN SIZE (MATCHING PHOTO 3) */
+              <div className="relative w-[350px] sm:w-[365px] h-[min(650px,calc(100vh-165px))] rounded-[48px] border-[9px] border-slate-900 bg-slate-900 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.4)] ring-1 ring-slate-800 flex flex-col overflow-hidden shrink-0 select-none">
+                {/* Fixed Dedicated Top Status Bar with Dynamic Island */}
+                <div className={`relative z-30 shrink-0 flex items-center justify-between px-6 pt-2 pb-1.5 border-b border-black/5 select-none ${currentTheme.phoneBg}`}>
                   <span className={`text-[11px] font-bold tracking-tight ${currentTheme.isDark ? 'text-white/80' : 'text-slate-800'}`}>9:41</span>
                   {/* Dynamic Island Notch */}
-                  <div className="h-5 w-24 rounded-full bg-black flex items-center justify-between px-2.5 shadow-sm">
-                    <span className="h-2 w-2 rounded-full bg-slate-800" />
+                  <div className="h-4.5 w-22 rounded-full bg-black flex items-center justify-between px-2.5 shadow-xs">
+                    <span className="h-1.5 w-1.5 rounded-full bg-slate-800" />
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-950" />
                   </div>
                   <div className={`flex items-center gap-1.5 text-[10px] font-bold ${currentTheme.isDark ? 'text-white/80' : 'text-slate-800'}`}>
@@ -1573,524 +1613,271 @@ export default function StudioEditor() {
                   </div>
                 </div>
 
-                {/* Inner Phone Screen: starts cleanly below the notch and scrolls smoothly */}
-                <div
-                  className={`relative flex-1 overflow-y-auto ${currentTheme.phoneBg} custom-scrollbar font-sans`}
-                >
-                  {/* Top Divine Blessing */}
-                  <div className="py-2.5 px-4 text-center border-b border-black/5">
-                    <p className={`text-xs font-serif font-bold tracking-widest ${currentTheme.headerAccent}`}>
-                      {godBlessing}
-                    </p>
-                  </div>
-
-                {/* Couple Palatial Photo Banner matching active theme */}
-                <div
-                  className={`relative h-56 w-full overflow-hidden bg-gradient-to-b ${currentTheme.bannerGradient} flex items-center justify-center`}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.25)_0%,_rgba(0,0,0,0.35)_100%)]" />
-                  <div className="relative text-center p-4 z-10 text-white">
-                    <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/60 bg-white/20 backdrop-blur-sm text-3xl shadow-lg">
-                      💍
-                    </div>
-                    <span className="inline-block rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">
-                      Royal Mandap & Palace
-                    </span>
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-
-                {/* Couple Header */}
-                <div className="px-6 pt-3 pb-4 text-center">
-                  <span className={`text-[10px] font-sans font-bold uppercase tracking-[0.22em] ${currentTheme.headerAccent}`}>
-                    TOGETHER WITH THEIR FAMILIES
-                  </span>
-                  <h2
-                    className={`text-3xl font-bold mt-2 tracking-tight ${currentTheme.titleColor}`}
-                    style={{ fontFamily: currentTheme.fontFamily }}
-                  >
-                    {groomName} <span className="italic font-normal opacity-75">&</span> {brideName}
-                  </h2>
-                  <p className={`mt-2 text-xs font-serif leading-relaxed max-w-[280px] mx-auto ${currentTheme.subtextColor}`}>
-                    Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
-                  </p>
-                </div>
-
-                {/* DYNAMIC PERSONALIZED GUEST CARD (Reacts directly to user typing in Right Panel!) */}
-                <div
-                  className={`mx-4 mb-4 rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 shadow-sm text-left`}
-                >
-                  <div className="flex items-start gap-2.5">
-                    <span className="text-base text-amber-700">✉️</span>
-                    <div className="flex-1">
-                      <p className={`font-bold text-xs ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                        {currentGuest.salutation}
+                {/* Wishlys Wax Seal Envelope Opening Animation Screen */}
+                {showWaxSealReveal && !isEnvelopeOpen ? (
+                  <div className="relative flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-[#7a1420] via-[#540914] to-[#2e0308] p-6 text-center text-amber-100">
+                    <div className="border border-amber-400/40 rounded-3xl p-6 w-full flex flex-col items-center bg-black/20 backdrop-blur-sm">
+                      <p className="text-[10px] uppercase font-bold tracking-[0.25em] text-amber-300 mb-2">
+                        SPECIAL INVITATION FOR
                       </p>
-                      <div className="mt-2.5 flex items-center gap-2 text-[10px] font-bold">
-                        <span className={`rounded-full px-2.5 py-0.5 ${currentTheme.badgeBg}`}>
-                          {currentGuest.passes} Reserved Passes
-                        </span>
-                        <span className="rounded-full bg-black/5 px-2 py-0.5 text-slate-500">
-                          {guestVisibleEvents.length} Ceremonies
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                      <h3 className="font-serif text-lg font-bold text-white mb-6">
+                        {currentGuest.name}
+                      </h3>
 
-                {/* Live Ticking Countdown Timer */}
-                <div
-                  className={`mx-4 mb-4 rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3.5 text-center shadow-sm`}
-                >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60 mb-2">
-                    COUNTDOWN TO MUHURTHAM
-                  </p>
-                  <div className="grid grid-cols-4 gap-2 text-center font-sans">
-                    <div className="rounded-xl bg-black/5 py-2">
-                      <p className="text-lg font-bold">{timeLeft.days}</p>
-                      <p className="text-[8px] uppercase tracking-wider opacity-60">Days</p>
-                    </div>
-                    <div className="rounded-xl bg-black/5 py-2">
-                      <p className="text-lg font-bold">{timeLeft.hours}</p>
-                      <p className="text-[8px] uppercase tracking-wider opacity-60">Hours</p>
-                    </div>
-                    <div className="rounded-xl bg-black/5 py-2">
-                      <p className="text-lg font-bold">{timeLeft.mins}</p>
-                      <p className="text-[8px] uppercase tracking-wider opacity-60">Mins</p>
-                    </div>
-                    <div className="rounded-xl bg-black/5 py-2">
-                      <p className="text-lg font-bold">{timeLeft.secs}</p>
-                      <p className="text-[8px] uppercase tracking-wider opacity-60">Secs</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Event Itinerary for this Guest (Live filtered by guest permissions) */}
-                <div className="px-4 pb-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">
-                      EVENT ITINERARY
-                    </p>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${currentTheme.badgeBg}`}>
-                      {guestVisibleEvents.length} CELEBRATIONS
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    {guestVisibleEvents.map((ev) => (
-                      <div
-                        key={ev.id}
-                        className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3.5 shadow-sm text-left`}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <span className={`text-[9px] font-bold uppercase tracking-wider ${currentTheme.headerAccent}`}>
-                              {ev.date} • {ev.time}
-                            </span>
-                            <h4 className={`text-sm font-bold mt-0.5 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                              {ev.name}
-                            </h4>
-                          </div>
-                          <span className="text-xs">📍</span>
-                        </div>
-                        <p className={`text-[11px] mt-1.5 flex items-center gap-1 ${currentTheme.subtextColor}`}>
-                          <span>🏛️</span> {ev.venue}
-                        </p>
-                        <p className={`text-[10px] mt-0.5 flex items-center gap-1 opacity-70 ${currentTheme.subtextColor}`}>
-                          <span>👗</span> {ev.dressCode}
-                        </p>
-                        <div className="mt-2.5 pt-2 border-t border-black/5 dark:border-white/10 flex items-center gap-2">
-                          <a
-                            href={`https://maps.google.com/?q=${encodeURIComponent(ev.venue)}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-md bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 hover:bg-sky-100 border border-sky-200 dark:border-sky-800 transition"
-                          >
-                            <span>📍</span> Directions
-                          </a>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${ev.name} - ${groomName} & ${brideName}\nLOCATION:${ev.venue}\nDESCRIPTION:Dress code: ${ev.dressCode}\nEND:VEVENT\nEND:VCALENDAR`;
-                              const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-                              const link = document.createElement('a');
-                              link.href = window.URL.createObjectURL(blob);
-                              link.setAttribute('download', `${ev.name.replace(/\s+/g, '_')}.ics`);
-                              document.body.appendChild(link);
-                              link.click();
-                              document.body.removeChild(link);
-                              toast.success('Event added to Calendar (.ics)');
-                            }}
-                            className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-700 transition"
-                          >
-                            <span>📅</span> Add to Cal
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Virtual Attendance / Live Stream Card */}
-                  {showLiveStream && (
-                    <div className={`mt-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-sm text-left`}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                          </span>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-rose-500">
-                            LIVE BROADCAST
-                          </span>
-                        </div>
-                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 font-bold">1080p HD</span>
-                      </div>
-                      <p className={`text-[11px] font-semibold mt-1 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                        Virtual Attendance for Guests
-                      </p>
-                      <a
-                        href={liveStreamUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-red-600 py-1.5 text-[11px] font-bold text-white shadow hover:opacity-95 transition"
-                      >
-                        <span>🔴</span> Join Live Stream
-                      </a>
-                    </div>
-                  )}
-
-                  {/* Digital Blessing Wall */}
-                  <div className={`mt-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-sm text-left`}>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[9px] font-bold uppercase tracking-wider opacity-70">
-                        💌 BLESSING WALL ({blessingWishes.length})
-                      </span>
-                      <span className="text-[9px] font-bold text-sky-600">Guest Wishes</span>
-                    </div>
-                    <div className="space-y-1.5 max-h-28 overflow-y-auto pr-1">
-                      {blessingWishes.map((w, idx) => (
-                        <div key={idx} className="rounded-lg bg-black/5 dark:bg-white/5 p-1.5 text-[10px] leading-relaxed">
-                          {w}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-2 flex gap-1">
-                      <input
-                        type="text"
-                        placeholder="Write a sweet blessing..."
-                        value={newBlessingWish}
-                        onChange={(e) => setNewBlessingWish(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && newBlessingWish.trim()) {
-                            setBlessingWishes((prev) => [...prev, `${newBlessingWish.trim()} - ${currentGuest.name}`]);
-                            setNewBlessingWish('');
-                            toast.success('Blessing added!');
-                          }
-                        }}
-                        className="flex-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-[10px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
-                      />
+                      {/* Golden Wax Seal Button */}
                       <button
                         type="button"
                         onClick={() => {
-                          if (newBlessingWish.trim()) {
-                            setBlessingWishes((prev) => [...prev, `${newBlessingWish.trim()} - ${currentGuest.name}`]);
-                            setNewBlessingWish('');
-                            toast.success('Blessing added!');
+                          setIsEnvelopeOpen(true);
+                          if (musicAutoplay && !isPlayingMusic) {
+                            toggleMusic();
                           }
+                          toast.success('Royal Wax Seal Broken! Unfolding card... ✨');
                         }}
-                        className="rounded-md bg-sky-600 px-2 py-1 text-[10px] font-bold text-white hover:bg-sky-700 transition"
+                        className="group relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-[#991b1b] to-[#dc2626] border-4 border-amber-400 shadow-2xl hover:scale-105 transition active:scale-95"
                       >
-                        Post
+                        <span className="font-serif font-black text-amber-200 text-lg tracking-widest drop-shadow">
+                          A & P
+                        </span>
+                        <span className="absolute -bottom-7 whitespace-nowrap text-[9px] font-bold text-amber-300">
+                          Tap Seal to Open ✉️
+                        </span>
                       </button>
                     </div>
                   </div>
-
-                  {/* Family & Host Blessings */}
-                  <div className={`mt-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 text-center`}>
-                    <p className={`text-xs font-bold ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {groomParents} & {brideParents}
-                    </p>
-                    <p className={`text-[10px] italic mt-1 opacity-80 ${currentTheme.subtextColor}`}>
-                      "{hostBlessing}"
-                    </p>
-                  </div>
-
-                  {/* RSVP Interactive Mode inside the Phone */}
-                  {previewMode === 'rsvp' && (
-                    <div className="mt-4 rounded-2xl border-2 border-sky-400 bg-sky-50/95 p-4 text-left font-sans text-slate-800">
-                      <p className="font-bold text-xs text-sky-950">RSVP for {currentGuest.name}</p>
-                      <p className="text-[10px] text-slate-600 mb-3">
-                        Will you join our celebration?
+                ) : (
+                  /* Inner Phone Screen: Smooth internal scroll inside the phone without outer canvas scroll! */
+                  <div
+                    className={`relative flex-1 overflow-y-auto ${currentTheme.phoneBg} custom-scrollbar font-sans`}
+                  >
+                    {/* Top Divine Blessing */}
+                    <div className="py-2 px-4 text-center border-b border-black/5">
+                      <p className={`text-xs font-serif font-bold tracking-widest ${currentTheme.headerAccent}`}>
+                        {godBlessing}
                       </p>
+                    </div>
 
-                      {rsvpSubmitted ? (
-                        <div className="rounded-xl bg-emerald-100 p-3 text-center text-emerald-900">
-                          <p className="font-bold text-xs">✓ RSVP Confirmed!</p>
-                          <p className="text-[10px] mt-0.5">We look forward to welcoming you.</p>
-                        </div>
+                    {/* Couple Palatial Photo Banner */}
+                    <div
+                      className={`relative h-48 w-full overflow-hidden bg-gradient-to-b ${currentTheme.bannerGradient} flex items-center justify-center`}
+                    >
+                      {coverPhoto ? (
+                        <>
+                          <img src={coverPhoto} alt="Cover" className="absolute inset-0 h-full w-full object-cover" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          <div className="relative text-center p-3 z-10 text-white">
+                            <span className="inline-block rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[9px] font-sans font-bold uppercase tracking-[0.2em] border border-white/20">
+                              Shubh Vivah Moments
+                            </span>
+                          </div>
+                        </>
                       ) : (
-                        <div className="space-y-2.5">
-                          <div className="grid grid-cols-2 gap-2">
-                            <button
-                              type="button"
-                              onClick={() => setRsvpAttending(true)}
-                              className={`rounded-xl py-2 text-xs font-bold border transition ${
-                                rsvpAttending
-                                  ? 'bg-emerald-600 text-white border-emerald-600'
-                                  : 'bg-white text-slate-700'
-                              }`}
-                            >
-                              ✓ Accept
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setRsvpAttending(false)}
-                              className={`rounded-xl py-2 text-xs font-bold border transition ${
-                                !rsvpAttending
-                                  ? 'bg-rose-600 text-white border-rose-600'
-                                  : 'bg-white text-slate-700'
-                              }`}
-                            >
-                              ✕ Decline
-                            </button>
+                        <>
+                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.25)_0%,_rgba(0,0,0,0.35)_100%)]" />
+                          <div className="relative text-center p-4 z-10 text-white">
+                            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/60 bg-white/20 backdrop-blur-sm text-2xl shadow-lg">
+                              💍
+                            </div>
+                            <span className="inline-block rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">
+                              Royal Mandap & Palace
+                            </span>
                           </div>
-
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-600 mb-1">
-                              Number of Attending Guests
-                            </label>
-                            <select
-                              value={rsvpGuestsCount}
-                              onChange={(e) => setRsvpGuestsCount(Number(e.target.value))}
-                              className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800"
-                            >
-                              {[1, 2, 3, 4, 5, 6].map((n) => (
-                                <option key={n} value={n}>
-                                  {n} {n === 1 ? 'Guest' : 'Guests'}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-600 mb-1">
-                              Blessing Message
-                            </label>
-                            <input
-                              type="text"
-                              value={rsvpMessage}
-                              onChange={(e) => setRsvpMessage(e.target.value)}
-                              className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800"
-                            />
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setRsvpSubmitted(true);
-                              toast.success('RSVP submitted successfully in live test!');
-                            }}
-                            className="w-full rounded-xl bg-sky-700 py-2 font-bold text-white text-xs shadow hover:bg-sky-800 transition"
-                          >
-                            Submit RSVP
-                          </button>
-                        </div>
+                          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/20 to-transparent" />
+                        </>
                       )}
                     </div>
-                  )}
-                </div>
-              </div>
 
-              {/* Bottom Home Indicator */}
-              <div className={`h-5 shrink-0 flex items-center justify-center select-none border-t border-black/5 ${currentTheme.phoneBg}`}>
-                <span className={`h-1 w-28 rounded-full ${currentTheme.isDark ? 'bg-white/40' : 'bg-black/30'}`} />
-              </div>
-            </div>
-          ) : (
-            /* WIDE DESKTOP BROWSER PREVIEW */
-            <div className="w-[95%] max-w-[840px] rounded-2xl border-4 border-slate-800 bg-slate-900 shadow-2xl overflow-hidden">
-              {/* Browser chrome top bar */}
-              <div className="bg-slate-800 px-4 py-2 flex items-center justify-between text-xs text-slate-300">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-rose-500" />
-                  <span className="h-3 w-3 rounded-full bg-amber-500" />
-                  <span className="h-3 w-3 rounded-full bg-emerald-500" />
-                </div>
-                <div className="rounded-lg bg-slate-900 px-6 py-1 text-[11px] font-mono text-slate-400">
-                  {shareableUrl}
-                </div>
-                <div className="text-[11px] font-bold text-sky-400">Desktop View</div>
-              </div>
-
-              {/* Desktop Layout Inner Body */}
-              <div
-                className={`p-8 max-h-[640px] overflow-y-auto ${currentTheme.phoneBg} custom-scrollbar`}
-                style={{ fontFamily: currentTheme.fontFamily }}
-              >
-                <div className="text-center pb-6 border-b border-black/5">
-                  <p className={`text-sm font-bold tracking-widest ${currentTheme.headerAccent}`}>
-                    {godBlessing}
-                  </p>
-                  <h2 className={`text-4xl sm:text-5xl font-bold mt-2 ${currentTheme.titleColor}`}>
-                    {groomName} <span className="italic font-normal opacity-75">&</span> {brideName}
-                  </h2>
-                  <p className={`mt-2 text-sm max-w-lg mx-auto ${currentTheme.subtextColor}`}>
-                    Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
-                  </p>
-                </div>
-
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column: Personalized Card & Countdown */}
-                  <div className="space-y-4">
-                    <div className={`rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-5 shadow-sm`}>
-                      <span className="text-lg">✉️</span>
-                      <h4 className={`text-sm font-bold mt-1 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                        {currentGuest.salutation}
-                      </h4>
-                      <div className="mt-3 flex gap-2">
-                        <span className={`text-xs px-3 py-1 rounded-full font-bold ${currentTheme.badgeBg}`}>
-                          {currentGuest.passes} Passes Reserved
-                        </span>
-                        <span className="text-xs px-3 py-1 rounded-full bg-black/5 font-semibold">
-                          Assigned: {guestVisibleEvents.length} Ceremonies
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className={`rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-5 text-center shadow-sm`}>
-                      <p className="text-[11px] font-bold uppercase tracking-wider opacity-60 mb-3">
-                        COUNTDOWN TO MUHURTHAM
-                      </p>
-                      <div className="grid grid-cols-4 gap-2 font-sans">
-                        <div className="rounded-xl bg-black/5 py-2">
-                          <p className="text-xl font-bold">{timeLeft.days}</p>
-                          <p className="text-[9px] uppercase tracking-wider opacity-60">Days</p>
-                        </div>
-                        <div className="rounded-xl bg-black/5 py-2">
-                          <p className="text-xl font-bold">{timeLeft.hours}</p>
-                          <p className="text-[9px] uppercase tracking-wider opacity-60">Hours</p>
-                        </div>
-                        <div className="rounded-xl bg-black/5 py-2">
-                          <p className="text-xl font-bold">{timeLeft.mins}</p>
-                          <p className="text-[9px] uppercase tracking-wider opacity-60">Mins</p>
-                        </div>
-                        <div className="rounded-xl bg-black/5 py-2">
-                          <p className="text-xl font-bold">{timeLeft.secs}</p>
-                          <p className="text-[9px] uppercase tracking-wider opacity-60">Secs</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Events list */}
-                  <div className="space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-wider opacity-60">
-                      SCHEDULE FOR {currentGuest.name.toUpperCase()}
-                    </h4>
-                    {guestVisibleEvents.map((ev) => (
-                      <div
-                        key={ev.id}
-                        className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 shadow-sm`}
+                    {/* Couple Header */}
+                    <div className="px-5 pt-3 pb-3 text-center">
+                      <span className={`text-[9px] font-sans font-bold uppercase tracking-[0.22em] ${currentTheme.headerAccent}`}>
+                        TOGETHER WITH THEIR FAMILIES
+                      </span>
+                      <h2
+                        className={`text-2xl sm:text-3xl font-bold mt-1 tracking-tight ${currentTheme.titleColor}`}
+                        style={{ fontFamily: currentTheme.fontFamily }}
                       >
-                        <div className="flex justify-between">
-                          <span className={`text-[10px] font-bold uppercase ${currentTheme.headerAccent}`}>
-                            {ev.date} • {ev.time}
-                          </span>
-                          <span>📍</span>
-                        </div>
-                        <h4 className={`text-base font-bold mt-0.5 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                          {ev.name}
-                        </h4>
-                        <p className={`text-xs mt-1 ${currentTheme.subtextColor}`}>🏛️ {ev.venue}</p>
-                        <p className={`text-xs mt-0.5 opacity-75 ${currentTheme.subtextColor}`}>👗 {ev.dressCode}</p>
-                        <div className="mt-3 pt-2 border-t border-black/5 dark:border-white/10 flex items-center gap-2">
-                          <a
-                            href={`https://maps.google.com/?q=${encodeURIComponent(ev.venue)}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 hover:bg-sky-100 border border-sky-200 dark:border-sky-800 transition"
-                          >
-                            <span>📍</span> Get Directions
-                          </a>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${ev.name} - ${groomName} & ${brideName}\nLOCATION:${ev.venue}\nDESCRIPTION:Dress code: ${ev.dressCode}\nEND:VEVENT\nEND:VCALENDAR`;
-                              const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-                              const link = document.createElement('a');
-                              link.href = window.URL.createObjectURL(blob);
-                              link.setAttribute('download', `${ev.name.replace(/\s+/g, '_')}.ics`);
-                              document.body.appendChild(link);
-                              link.click();
-                              document.body.removeChild(link);
-                              toast.success('Calendar event saved (.ics)');
-                            }}
-                            className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-700 transition"
-                          >
-                            <span>📅</span> Add to Calendar
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                        {groomName} <span className="italic font-normal opacity-75">&</span> {brideName}
+                      </h2>
+                      <p className={`mt-1.5 text-[11px] font-serif leading-relaxed max-w-[260px] mx-auto ${currentTheme.subtextColor}`}>
+                        Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
+                      </p>
+                    </div>
 
-                    {/* Virtual Attendance Live Broadcast in Desktop */}
-                    {showLiveStream && (
-                      <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 shadow-sm text-left`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="relative flex h-2.5 w-2.5">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
+                    {/* DYNAMIC PERSONALIZED GUEST CARD */}
+                    <div
+                      className={`mx-3.5 mb-3 rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3.5 shadow-xs text-left`}
+                    >
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-base text-amber-700">✉️</span>
+                        <div className="flex-1">
+                          <p className={`font-bold text-xs ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
+                            {currentGuest.salutation}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2 text-[9px] font-bold">
+                            <span className={`rounded-full px-2 py-0.5 ${currentTheme.badgeBg}`}>
+                              {currentGuest.passes} Reserved Passes
                             </span>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-500">
-                              VIRTUAL ATTENDANCE (LIVE STREAM)
+                            <span className="rounded-full bg-black/5 px-2 py-0.5 text-slate-500">
+                              {guestVisibleEvents.length} Ceremonies
                             </span>
                           </div>
-                          <span className="text-xs px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-bold">1080p HD</span>
                         </div>
-                        <p className={`text-xs mt-2 ${currentTheme.subtextColor}`}>
-                          Join {groomName} & {brideName}'s wedding ceremony virtually in real-time.
+                      </div>
+                    </div>
+
+                    {/* Live Ticking Countdown Timer */}
+                    <div
+                      className={`mx-3.5 mb-3 rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 text-center shadow-xs`}
+                    >
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-60 mb-1.5">
+                        COUNTDOWN TO MUHURTHAM
+                      </p>
+                      <div className="grid grid-cols-4 gap-1.5 text-center font-sans">
+                        <div className="rounded-xl bg-black/5 py-1.5">
+                          <p className="text-base font-bold">{timeLeft.days}</p>
+                          <p className="text-[8px] uppercase tracking-wider opacity-60">Days</p>
+                        </div>
+                        <div className="rounded-xl bg-black/5 py-1.5">
+                          <p className="text-base font-bold">{timeLeft.hours}</p>
+                          <p className="text-[8px] uppercase tracking-wider opacity-60">Hours</p>
+                        </div>
+                        <div className="rounded-xl bg-black/5 py-1.5">
+                          <p className="text-base font-bold">{timeLeft.mins}</p>
+                          <p className="text-[8px] uppercase tracking-wider opacity-60">Mins</p>
+                        </div>
+                        <div className="rounded-xl bg-black/5 py-1.5">
+                          <p className="text-base font-bold">{timeLeft.secs}</p>
+                          <p className="text-[8px] uppercase tracking-wider opacity-60">Secs</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Ceremonies & Schedule List for Current Guest */}
+                    <div className="px-3.5 mb-3 text-left">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-60">
+                          EVENT ITINERARY
+                        </p>
+                        <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${currentTheme.badgeBg}`}>
+                          {guestVisibleEvents.length} CELEBRATIONS
+                        </span>
+                      </div>
+
+                      <div className="space-y-2.5">
+                        {guestVisibleEvents.map((ev) => (
+                          <div
+                            key={ev.id}
+                            className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-xs text-left`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <span className={`text-[9px] font-bold uppercase tracking-wider ${currentTheme.headerAccent}`}>
+                                  {ev.date} • {ev.time}
+                                </span>
+                                <h4 className={`text-xs font-bold mt-0.5 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
+                                  {ev.name}
+                                </h4>
+                              </div>
+                              <span className="text-xs">📍</span>
+                            </div>
+                            <p className={`text-[10px] mt-1 flex items-center gap-1 ${currentTheme.subtextColor}`}>
+                              <span>🏛️</span> {ev.venue}
+                            </p>
+                            <p className={`text-[9px] mt-0.5 flex items-center gap-1 opacity-70 ${currentTheme.subtextColor}`}>
+                              <span>👗</span> {ev.dressCode}
+                            </p>
+
+                            {/* Google Maps Directions + Calendar Actions */}
+                            <div className="mt-2 pt-2 border-t border-black/5 dark:border-white/10 flex items-center gap-2">
+                              <a
+                                href={`https://maps.google.com/?q=${encodeURIComponent(ev.venue)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 hover:bg-sky-100 border border-sky-200 dark:border-sky-800 transition"
+                              >
+                                <span>📍</span> Directions
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${ev.name} - ${groomName} & ${brideName}\nLOCATION:${ev.venue}\nDESCRIPTION:Dress code: ${ev.dressCode}\nEND:VEVENT\nEND:VCALENDAR`;
+                                  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+                                  const link = document.createElement('a');
+                                  link.href = window.URL.createObjectURL(blob);
+                                  link.setAttribute('download', `${ev.name.replace(/\s+/g, '_')}.ics`);
+                                  document.body.appendChild(link);
+                                  link.click();
+                                  document.body.removeChild(link);
+                                  toast.success('Event added to Calendar (.ics)');
+                                }}
+                                className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-700 transition"
+                              >
+                                <span>📅</span> Add to Cal
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Virtual Attendance / Live Stream Card */}
+                    {showLiveStream && (
+                      <div className={`mx-3.5 mb-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-xs text-left`}>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                            </span>
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-rose-500">
+                              LIVE BROADCAST
+                            </span>
+                          </div>
+                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 font-bold">1080p HD</span>
+                        </div>
+                        <p className={`text-[11px] font-semibold mt-1 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
+                          Virtual Attendance for Distant Guests
                         </p>
                         <a
                           href={liveStreamUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 py-2 text-xs font-bold text-white shadow hover:opacity-95 transition"
+                          className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-red-600 py-1.5 text-[10px] font-bold text-white shadow-xs hover:opacity-95 transition"
                         >
-                          <span>🔴</span> Watch Live Broadcast
+                          <span>🔴</span> Join Live Broadcast
                         </a>
                       </div>
                     )}
 
-                    {/* Digital Blessing Wall in Desktop */}
-                    <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 shadow-sm text-left`}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold uppercase tracking-wider opacity-70">
+                    {/* Digital Blessing Wall */}
+                    <div className={`mx-3.5 mb-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-xs text-left`}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[9px] font-bold uppercase tracking-wider opacity-70">
                           💌 BLESSING WALL ({blessingWishes.length})
                         </span>
-                        <span className="text-xs font-bold text-sky-600">Guest Messages</span>
+                        <span className="text-[9px] font-bold text-sky-600">Guest Wishes</span>
                       </div>
-                      <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
+                      <div className="space-y-1.5 max-h-24 overflow-y-auto pr-1">
                         {blessingWishes.map((w, idx) => (
-                          <div key={idx} className="rounded-lg bg-black/5 dark:bg-white/5 p-2 text-xs leading-relaxed">
+                          <div key={idx} className="rounded-lg bg-black/5 dark:bg-white/5 p-1.5 text-[9px] leading-relaxed">
                             {w}
                           </div>
                         ))}
                       </div>
-                      <div className="mt-3 flex gap-2">
+                      <div className="mt-2 flex gap-1">
                         <input
                           type="text"
-                          placeholder="Write a sweet blessing for the couple..."
+                          placeholder="Write a sweet blessing..."
                           value={newBlessingWish}
                           onChange={(e) => setNewBlessingWish(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && newBlessingWish.trim()) {
                               setBlessingWishes((prev) => [...prev, `${newBlessingWish.trim()} - ${currentGuest.name}`]);
                               setNewBlessingWish('');
-                              toast.success('Blessing added to the wall!');
+                              toast.success('Blessing added!');
                             }
                           }}
-                          className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                          className="flex-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-[9px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
                         />
                         <button
                           type="button"
@@ -2098,89 +1885,193 @@ export default function StudioEditor() {
                             if (newBlessingWish.trim()) {
                               setBlessingWishes((prev) => [...prev, `${newBlessingWish.trim()} - ${currentGuest.name}`]);
                               setNewBlessingWish('');
-                              toast.success('Blessing added to the wall!');
+                              toast.success('Blessing added!');
                             }
                           }}
-                          className="rounded-xl bg-sky-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-sky-700 transition"
+                          className="rounded-md bg-sky-600 px-2 py-1 text-[9px] font-bold text-white hover:bg-sky-700 transition"
                         >
                           Post
                         </button>
                       </div>
                     </div>
+
+                    {/* Family & Host Blessings */}
+                    <div className={`mx-3.5 mb-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 text-center`}>
+                      <p className={`text-xs font-bold ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
+                        {groomParents} & {brideParents}
+                      </p>
+                      <p className={`text-[10px] italic mt-1 opacity-80 ${currentTheme.subtextColor}`}>
+                        "{hostBlessing}"
+                      </p>
+                    </div>
+
+                    {/* RSVP Interactive Mode inside the Phone */}
+                    {previewMode === 'rsvp' && (
+                      <div className="mx-3.5 mb-4 rounded-2xl border-2 border-sky-400 bg-sky-50/95 p-3.5 text-left font-sans text-slate-800">
+                        <p className="font-bold text-xs text-sky-950">RSVP for {currentGuest.name}</p>
+                        <p className="text-[10px] text-slate-600 mb-2">
+                          Will you join our celebration?
+                        </p>
+
+                        {rsvpSubmitted ? (
+                          <div className="rounded-xl bg-emerald-100 p-2.5 text-center text-emerald-900">
+                            <p className="font-bold text-xs">✓ RSVP Confirmed!</p>
+                            <p className="text-[9px] mt-0.5">We look forward to welcoming you.</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                type="button"
+                                onClick={() => setRsvpAttending(true)}
+                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${
+                                  rsvpAttending
+                                    ? 'bg-emerald-600 text-white border-emerald-600'
+                                    : 'bg-white text-slate-700'
+                                }`}
+                              >
+                                ✓ Accept
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setRsvpAttending(false)}
+                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${
+                                  !rsvpAttending
+                                    ? 'bg-rose-600 text-white border-rose-600'
+                                    : 'bg-white text-slate-700'
+                                }`}
+                              >
+                                ✕ Decline
+                              </button>
+                            </div>
+
+                            <div>
+                              <label className="block text-[9px] font-bold text-slate-600 mb-1">
+                                Attending Guests
+                              </label>
+                              <select
+                                value={rsvpGuestsCount}
+                                onChange={(e) => setRsvpGuestsCount(Number(e.target.value))}
+                                className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-800"
+                              >
+                                {[1, 2, 3, 4, 5, 6].map((n) => (
+                                  <option key={n} value={n}>
+                                    {n} {n === 1 ? 'Guest' : 'Guests'}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-[9px] font-bold text-slate-600 mb-1">
+                                Diet Preference
+                              </label>
+                              <select
+                                value={rsvpDiet}
+                                onChange={(e) => setRsvpDiet(e.target.value)}
+                                className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-800"
+                              >
+                                <option>Vegetarian</option>
+                                <option>Jain Vegetarian</option>
+                                <option>Vegan</option>
+                              </select>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setRsvpSubmitted(true);
+                                toast.success('RSVP submitted successfully in live test!');
+                              }}
+                              className="w-full rounded-xl bg-sky-700 py-2 font-bold text-white text-xs shadow hover:bg-sky-800 transition"
+                            >
+                              Submit RSVP
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Bottom Home Indicator */}
+                <div className={`h-4 shrink-0 flex items-center justify-center select-none border-t border-black/5 ${currentTheme.phoneBg}`}>
+                  <span className={`h-1 w-24 rounded-full ${currentTheme.isDark ? 'bg-white/40' : 'bg-black/30'}`} />
+                </div>
+              </div>
+            ) : (
+              /* WIDE DESKTOP BROWSER PREVIEW */
+              <div className="w-[95%] max-w-[820px] rounded-2xl border-4 border-slate-800 bg-slate-900 shadow-2xl overflow-hidden h-[min(650px,calc(100vh-165px))] flex flex-col">
+                <div className="bg-slate-800 px-4 py-2 flex items-center justify-between text-xs text-slate-300 shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  </div>
+                  <div className="rounded-lg bg-slate-900 px-6 py-1 text-[10px] font-mono text-slate-400 truncate max-w-sm">
+                    {shareableUrl}
+                  </div>
+                  <div className="text-[10px] font-bold text-sky-400">Desktop View</div>
+                </div>
+
+                <div className={`flex-1 overflow-y-auto ${currentTheme.phoneBg} p-6 text-slate-800 custom-scrollbar`}>
+                  <div className="text-center mb-6">
+                    <p className={`font-serif font-bold text-sm tracking-widest ${currentTheme.headerAccent}`}>
+                      {godBlessing}
+                    </p>
+                    <h2 className={`font-serif text-3xl font-bold mt-2 ${currentTheme.titleColor}`}>
+                      {groomName} & {brideName}
+                    </h2>
+                    <p className={`text-xs mt-1 max-w-md mx-auto ${currentTheme.subtextColor}`}>
+                      Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 shadow-xs`}>
+                      <p className="font-bold text-xs mb-1">✉️ Personalized Greeting</p>
+                      <p className="text-xs text-slate-700">{currentGuest.salutation}</p>
+                      <span className={`inline-block mt-2 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${currentTheme.badgeBg}`}>
+                        {currentGuest.passes} Reserved Passes
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider opacity-60">SCHEDULE FOR {currentGuest.name}</p>
+                      {guestVisibleEvents.map((ev) => (
+                        <div key={ev.id} className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 text-xs shadow-xs`}>
+                          <p className={`font-bold ${currentTheme.headerAccent}`}>{ev.name}</p>
+                          <p className="text-[10px] text-slate-500">{ev.date} • {ev.time}</p>
+                          <p className="text-[10px] mt-1 text-slate-600">📍 {ev.venue}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-          </div>
-
-          {/* Floating Anchored Zoom & Reload Toolbar */}
-          <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 text-xs font-bold text-slate-700 bg-white/95 backdrop-blur-md px-5 py-2.5 rounded-full border border-slate-300 shadow-2xl shadow-slate-900/20">
-            <button
-              type="button"
-              onClick={() => setZoomLevel((prev) => Math.max(60, prev - 10))}
-              className="px-2 py-1 rounded-md hover:bg-slate-100 text-slate-700 transition"
-              title="Zoom out"
-            >
-              🔍 -
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setZoomLevel(100);
-                toast('Zoom reset to 100%');
-              }}
-              className="px-2.5 py-1 rounded-md hover:bg-sky-50 text-sky-800 transition font-mono font-bold"
-              title="Reset Zoom"
-            >
-              {zoomLevel}%
-            </button>
-            <button
-              type="button"
-              onClick={() => setZoomLevel((prev) => Math.min(130, prev + 10))}
-              className="px-2 py-1 rounded-md hover:bg-slate-100 text-slate-700 transition"
-              title="Zoom in"
-            >
-              🔍 +
-            </button>
-            <span className="h-3.5 w-px bg-slate-300" />
-            <button
-              type="button"
-              onClick={() => {
-                setRsvpSubmitted(false);
-                setZoomLevel(100);
-                toast.success('Preview reloaded at 100%');
-              }}
-              className="hover:text-slate-900 flex items-center gap-1.5 text-slate-700"
-            >
-              <span>🔄</span> Reload Frame
-            </button>
+            )}
           </div>
         </main>
 
-        {/* 3. RIGHT PANEL: 100% MANUALLY EDITABLE GUEST SIMULATOR */}
-        <aside className="w-[360px] xl:w-[400px] shrink-0 border-l border-slate-200/90 bg-white p-5 overflow-y-auto flex flex-col gap-4 custom-scrollbar z-10">
-          <div className="space-y-3.5 text-xs">
-            {/* Header with Add Guest button */}
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-base text-amber-700">👥</span>
-                  <h3 className="font-bold text-slate-900 text-sm">Guest Simulator</h3>
-                </div>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Fully customizable per-guest personalization
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowAddGuestModal(true)}
-                className="rounded-full bg-sky-100 px-2.5 py-1 text-[11px] font-bold text-sky-800 hover:bg-sky-200 transition"
-              >
-                + New
-              </button>
+        {/* 4. RIGHT WORKSPACE PANEL (REACTIVE GUEST PERSONALIZATION & INSTANT WHATSAPP) */}
+        <aside className="w-[340px] xl:w-[380px] shrink-0 border-l border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar text-xs">
+          <div className="flex items-center justify-between border-b border-sky-100 pb-3">
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                <span>⚡</span> Guest Pass & WhatsApp Suite
+              </h3>
+              <p className="text-[11px] text-slate-500">Personalize greetings & test instant WhatsApp delivery</p>
             </div>
+            <button
+              type="button"
+              onClick={() => setShowAddGuestModal(true)}
+              className="rounded-full bg-sky-100 px-2.5 py-1 text-[10px] font-bold text-sky-800 hover:bg-sky-200 transition"
+            >
+              + Add
+            </button>
+          </div>
 
+          <div className="mt-4 space-y-4">
             {/* Select Guest Dropdown */}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
@@ -2189,7 +2080,7 @@ export default function StudioEditor() {
               <select
                 value={selectedGuestId}
                 onChange={(e) => setSelectedGuestId(e.target.value)}
-                className="w-full rounded-xl border border-sky-200 bg-sky-50/50 px-3 py-2 font-bold text-slate-800 outline-none focus:border-sky-400 focus:bg-white transition"
+                className="w-full rounded-xl border border-sky-200 bg-sky-50/50 px-3 py-2 font-bold text-slate-800 outline-none focus:border-sky-400 focus:bg-white transition text-xs"
               >
                 {guests.map((g) => (
                   <option key={g.id} value={g.id}>
@@ -2208,7 +2099,7 @@ export default function StudioEditor() {
                 type="text"
                 value={currentGuest.name}
                 onChange={(e) => updateCurrentGuest('name', e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 font-bold outline-none focus:bg-white focus:border-sky-400"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 font-bold outline-none focus:bg-white focus:border-sky-400 text-xs"
               />
             </div>
 
@@ -2255,17 +2146,16 @@ export default function StudioEditor() {
               </div>
             </div>
 
-            {/* MANUAL CEREMONIES CHECKLIST FOR THIS GUEST */}
+            {/* REACTIVE CEREMONIES CHECKLIST (WORKS 100% RELIABLY) */}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 ASSIGN CEREMONIES FOR THIS GUEST
               </label>
               <div className="space-y-1.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                 {events.map((ev) => {
-                  const isChecked =
-                    ev.visibleToAll ||
-                    (currentGuest.assignedEventIds &&
-                      currentGuest.assignedEventIds.includes(ev.id));
+                  const isChecked = currentGuest.assignedEventIds
+                    ? currentGuest.assignedEventIds.includes(ev.id)
+                    : false;
                   return (
                     <label
                       key={ev.id}
@@ -2284,7 +2174,7 @@ export default function StudioEditor() {
               </div>
             </div>
 
-            {/* FULLY MANUAL WHATSAPP MESSAGE DRAFT */}
+            {/* WHATSAPP MESSAGE DRAFT & COPY */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
@@ -2294,7 +2184,7 @@ export default function StudioEditor() {
                   type="button"
                   onClick={() => {
                     updateCurrentGuest('customWhatsAppText', '');
-                    toast('Reset to default template');
+                    toast('Reset to dynamic template');
                   }}
                   className="text-[9px] text-sky-600 hover:underline"
                 >
@@ -2310,13 +2200,13 @@ export default function StudioEditor() {
               <button
                 type="button"
                 onClick={copyWhatsApp}
-                className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white py-2 font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white py-2 font-bold text-slate-700 shadow-xs transition hover:bg-slate-50"
               >
                 <span>📋</span> Copy WhatsApp Text
               </button>
             </div>
 
-            {/* PRIMARY WORKING WHATSAPP BUTTON */}
+            {/* SEND TEST WHATSAPP MESSAGE BUTTON */}
             <button
               type="button"
               onClick={sendWhatsApp}
@@ -2330,7 +2220,7 @@ export default function StudioEditor() {
               href={shareableUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-sky-50 py-2.5 font-bold text-sky-800 text-xs hover:bg-sky-100 transition shadow-sm"
+              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-sky-50 py-2.5 font-bold text-sky-800 text-xs hover:bg-sky-100 transition shadow-xs"
             >
               <span>🔗</span> Open Guest Link in New Tab ↗
             </a>
@@ -2343,18 +2233,6 @@ export default function StudioEditor() {
             >
               Delete this guest from list
             </button>
-          </div>
-
-          {/* Bottom Stats Status Bar */}
-          <div className="mt-4 pt-3 border-t border-sky-100 flex items-center justify-between text-xs font-bold">
-            <div>
-              <p className="text-[9px] uppercase tracking-wider text-slate-400">TOTAL GUESTS</p>
-              <p className="text-slate-900 text-sm">{guests.length} In Simulator</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[9px] uppercase tracking-wider text-slate-400">STATUS</p>
-              <p className="text-emerald-700 text-sm">100% Free Lifetime</p>
-            </div>
           </div>
         </aside>
       </div>
@@ -2379,64 +2257,38 @@ export default function StudioEditor() {
                 </button>
                 <button
                   onClick={() => setShowFullPreview(false)}
-                  className="text-slate-400 hover:text-white text-lg p-1"
+                  className="rounded-full h-7 w-7 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white text-xs font-bold"
                 >
                   ✕
                 </button>
               </div>
             </div>
 
-            <div
-              className={`p-6 overflow-y-auto flex-1 ${currentTheme.phoneBg} custom-scrollbar`}
-              style={{ fontFamily: currentTheme.fontFamily }}
-            >
-              <div className="text-center pb-4">
-                <p className={`text-xs font-bold tracking-widest ${currentTheme.headerAccent}`}>
-                  {godBlessing}
-                </p>
-                <h3 className={`text-3xl font-bold mt-2 ${currentTheme.titleColor}`}>
-                  {groomName} & {brideName}
-                </h3>
-                <p className={`text-xs mt-1 ${currentTheme.subtextColor}`}>
-                  Request the honour of your presence at their wedding
-                </p>
-              </div>
-
-              {/* Salutation Card */}
-              <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 my-4`}>
+            <div className={`flex-1 overflow-y-auto ${currentTheme.phoneBg} p-6 text-center custom-scrollbar`}>
+              <p className={`font-serif font-bold text-xs tracking-widest ${currentTheme.headerAccent}`}>
+                {godBlessing}
+              </p>
+              <h2 className={`text-2xl font-bold mt-2 ${currentTheme.titleColor}`} style={{ fontFamily: currentTheme.fontFamily }}>
+                {groomName} & {brideName}
+              </h2>
+              <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 my-4 text-left`}>
                 <p className={`text-xs font-bold ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
                   {currentGuest.salutation}
                 </p>
               </div>
-
-              {/* Events */}
-              <div className="space-y-3 mt-4">
+              <div className="space-y-2 mt-4 text-left">
                 {guestVisibleEvents.map((ev) => (
-                  <div
-                    key={ev.id}
-                    className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3.5 text-left`}
-                  >
-                    <span className={`text-[10px] font-bold uppercase ${currentTheme.headerAccent}`}>
-                      {ev.date} • {ev.time}
-                    </span>
-                    <h4 className={`text-sm font-bold mt-0.5 ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {ev.name}
-                    </h4>
-                    <p className={`text-xs mt-1 ${currentTheme.subtextColor}`}>🏛️ {ev.venue}</p>
-                    <p className={`text-[11px] mt-0.5 opacity-70 ${currentTheme.subtextColor}`}>👗 {ev.dressCode}</p>
+                  <div key={ev.id} className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3`}>
+                    <p className={`font-bold text-xs ${currentTheme.headerAccent}`}>{ev.name}</p>
+                    <p className="text-[10px] text-slate-500">{ev.date} • {ev.time}</p>
+                    <p className="text-[10px] mt-1 text-slate-600">🏛️ {ev.venue}</p>
                   </div>
                 ))}
-              </div>
-
-              {/* Family */}
-              <div className="mt-4 text-center text-xs opacity-80 pt-4 border-t border-black/5">
-                <p className="font-bold">{groomParents} & {brideParents}</p>
-                <p className="italic mt-1">"{hostBlessing}"</p>
               </div>
             </div>
 
             <div className="p-3 bg-slate-100 border-t flex justify-between items-center text-xs">
-              <span className="text-slate-500">Live guest link: {shareableUrl}</span>
+              <span className="text-slate-500 truncate max-w-xs">{shareableUrl}</span>
               <button
                 onClick={() => setShowFullPreview(false)}
                 className="rounded-full bg-[#123b5d] text-white px-4 py-1.5 font-bold"
@@ -2465,48 +2317,50 @@ export default function StudioEditor() {
             </div>
 
             <div className="mt-4 space-y-4 text-xs">
-              <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-3 text-emerald-900">
-                <p className="font-bold">✓ 100% Free Lifetime Host Access</p>
-                <p className="text-[11px] mt-0.5">
-                  Your invitation is live and ready for all guests. No fees, no limits, no watermarks.
-                </p>
-              </div>
-
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Active Guest Link for {currentGuest.name}
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                  Public Guest Link
                 </label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-2">
                   <input
                     type="text"
                     readOnly
                     value={shareableUrl}
-                    className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-800"
+                    className="flex-1 bg-transparent font-mono text-[11px] text-slate-700 outline-none"
                   />
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(shareableUrl);
-                      toast.success('Link copied to clipboard!');
+                      toast.success('Link copied! 📋');
                     }}
-                    className="rounded-xl bg-slate-900 px-4 py-2 font-bold text-white hover:bg-slate-800"
+                    className="rounded-lg bg-sky-600 px-3 py-1 font-bold text-white hover:bg-sky-700 text-xs"
                   >
                     Copy
                   </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+                <p className="font-bold text-emerald-950 mb-1">✓ Ready for Instant Sharing</p>
+                <p className="text-[11px] text-emerald-800 leading-relaxed">
+                  Your digital invitation is live. Distant guests can view ceremonies, submit RSVPs, and watch live broadcasts directly from their phone browsers.
+                </p>
+              </div>
+
+              <div className="flex gap-2 pt-2">
                 <button
+                  type="button"
                   onClick={sendWhatsApp}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-bold text-white hover:bg-emerald-700"
+                  className="flex-1 rounded-2xl bg-emerald-600 py-3 font-bold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 text-xs flex items-center justify-center gap-1.5"
                 >
-                  <span>💬</span> WhatsApp Broadcast
+                  <span>💬</span> Share on WhatsApp
                 </button>
                 <button
-                  onClick={() => window.open(shareableUrl, '_blank')}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 py-3 font-bold text-slate-800 hover:bg-slate-50"
+                  type="button"
+                  onClick={() => setShowShareModal(false)}
+                  className="rounded-2xl border border-slate-200 px-5 py-3 font-bold text-slate-700 hover:bg-slate-50 text-xs"
                 >
-                  <span>↗</span> Open Live Page
+                  Done
                 </button>
               </div>
             </div>
@@ -2517,70 +2371,66 @@ export default function StudioEditor() {
       {/* ADD GUEST MODAL */}
       {showAddGuestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <form
-            onSubmit={handleAddGuest}
-            className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-sky-100"
-          >
-            <div className="flex items-center justify-between border-b pb-3">
-              <h3 className="font-serif text-lg font-bold text-slate-900">Add New Guest</h3>
-              <button
-                type="button"
-                onClick={() => setShowAddGuestModal(false)}
-                className="text-slate-400 hover:text-slate-800 text-lg"
-              >
-                ✕
-              </button>
-            </div>
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-sky-100">
+            <h3 className="font-serif text-lg font-bold text-slate-900 mb-1">Add Guest</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Create a personalized pass and WhatsApp greeting for this guest.
+            </p>
 
-            <div className="mt-4 space-y-3 text-xs">
+            <form onSubmit={handleAddGuest} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Guest / Family Name</label>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">Guest Name</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Shah Family"
+                  placeholder="e.g. Anand Patel & Family"
                   value={newGuestData.name}
                   onChange={(e) => setNewGuestData({ ...newGuestData, name: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Passes / Guests</label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Passes</label>
                   <input
                     type="number"
                     min={1}
-                    max={20}
+                    max={10}
                     value={newGuestData.passes}
-                    onChange={(e) =>
-                      setNewGuestData({ ...newGuestData, passes: Number(e.target.value) })
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                    onChange={(e) => setNewGuestData({ ...newGuestData, passes: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">WhatsApp Number</label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Phone Number</label>
                   <input
                     type="text"
-                    placeholder="+91 98765..."
+                    placeholder="+91 98250 12345"
                     value={newGuestData.phone}
-                    onChange={(e) =>
-                      setNewGuestData({ ...newGuestData, phone: e.target.value })
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none focus:bg-white focus:border-sky-400"
+                    onChange={(e) => setNewGuestData({ ...newGuestData, phone: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 outline-none"
                   />
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="mt-3 w-full rounded-xl bg-[#123b5d] py-2.5 font-bold text-white shadow hover:bg-sky-800 transition"
-              >
-                Save & Generate Personalized Link
-              </button>
-            </div>
-          </form>
+              <div className="flex gap-2 pt-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl bg-sky-600 py-2.5 font-bold text-white hover:bg-sky-700"
+                >
+                  Add Guest
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddGuestModal(false)}
+                  className="rounded-xl border border-slate-200 px-4 py-2.5 font-bold text-slate-600 hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
