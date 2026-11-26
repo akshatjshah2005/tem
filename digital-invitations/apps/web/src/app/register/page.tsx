@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 
 /** Strips formatting and country/trunk prefixes so any mobile format works. */
 function normalizeMobile(raw: string): string {
@@ -204,7 +205,7 @@ export default function RegisterPage() {
               }}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-sky-200 bg-sky-50/80 px-5 py-3 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-sky-950"
             >
-              <span>⚡</span> 1-Click Instant Demo Login (Akshat Shah)
+              <Icon name="zap" /> 1-Click Instant Demo Login (Akshat Shah)
             </button>
           </div>
         </form>

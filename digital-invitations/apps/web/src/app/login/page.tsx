@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function LoginPage() {
           <div className="mt-4 rounded-2xl border border-sky-200 bg-sky-50/70 p-3.5 text-xs text-sky-950 shadow-sm">
             <div className="flex items-center justify-between font-bold mb-1">
               <span className="flex items-center gap-1.5">
-                <span>🔑</span> Verified Test Credentials:
+                <Icon name="key" /> Verified Test Credentials:
               </span>
               <button
                 type="button"
@@ -139,7 +140,7 @@ export default function LoginPage() {
               }}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-sky-200 bg-sky-50/80 px-5 py-2.5 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-sky-950"
             >
-              <span>⚡</span> 1-Click Instant Login (ak@123)
+              <Icon name="zap" /> 1-Click Instant Login (ak@123)
             </button>
           </div>
         </form>

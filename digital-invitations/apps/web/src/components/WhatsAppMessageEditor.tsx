@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { invitationAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 import { formatDateOnly, formatTimeRange } from '@/lib/format';
 
 interface WhatsAppMessage {
@@ -59,16 +60,16 @@ export default function WhatsAppMessageEditor({
 
     return `Dear ${guestName},
 
-You are cordially invited to ${invitation.name}! 🎉
+You are cordially invited to ${invitation.name}!
 
-✨ ${eventName}
-📅 ${date}
-📍 ${venue}
+${eventName}
+Date: ${date}
+Venue: ${venue}
 
 Click the link below to view your personalized invitation:
 ${invitationLink}
 
-We look forward to celebrating with you! 🙏`;
+We look forward to celebrating with you!`;
   };
 
   const handleSave = async () => {
@@ -190,7 +191,7 @@ We look forward to celebrating with you! 🙏`;
           onClick={handleCopyToClipboard}
           className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium"
         >
-          📋 Copy to Clipboard
+          <Icon name="copy" /> Copy to Clipboard
         </button>
         <button
           onClick={handleSave}

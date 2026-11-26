@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { invitationAPI, eventAPI, mediaAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 import EventForm from '@/components/EventForm';
 import MediaUploader from '@/components/MediaUploader';
 import WhatsAppMessageEditor from '@/components/WhatsAppMessageEditor';
@@ -277,12 +278,12 @@ export default function InvitationEditorPage() {
   }
 
   const tabs: { id: TabType; label: string; icon: string }[] = [
-    { id: 'details', label: 'Details', icon: '📝' },
-    { id: 'content', label: 'Content', icon: '✍️' },
-    { id: 'events', label: 'Events', icon: '📅' },
-    { id: 'media', label: 'Media', icon: '🖼️' },
-    { id: 'whatsapp', label: 'WhatsApp', icon: '💬' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
+    { id: 'details', label: 'Details', icon: 'file' },
+    { id: 'content', label: 'Content', icon: 'pen' },
+    { id: 'events', label: 'Events', icon: 'calendar' },
+    { id: 'media', label: 'Media', icon: 'image' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
+    { id: 'settings', label: 'Settings', icon: 'settings' },
   ];
 
   const editableFields = (invitation.template?.editableFields || {}) as Record<string, any>;
@@ -417,7 +418,7 @@ export default function InvitationEditorPage() {
                     : 'border-transparent text-slate-500 hover:bg-sky-50 hover:text-sky-900'
                 }`}
               >
-                <span className="mr-2">{tab.icon}</span>
+                <span className="mr-2"><Icon name={tab.icon} /></span>
                 {tab.label}
               </button>
             ))}
@@ -512,7 +513,7 @@ export default function InvitationEditorPage() {
 
               {editableFieldKeys.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-sky-200 bg-sky-50/70 py-14 text-center">
-                  <div className="text-4xl mb-4">✍️</div>
+                  <div className="text-4xl mb-4"><Icon name="pen" /></div>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">No content fields</h3>
                   <p className="text-slate-500">
                     This template does not expose any editable content fields.
@@ -539,7 +540,7 @@ export default function InvitationEditorPage() {
 
               {invitation.events.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-sky-200 bg-sky-50/70 py-14 text-center">
-                  <div className="text-4xl mb-4">📅</div>
+                  <div className="text-4xl mb-4"><Icon name="calendar" /></div>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">No events yet</h3>
                   <p className="text-slate-500 mb-4">Add events to your invitation</p>
                   <button
@@ -564,12 +565,12 @@ export default function InvitationEditorPage() {
                           </div>
                           <div className="mt-2 text-sm text-slate-600 space-y-1">
                             <p>
-                              📅 {formatDateOnly(event.date)}
+                              <Icon name="calendar" /> {formatDateOnly(event.date)}
                             </p>
                             {(event.startTime || event.endTime) && (
-                              <p>🕐 {formatTimeRange(event.startTime, event.endTime)}</p>
+                              <p><Icon name="clock" /> {formatTimeRange(event.startTime, event.endTime)}</p>
                             )}
-                            {event.venueName && <p>📍 {event.venueName}</p>}
+                            {event.venueName && <p><Icon name="pin" /> {event.venueName}</p>}
                             {event.description && <p className="text-slate-500">{event.description}</p>}
                           </div>
                         </div>
@@ -663,7 +664,7 @@ export default function InvitationEditorPage() {
               <div className="overflow-hidden rounded-[1.45rem] bg-[#f8fbff]">
                 <div className="flex items-center justify-between bg-white px-4 py-2 text-[9px] font-bold text-slate-500"><span>9:41</span><span>● ● ▰</span></div>
                 {invitation.media?.find((item) => item.isCover && mediaIsImage(item)) ? <div className="h-28 overflow-hidden"><img src={mediaDisplayUrl(invitation.media.find((item) => item.isCover && mediaIsImage(item))!)} alt="Invitation cover" className="h-full w-full object-cover" /></div> : <div className="h-24 bg-gradient-to-br from-sky-100 via-white to-blue-100" />}
-                <div className="px-4 pb-5 pt-3 text-center"><span className="mx-auto grid h-8 w-8 place-items-center rounded-full border border-sky-300 font-serif text-sky-700">✦</span><p className="mt-3 text-[8px] font-bold uppercase tracking-[0.18em] text-sky-700">Together with their families</p><h3 className="mt-2 break-words font-serif text-2xl font-bold leading-tight text-sky-950">{formData.name || invitation.name}</h3><p className="mt-2 line-clamp-3 text-[10px] leading-5 text-slate-600">{formData.description || invitation.description || 'A special celebration, shared with the people who matter most.'}</p><div className="mt-4 rounded-xl border border-sky-100 bg-white p-3 text-left"><p className="text-[8px] font-bold uppercase tracking-[0.16em] text-sky-700">Celebration details</p>{invitation.events[0] ? <><p className="mt-1 text-sm font-bold text-slate-900">{invitation.events[0].name}</p><p className="mt-1 text-[9px] text-slate-500">{formatDateOnly(invitation.events[0].date)}{invitation.events[0].venueName ? ' · ' + invitation.events[0].venueName : ''}</p></> : <p className="mt-1 text-[10px] text-slate-500">Add an event to see it here.</p>}</div><div className="mt-3 rounded-full bg-sky-700 px-3 py-2 text-[10px] font-bold text-white">Celebrate with us</div></div>
+                <div className="px-4 pb-5 pt-3 text-center"><span className="mx-auto grid h-8 w-8 place-items-center rounded-full border border-sky-300 font-serif text-sky-700"><Icon name="sparkles" /></span><p className="mt-3 text-[8px] font-bold uppercase tracking-[0.18em] text-sky-700">Together with their families</p><h3 className="mt-2 break-words font-serif text-2xl font-bold leading-tight text-sky-950">{formData.name || invitation.name}</h3><p className="mt-2 line-clamp-3 text-[10px] leading-5 text-slate-600">{formData.description || invitation.description || 'A special celebration, shared with the people who matter most.'}</p><div className="mt-4 rounded-xl border border-sky-100 bg-white p-3 text-left"><p className="text-[8px] font-bold uppercase tracking-[0.16em] text-sky-700">Celebration details</p>{invitation.events[0] ? <><p className="mt-1 text-sm font-bold text-slate-900">{invitation.events[0].name}</p><p className="mt-1 text-[9px] text-slate-500">{formatDateOnly(invitation.events[0].date)}{invitation.events[0].venueName ? ' · ' + invitation.events[0].venueName : ''}</p></> : <p className="mt-1 text-[10px] text-slate-500">Add an event to see it here.</p>}</div><div className="mt-3 rounded-full bg-sky-700 px-3 py-2 text-[10px] font-bold text-white">Celebrate with us</div></div>
               </div>
             </div>
             <Link href={`/dashboard/invitations/${invitation.id}/preview`} target="_blank" className="mt-4 block rounded-full border border-sky-200 px-4 py-2.5 text-center text-xs font-bold text-sky-800 transition hover:bg-sky-50">Open full preview ↗</Link>

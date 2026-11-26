@@ -8,6 +8,7 @@ import { invitationAPI } from '@/lib/api';
 import { buildRenderModel, type RawInvitation } from '@/lib/template/model';
 import type { RenderModel, TemplateSummary } from '@/lib/template/types';
 import TemplateRenderer from '@/components/template/TemplateRenderer';
+import Icon from '@/components/ui/Icon';
 
 export default function InvitationPreviewPage() {
   const params = useParams();
@@ -63,7 +64,7 @@ export default function InvitationPreviewPage() {
   if (!user) return null;
 
   if (error || !model) {
-    return <main className="flex min-h-screen items-center justify-center bg-slate-50 px-5"><div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm"><div className="text-4xl">💌</div><h1 className="mt-4 text-xl font-bold text-slate-900">Preview unavailable</h1><p className="mt-2 text-sm leading-6 text-slate-600">{error || 'This invitation could not be previewed.'}</p><Link href={`/dashboard/invitations/${String(params.id)}`} className="mt-6 inline-flex rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700">Return to editor</Link></div></main>;
+    return <main className="flex min-h-screen items-center justify-center bg-slate-50 px-5"><div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm"><div className="text-4xl"><Icon name="letter" /></div><h1 className="mt-4 text-xl font-bold text-slate-900">Preview unavailable</h1><p className="mt-2 text-sm leading-6 text-slate-600">{error || 'This invitation could not be previewed.'}</p><Link href={`/dashboard/invitations/${String(params.id)}`} className="mt-6 inline-flex rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700">Return to editor</Link></div></main>;
   }
 
   return <main className="min-h-screen bg-slate-50">

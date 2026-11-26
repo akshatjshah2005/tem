@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useAuth } from '@/hooks/useAuth';
+import { studioDesigns } from '@/lib/studio-designs';
+import '@/app/invitation-studio.css';
 
 export interface CeremonyEvent {
   id: string;
@@ -324,7 +325,7 @@ const DEFAULT_EVENTS: CeremonyEvent[] = [
     id: 'ev-1',
     name: 'The Holy Muhurtham',
     categoryTag: 'PRIMARY WEDDING CEREMONY',
-    date: 'Feb 14, 2026',
+    date: 'Feb 14, 2027',
     time: '09:30 AM',
     venue: 'The Grand Palace, Ahmedabad',
     dressCode: 'Traditional Silk / Festive Pastels',
@@ -335,7 +336,7 @@ const DEFAULT_EVENTS: CeremonyEvent[] = [
     id: 'ev-2',
     name: 'Sangeet & Musical Night',
     categoryTag: 'EVENING CELEBRATION',
-    date: 'Feb 13, 2026',
+    date: 'Feb 13, 2027',
     time: '07:00 PM',
     venue: 'Royal Courtyard & Lawn, Ahmedabad',
     dressCode: 'Sparkling Indo-Western / Glamour',
@@ -346,7 +347,7 @@ const DEFAULT_EVENTS: CeremonyEvent[] = [
     id: 'ev-3',
     name: 'Grand Royal Reception',
     categoryTag: 'CELEBRATION DINNER',
-    date: 'Feb 15, 2026',
+    date: 'Feb 15, 2027',
     time: '08:00 PM',
     venue: 'Crystal Grand Ballroom, Ahmedabad',
     dressCode: 'Black Tie / Royal Traditional',
@@ -361,7 +362,7 @@ const DEFAULT_GUESTS: GuestItem[] = [
     name: 'Uncle Ravi & Family (VIP Family)',
     category: 'VIP Family',
     passes: 4,
-    phone: '+91 98250 12345',
+    phone: '',
     salutation: 'Dear Ravi Uncle & Family, you hold a cherished place in our hearts. We seek your warmest blessings at our wedding ceremony.',
     customWhatsAppText: '',
     assignedEventIds: ['ev-1', 'ev-2', 'ev-3'],
@@ -372,7 +373,7 @@ const DEFAULT_GUESTS: GuestItem[] = [
     name: 'Priya Sharma (Bride’s Sister)',
     category: 'Immediate Family',
     passes: 2,
-    phone: '+91 98251 67890',
+    phone: '',
     salutation: 'Dearest Priya, our celebration wouldn’t be complete without your dance, laughter and love!',
     customWhatsAppText: '',
     assignedEventIds: ['ev-1', 'ev-2', 'ev-3'],
@@ -383,7 +384,7 @@ const DEFAULT_GUESTS: GuestItem[] = [
     name: 'Rahul Mehta & Friends',
     category: 'Friends',
     passes: 2,
-    phone: '+91 98252 54321',
+    phone: '',
     salutation: 'Hey Rahul! Gear up for the most happening Sangeet and after-party celebrations!',
     customWhatsAppText: '',
     assignedEventIds: ['ev-2', 'ev-3'],
@@ -394,7 +395,7 @@ const DEFAULT_GUESTS: GuestItem[] = [
     name: 'The Singhania Family (Relatives)',
     category: 'Relatives',
     passes: 3,
-    phone: '+91 98253 98765',
+    phone: '',
     salutation: 'Respected Singhania Family, with divine grace we solicit your presence and heartfelt blessings.',
     customWhatsAppText: '',
     assignedEventIds: ['ev-1', 'ev-3'],
@@ -402,41 +403,69 @@ const DEFAULT_GUESTS: GuestItem[] = [
   },
 ];
 
+function downloadCalendarEvent(event: CeremonyEvent, hosts: string) {
+  const start = new Date([event.date, event.time].filter(Boolean).join(" "));
+  if (!Number.isFinite(start.getTime())) {
+    toast.error("Enter a valid ceremony date and time first.");
+    return;
+  }
+
+  const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const escapeText = (value: string) => value.replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/[,;]/g, "\\$&");
+  const calendar = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Uptemp//Invitation Studio//EN", "BEGIN:VEVENT",
+    "UID:" + crypto.randomUUID() + "@uptemp", "DTSTAMP:" + formatDate(new Date()),
+    "DTSTART:" + formatDate(start), "SUMMARY:" + escapeText(event.name + " - " + hosts),
+    "LOCATION:" + escapeText(event.venue), "DESCRIPTION:" + escapeText("Dress code: " + event.dressCode),
+    "END:VEVENT", "END:VCALENDAR", "",
+  ].join("\r\n");
+  const url = URL.createObjectURL(new Blob([calendar], { type: "text/calendar;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "ceremony.ics";
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 export default function StudioEditor() {
-  const router = useRouter();
+  return <Suspense fallback={<p className="p-6">Loading invitation studio...</p>}><StudioRoute /></Suspense>;
+}
+
+function StudioRoute() {
+  const params = useSearchParams();
+  return <StudioWorkspace key={params?.toString()} />;
+}
+
+function StudioWorkspace() {
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const categoryParam = searchParams?.get('category');
+  const isTrial = searchParams?.get('mode') === 'trial';
+  const [editing, setEditing] = useState(!isTrial);
+  const [mobilePanel, setMobilePanel] = useState<'edit' | 'preview'>('edit');
 
-  const templateParam = searchParams?.get('template') || 'royal-sandalwood';
+  const templateParam = searchParams?.get('template') || studioDesigns.find((design) => design.category === categoryParam)?.id || 'royal-sandalwood';
+  const selectedDesign = studioDesigns.find((design) => design.id === templateParam);
+  const category = categoryParam || selectedDesign?.category || 'wedding';
+  const draftKey = 'uptemp-studio-v1:' + templateParam + ':' + category;
 
-  // Initialize theme based on template query or default
-  const initialTheme = useMemo(() => {
-    return (
-      THEMES.find((t) => t.id === templateParam || templateParam.includes(t.id)) ||
-      THEMES[0]
-    );
-  }, [templateParam]);
+  const initialTheme = THEMES.find((theme) => theme.id === templateParam) || THEMES[0];
+
+  const occasion = studioDesigns.find((design) => design.category === category)?.label || 'Wedding';
+  const isWedding = occasion === 'Wedding';
+  const occasionTitle = occasion === 'Any occasion' ? 'Celebration' : occasion;
+  const sampleEvents = isWedding ? DEFAULT_EVENTS : [{ ...DEFAULT_EVENTS[0], name: occasionTitle, categoryTag: 'CELEBRATION', dressCode: occasion === 'Haldi' ? 'Marigold Yellow' : 'Festive Attire' }];
 
   // Primary State
   const [currentTheme, setCurrentTheme] = useState<ThemeStyle>(initialTheme);
 
-  useEffect(() => {
-    if (templateParam) {
-      const found = THEMES.find((t) => t.id === templateParam || templateParam.includes(t.id));
-      if (found) {
-        setCurrentTheme(found);
-      }
-    }
-  }, [templateParam]);
 
-  const [inviteTitle, setInviteTitle] = useState('Akshat & Priya Wedding Invite');
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
-  const [activeTab, setActiveTab] = useState<'events' | 'story' | 'themes' | 'guests' | 'gallery' | 'settings'>('events');
+  const [inviteTitle, setInviteTitle] = useState('Akshat & Priya ' + occasionTitle + ' Invite');
+  const [viewMode, setViewMode] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
+  const [step, setStep] = useState(0);
+  const [previewKey, setPreviewKey] = useState(0);
+  const [activeTab, setActiveTab] = useState<'events' | 'story' | 'themes' | 'guests' | 'gallery' | 'settings'>('story');
   const [previewMode, setPreviewMode] = useState<'live' | 'rsvp'>('live');
 
   // Full Screen Preview Modal
-  const [showFullPreview, setShowFullPreview] = useState(false);
 
   // Audio State & Web Audio Synthesizer (Wishlys Wedding Suite)
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -455,44 +484,45 @@ export default function StudioEditor() {
     'With divine grace and heavenly blessings of our elders, we solicit your presence and blessings.'
   );
 
+  useEffect(() => () => {
+    void audioCtxRef.current?.close();
+  }, []);
+
   // Photo Gallery State
-  const [coverPhoto, setCoverPhoto] = useState('');
+  const [coverPhoto, setCoverPhoto] = useState(selectedDesign ? 'https://images.unsplash.com/photo-' + selectedDesign.photo + '?auto=format&fit=crop&w=900&q=80' : '');
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
   // Events & Guest state
-  const [events, setEvents] = useState<CeremonyEvent[]>(DEFAULT_EVENTS);
+  const [events, setEvents] = useState<CeremonyEvent[]>(sampleEvents);
   const [guests, setGuests] = useState<GuestItem[]>(DEFAULT_GUESTS);
   const [selectedGuestId, setSelectedGuestId] = useState<string>(DEFAULT_GUESTS[0].id);
   const [familyDetailsOpen, setFamilyDetailsOpen] = useState(true);
 
   // Share Modal & Add Guest Modal
-  const [showShareModal, setShowShareModal] = useState(false);
   const [showAddGuestModal, setShowAddGuestModal] = useState(false);
   const [newGuestData, setNewGuestData] = useState({ name: '', passes: 2, phone: '', category: 'VIP Family' });
 
   // Settings State
-  const [customSlug, setCustomSlug] = useState('akshat-priya');
-  const [musicAutoplay, setMusicAutoplay] = useState(true);
-  const [rsvpCutoffDate, setRsvpCutoffDate] = useState('2026-02-05');
-  const [requirePasscode, setRequirePasscode] = useState(false);
-  const [passcodePin, setPasscodePin] = useState('1402');
-  const [showWaxSealReveal, setShowWaxSealReveal] = useState(false);
-  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
+  const [musicAutoplay, setMusicAutoplay] = useState(false);
+  const [rsvpCutoffDate, setRsvpCutoffDate] = useState('2027-02-05');
+  const [showWaxSealReveal, setShowWaxSealReveal] = useState(isTrial);
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(!isTrial);
 
   // RSVP Form Interactive State
   const [rsvpAttending, setRsvpAttending] = useState<boolean | null>(true);
   const [rsvpGuestsCount, setRsvpGuestsCount] = useState(2);
   const [rsvpDiet, setRsvpDiet] = useState('Vegetarian');
-  const [rsvpMessage, setRsvpMessage] = useState('Heartiest congratulations to the lovely couple!');
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
   // Real Ticking Countdown
-  const [timeLeft, setTimeLeft] = useState({ days: 48, hours: 14, mins: 26, secs: 35 });
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+  const rsvpRef = useRef<HTMLDivElement>(null);
+  const firstEvent = events[0];
   const [zoomLevel, setZoomLevel] = useState<number>(100);
 
   // Live Stream & Blessing Wall
-  const [liveStreamUrl, setLiveStreamUrl] = useState('https://youtube.com/live/demo-stream');
-  const [showLiveStream, setShowLiveStream] = useState(true);
+  const [liveStreamUrl, setLiveStreamUrl] = useState('');
+  const [showLiveStream, setShowLiveStream] = useState(false);
   const [blessingWishes, setBlessingWishes] = useState<string[]>([
     'Heartiest congratulations Akshat & Priya! Wishing you a lifetime of joy and togetherness. - The Singhania Family',
     'So thrilled to celebrate your special day! Dancing all night at the Sangeet! - Rahul & Friends',
@@ -501,19 +531,70 @@ export default function StudioEditor() {
   const [newBlessingWish, setNewBlessingWish] = useState('');
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.secs > 0) return { ...prev, secs: prev.secs - 1 };
-        if (prev.mins > 0) return { ...prev, mins: prev.mins - 1, secs: 59 };
-        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, mins: 59, secs: 59 };
-        if (prev.days > 0) return { ...prev, days: prev.days - 1, hours: 23, mins: 59, secs: 59 };
-        return prev;
-      });
-    }, 1000);
+    const eventTime = new Date([firstEvent?.date, firstEvent?.time].filter(Boolean).join(" ")).getTime();
+    const tick = () => {
+      const seconds = Number.isFinite(eventTime) ? Math.max(0, Math.ceil((eventTime - Date.now()) / 1000)) : 0;
+      setTimeLeft({ days: Math.floor(seconds / 86400), hours: Math.floor(seconds / 3600) % 24, mins: Math.floor(seconds / 60) % 60, secs: seconds % 60 });
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [firstEvent?.date, firstEvent?.time]);
 
+  useEffect(() => {
+    if (previewMode === "rsvp") rsvpRef.current?.scrollIntoView({ block: "nearest" });
+  }, [previewMode, viewMode, isEnvelopeOpen, mobilePanel]);
   // Currently Selected Guest (Mutable on right panel!)
+
+  const draft = { themeId: currentTheme.id, inviteTitle, groomName, brideName, godBlessing, groomParents, brideParents, hostBlessing, coverPhoto, galleryImages, events, guests, selectedGuestId, audioTrack, audioVolume, musicAutoplay, rsvpCutoffDate, showWaxSealReveal, liveStreamUrl, showLiveStream };
+
+  function loadDraft() {
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as Partial<typeof draft>;
+      const theme = THEMES.find((item) => item.id === saved.themeId);
+      if (theme) setCurrentTheme(theme);
+      if (saved.inviteTitle !== undefined) setInviteTitle(saved.inviteTitle);
+      if (saved.groomName !== undefined) setGroomName(saved.groomName);
+      if (saved.brideName !== undefined) setBrideName(saved.brideName);
+      if (saved.godBlessing !== undefined) setGodBlessing(saved.godBlessing);
+      if (saved.groomParents !== undefined) setGroomParents(saved.groomParents);
+      if (saved.brideParents !== undefined) setBrideParents(saved.brideParents);
+      if (saved.hostBlessing !== undefined) setHostBlessing(saved.hostBlessing);
+      if (saved.coverPhoto !== undefined) setCoverPhoto(saved.coverPhoto);
+      if (saved.galleryImages !== undefined) setGalleryImages(saved.galleryImages);
+      if (saved.events !== undefined) setEvents(saved.events);
+      if (saved.guests !== undefined) setGuests(saved.guests);
+      if (saved.selectedGuestId !== undefined) setSelectedGuestId(saved.selectedGuestId);
+      if (saved.audioTrack !== undefined) setAudioTrack(saved.audioTrack);
+      if (saved.audioVolume !== undefined) setAudioVolume(saved.audioVolume);
+      if (saved.musicAutoplay !== undefined) setMusicAutoplay(saved.musicAutoplay);
+      if (saved.rsvpCutoffDate !== undefined) setRsvpCutoffDate(saved.rsvpCutoffDate);
+      if (saved.showWaxSealReveal !== undefined) setShowWaxSealReveal(saved.showWaxSealReveal);
+      if (saved.liveStreamUrl !== undefined) setLiveStreamUrl(saved.liveStreamUrl);
+      if (saved.showLiveStream !== undefined) setShowLiveStream(saved.showLiveStream);
+      if (saved.showWaxSealReveal !== undefined) setIsEnvelopeOpen(!saved.showWaxSealReveal);
+    } catch {
+      toast.error('This browser could not open the saved draft.');
+    }
+  }
+
+  useEffect(() => {
+    if (!isTrial) loadDraft();
+    // Load once for the selected design. Live edits are captured when saving.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftKey, isTrial]);
+
+  function saveDraft() {
+    try {
+      localStorage.setItem(draftKey, JSON.stringify(draft));
+      toast.success('Draft saved in this browser');
+    } catch {
+      toast.error('This draft could not be saved. Try removing large photos.');
+    }
+  }
+
   const currentGuest = useMemo(() => {
     return guests.find((g) => g.id === selectedGuestId) || guests[0];
   }, [guests, selectedGuestId]);
@@ -543,23 +624,13 @@ export default function StudioEditor() {
   }, [events, currentGuest]);
 
   // Dynamic, REAL working URL on current host
-  const shareableUrl = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      const origin = window.location.origin;
-      const slug = customSlug || `${groomName}-${brideName}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      return `${origin}/i/${slug}?guest=${currentGuest.slug}`;
-    }
-    return `http://localhost:3000/i/akshat-priya?guest=${currentGuest.slug}`;
-  }, [customSlug, groomName, brideName, currentGuest]);
-
-  // WhatsApp Message Draft
   const computedWhatsAppText = useMemo(() => {
     if (currentGuest.customWhatsAppText && currentGuest.customWhatsAppText.trim()) {
       return currentGuest.customWhatsAppText;
     }
     const guestFirstName = currentGuest.name.split(' ')[0];
-    return `Namaste ${guestFirstName}! 🙏 ${groomName} & ${brideName} are tying the knot on Feb 14! View our live invitation, ceremonies & directions here:\n${shareableUrl}`;
-  }, [currentGuest, groomName, brideName, shareableUrl]);
+    return ['Namaste ' + guestFirstName + '! ' + groomName + ' & ' + brideName + ' invite you to celebrate.', ...guestVisibleEvents.map((event) => [event.name, event.date, event.time, event.venue].filter(Boolean).join(' / '))].join('\n');
+  }, [currentGuest, groomName, brideName, guestVisibleEvents]);
 
   // Web Audio Festive Raga Synthesizer
   const toggleMusic = () => {
@@ -656,7 +727,7 @@ export default function StudioEditor() {
       id: newId,
       name: 'Haldi & Phoolon Ki Holi',
       categoryTag: 'PRE-WEDDING RITUAL',
-      date: 'Feb 12, 2026',
+      date: firstEvent?.date || '',
       time: '11:00 AM',
       venue: 'Palace Courtyard & Poolside',
       dressCode: 'Haldi Yellow / Mustard Silk',
@@ -739,6 +810,15 @@ export default function StudioEditor() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     const file = files[0];
+    e.target.value = "";
+    if (!/^image\/(jpeg|png|webp|gif|avif)$/.test(file.type) || file.size > 1_000_000) {
+      toast.error("Choose a JPEG, PNG, WebP, GIF, or AVIF under 1 MB.");
+      return;
+    }
+    if (galleryImages.length >= 3) {
+      toast.error("Remove a photo before adding another. This draft supports three uploads.");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => {
       if (ev.target?.result) {
@@ -748,94 +828,268 @@ export default function StudioEditor() {
         toast.success('Photo uploaded and set as invitation cover! 📸');
       }
     };
+    reader.onerror = () => toast.error("This photo could not be opened.");
     reader.readAsDataURL(file);
   };
 
-  return (
-    <div className="flex h-screen flex-col bg-[#f8fbff] text-slate-800 antialiased overflow-hidden selection:bg-sky-100 font-sans">
-      {/* 1. TOP HEADER */}
-      <header className="flex h-15 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-4 sm:px-6 shadow-xs z-30">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
-          >
-            <span>←</span> Dashboard
-          </Link>
+  const replayPreview = () => {
+    setPreviewMode('live');
+    setRsvpSubmitted(false);
+    if (showWaxSealReveal) setIsEnvelopeOpen(false);
+    setPreviewKey((k) => k + 1);
+  };
 
-          <div className="flex items-center gap-2">
-            {isEditingTitle ? (
-              <input
-                type="text"
-                value={inviteTitle}
-                autoFocus
-                onBlur={() => setIsEditingTitle(false)}
-                onChange={(e) => setInviteTitle(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
-                className="rounded border border-sky-400 bg-white px-2 py-0.5 font-serif text-base font-bold text-slate-900 outline-none"
-              />
-            ) : (
-              <h1
-                onClick={() => setIsEditingTitle(true)}
-                className="cursor-pointer font-serif text-base sm:text-lg font-bold text-slate-900 hover:text-sky-700 flex items-center gap-1.5"
-                title="Click to edit invitation title"
-              >
-                <span>{inviteTitle}</span>
-                <span className="text-xs text-slate-400">✏️</span>
-              </h1>
+  const wizardSteps = ['Design', 'Names', 'Events', 'Finish'];
+  const goToStep = (next: number) => {
+    setStep(Math.max(0, Math.min(wizardSteps.length - 1, next)));
+    setMobilePanel('edit');
+    document.querySelector('.upt-wizard-scroll')?.scrollTo({ top: 0 });
+  };
+  const openFullStudio = () => {
+    setEditing(true);
+    setActiveTab('guests');
+    setIsEnvelopeOpen(true);
+    toast.success('Your details are kept. Add guests and share on WhatsApp.');
+  };
+  const designFor = (themeId: string) => studioDesigns.find((d) => d.id === themeId);
+  const eventRange = events.length > 1 ? events[0].date + ' – ' + events[events.length - 1].date : events[0]?.date || '';
+
+  const wizardPanel = (
+    <aside className="upt-wizard" aria-label="Create your invitation">
+      <div className="upt-wizard-scroll">
+        <p className="upt-wz-step">Step {step + 1} of {wizardSteps.length}</p>
+
+        {step === 0 && (
+          <>
+            <h2>Choose your design</h2>
+            <p className="upt-wz-lead">Pick a look — watch the preview change as you go.</p>
+            <div className="upt-wz-designs">
+              {THEMES.map((theme) => {
+                const d = designFor(theme.id);
+                return (
+                  <button
+                    key={theme.id}
+                    type="button"
+                    aria-pressed={currentTheme.id === theme.id}
+                    onClick={() => { setCurrentTheme(theme); if (d) setCoverPhoto('https://images.unsplash.com/photo-' + d.photo + '?auto=format&fit=crop&w=900&q=80'); }}
+                    className="upt-wz-design"
+                  >
+                    <span className="upt-wz-thumb" style={{ backgroundColor: d?.color || theme.colors[0], backgroundImage: d ? 'url(https://images.unsplash.com/photo-' + d.photo + '?auto=format&fit=crop&w=300&q=60)' : undefined }}>
+                      {d?.isNew && <em>New</em>}
+                      <span className="upt-wz-swatches">{theme.colors.map((c) => <i key={c} style={{ background: c }} />)}</span>
+                    </span>
+                    <strong>{d?.name || theme.name.split(' (')[0]}</strong>
+                    <small>{d?.description || theme.badge}</small>
+                  </button>
+                );
+              })}
+            </div>
+
+            <h3>Opening</h3>
+            <p className="upt-wz-hint">What guests tap to open the invitation.</p>
+            <div className="upt-wz-options">
+              <button type="button" aria-pressed={showWaxSealReveal} onClick={() => { setShowWaxSealReveal(true); setIsEnvelopeOpen(false); setPreviewKey((k) => k + 1); }}>
+                <span className="upt-wz-icon">✉</span><strong>Wax seal envelope</strong><small>Guest name on the envelope, tap the seal</small>
+              </button>
+              <button type="button" aria-pressed={!showWaxSealReveal} onClick={() => { setShowWaxSealReveal(false); setIsEnvelopeOpen(true); }}>
+                <span className="upt-wz-icon">❖</span><strong>Open directly</strong><small>The invitation shows straight away</small>
+              </button>
+            </div>
+
+            <h3>Header blessing</h3>
+            <div className="upt-wz-chips">
+              {['॥ श्री गणेशाय नमः ॥', '॥ ॐ श्री महावीराय नमः ॥', 'ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ', 'Bismillah-ir-Rahman-ir-Rahim', 'Together With Our Families'].map((inv) => (
+                <button key={inv} type="button" aria-pressed={godBlessing === inv} onClick={() => setGodBlessing(inv)}>{inv}</button>
+              ))}
+            </div>
+            <label className="upt-wz-field">
+              <span>Or write your own</span>
+              <input value={godBlessing} onChange={(e) => setGodBlessing(e.target.value)} />
+            </label>
+
+            <h3>Music</h3>
+            <div className="upt-wz-music">
+              <select aria-label="Music track" value={audioTrack} onChange={(e) => { setAudioTrack(e.target.value); if (isPlayingMusic) { stopSynthesizer(); setIsPlayingMusic(false); } }}>
+                {WISHLYS_WEDDING_SONGS.map((s) => <option key={s.id} value={s.title}>{s.emoji} {s.title}</option>)}
+              </select>
+              <button type="button" onClick={toggleMusic}>{isPlayingMusic ? '⏸ Pause' : '▶ Play'}</button>
+            </div>
+            <label className="upt-wz-toggle">
+              <input type="checkbox" checked={musicAutoplay} onChange={(e) => setMusicAutoplay(e.target.checked)} />
+              <span>Play music when the guest opens the invitation</span>
+            </label>
+          </>
+        )}
+
+        {step === 1 && (
+          <>
+            <h2>{isWedding ? 'The couple' : 'Who is celebrating?'}</h2>
+            <p className="upt-wz-lead">These names appear on the cover and in every guest’s message.</p>
+            <div className="upt-wz-row">
+              <label className="upt-wz-field"><span>{isWedding ? 'Groom name' : 'First name'}</span><input value={groomName} onChange={(e) => setGroomName(e.target.value)} /></label>
+              <label className="upt-wz-field"><span>{isWedding ? 'Bride name' : 'Second name'}</span><input value={brideName} onChange={(e) => setBrideName(e.target.value)} /></label>
+            </div>
+            <label className="upt-wz-field"><span>Invitation title (for you)</span><input maxLength={100} value={inviteTitle} onChange={(e) => setInviteTitle(e.target.value)} /></label>
+
+            <h3>Families</h3>
+            <label className="upt-wz-field"><span>{isWedding ? 'Groom’s parents' : 'Hosted by'}</span><input value={groomParents} onChange={(e) => setGroomParents(e.target.value)} /></label>
+            <label className="upt-wz-field"><span>{isWedding ? 'Bride’s parents' : 'And family'}</span><input value={brideParents} onChange={(e) => setBrideParents(e.target.value)} /></label>
+            <label className="upt-wz-field"><span>Blessing message</span><textarea rows={3} value={hostBlessing} onChange={(e) => setHostBlessing(e.target.value)} /></label>
+
+            <h3>Cover photo</h3>
+            <p className="upt-wz-hint">Upload your own (under 1 MB) or pick one below.</p>
+            <label className="upt-wz-upload">
+              <span>📷 Upload a photo</span>
+              <input type="file" accept="image/*" onChange={handleImageUpload} />
+            </label>
+            <div className="upt-wz-photos">
+              {[...galleryImages, ...PRESET_MOMENTS.map((m) => m.url)].slice(0, 9).map((url, i) => (
+                <button key={url + i} type="button" aria-pressed={coverPhoto === url} onClick={() => setCoverPhoto(url)} style={{ backgroundImage: 'url(' + url + ')' }} aria-label={'Use photo ' + (i + 1) + ' as cover'} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <h2>Events</h2>
+            <p className="upt-wz-lead">{events.length} {events.length === 1 ? 'event' : 'events'}{eventRange ? ' · ' + eventRange : ''}</p>
+            <div className="upt-wz-events">
+              {events.map((ev, idx) => (
+                <div key={ev.id} className="upt-wz-event">
+                  <button type="button" className="upt-wz-event-head" onClick={() => toggleEventExpand(ev.id)} aria-expanded={!!ev.expanded}>
+                    <span className="upt-wz-num">{idx + 1}</span>
+                    <span><strong>{ev.name || 'Untitled event'}</strong><small>{ev.date} · {ev.time}</small></span>
+                    <span aria-hidden="true">{ev.expanded ? '▴' : '▾'}</span>
+                  </button>
+                  {ev.expanded && (
+                    <div className="upt-wz-event-body">
+                      <label className="upt-wz-field"><span>Event name</span><input value={ev.name} onChange={(e) => updateEvent(ev.id, 'name', e.target.value)} /></label>
+                      <div className="upt-wz-row">
+                        <label className="upt-wz-field"><span>Date</span><input value={ev.date} onChange={(e) => updateEvent(ev.id, 'date', e.target.value)} /></label>
+                        <label className="upt-wz-field"><span>Time</span><input value={ev.time} onChange={(e) => updateEvent(ev.id, 'time', e.target.value)} /></label>
+                      </div>
+                      <label className="upt-wz-field"><span>Venue</span><input value={ev.venue} onChange={(e) => updateEvent(ev.id, 'venue', e.target.value)} /></label>
+                      <label className="upt-wz-field"><span>Dress code</span><input value={ev.dressCode} onChange={(e) => updateEvent(ev.id, 'dressCode', e.target.value)} /></label>
+                      <button type="button" className="upt-wz-remove" onClick={() => removeEvent(ev.id)}>Remove event</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button type="button" className="upt-wz-add" onClick={addEvent}>+ Add another event</button>
+
+            <h3>RSVP</h3>
+            <label className="upt-wz-field"><span>Reply by</span><input type="date" value={rsvpCutoffDate} onChange={(e) => setRsvpCutoffDate(e.target.value)} /></label>
+            <label className="upt-wz-toggle">
+              <input type="checkbox" checked={showLiveStream} onChange={(e) => setShowLiveStream(e.target.checked)} />
+              <span>Add a live stream link for guests who can’t attend</span>
+            </label>
+            {showLiveStream && (
+              <label className="upt-wz-field"><span>Live stream URL</span><input type="url" placeholder="https://youtube.com/live/…" value={liveStreamUrl} onChange={(e) => setLiveStreamUrl(e.target.value)} /></label>
             )}
+          </>
+        )}
 
-            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {currentTheme.name}
-            </span>
+        {step === 3 && (
+          <>
+            <h2>Finish & share</h2>
+            <p className="upt-wz-lead">Check your invitation, see it as a guest, then add your guest list.</p>
+            <ul className="upt-wz-summary">
+              <li><span>Design</span><strong>{designFor(currentTheme.id)?.name || currentTheme.name}</strong><button type="button" onClick={() => goToStep(0)}>Edit</button></li>
+              <li><span>Names</span><strong>{groomName} & {brideName}</strong><button type="button" onClick={() => goToStep(1)}>Edit</button></li>
+              <li><span>Events</span><strong>{events.length} · {eventRange}</strong><button type="button" onClick={() => goToStep(2)}>Edit</button></li>
+              <li><span>Opening</span><strong>{showWaxSealReveal ? 'Wax seal envelope' : 'Open directly'}</strong><button type="button" onClick={() => goToStep(0)}>Edit</button></li>
+            </ul>
+
+            <h3>Preview as a guest</h3>
+            <p className="upt-wz-hint">Each guest gets their own link with their name and only their events.</p>
+            <select className="upt-wz-select" aria-label="Preview as guest" value={selectedGuestId} onChange={(e) => { setSelectedGuestId(e.target.value); replayPreview(); }}>
+              {guests.map((g) => <option key={g.id} value={g.id}>{g.name} — {g.assignedEventIds.length} events</option>)}
+            </select>
+            <div className="upt-wz-message">
+              <p>{computedWhatsAppText}</p>
+              <button type="button" onClick={copyWhatsApp}>Copy WhatsApp message</button>
+            </div>
+
+            <div className="upt-wz-plan">
+              <div><span className="upt-wz-pill">Free</span><strong>Build & preview</strong></div>
+              <p>Everything you’ve made so far is free. Premium designs and bulk WhatsApp sending are available later.</p>
+            </div>
+            <div className="upt-wz-final">
+              <button type="button" className="upt-wz-primary" onClick={openFullStudio}>Add guests & share →</button>
+              <button type="button" className="upt-wz-secondary" onClick={saveDraft}>Save draft</button>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="upt-wizard-bar">
+        <button type="button" className="upt-wz-secondary" onClick={() => goToStep(step - 1)} disabled={step === 0}>Back</button>
+        <button type="button" className="upt-wz-secondary upt-wz-preview-btn" onClick={() => setMobilePanel(mobilePanel === 'edit' ? 'preview' : 'edit')}>
+          {mobilePanel === 'edit' ? 'Preview' : 'Edit'}
+        </button>
+        {step < wizardSteps.length - 1 ? (
+          <button type="button" className="upt-wz-primary" onClick={() => goToStep(step + 1)}>Next: {wizardSteps[step + 1]}</button>
+        ) : (
+          <button type="button" className="upt-wz-primary" onClick={openFullStudio}>Add guests</button>
+        )}
+      </div>
+    </aside>
+  );
+
+  return (
+    <div className={'upt-studio flex flex-col text-slate-800' + (editing ? '' : ' upt-studio-wizard')}>
+      {!editing ? (
+        <header className="upt-studio-header upt-wz-header">
+          <div className="upt-studio-heading">
+            <Link href="/" className="upt-wz-logo"><span aria-hidden="true">✦</span> uptemp.</Link>
+            <span className="upt-wz-free">Free to build</span>
+          </div>
+          <ol className="upt-wz-stepper">
+            {wizardSteps.map((label, i) => (
+              <li key={label}>
+                <button type="button" onClick={() => goToStep(i)} aria-current={i === step ? 'step' : undefined} data-done={i < step || undefined}>
+                  <span>{i < step ? '✓' : i + 1}</span>{label}
+                </button>
+              </li>
+            ))}
+          </ol>
+          <Link href="/templates" className="upt-wz-exit">All templates</Link>
+        </header>
+      ) : (
+      <header className="upt-studio-header">
+        <div className="upt-studio-heading">
+          <Link href="/" className="upt-studio-brand" aria-label="uptemp home"><span aria-hidden="true">✦</span></Link>
+          <Link href="/templates" className="upt-studio-back">← All templates</Link>
+          <div>
+            <p className="upt-studio-kicker">{editing ? 'Invitation studio' : 'Interactive template trial'}</p>
+            {editing ? <input aria-label="Invitation title" maxLength={100} value={inviteTitle} onChange={(e) => setInviteTitle(e.target.value)} /> : <h1>{currentTheme.name.split(' (')[0]}</h1>}
           </div>
         </div>
-
-        {/* View mode toggle + Publish button */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="flex items-center rounded-xl bg-slate-100 p-1 text-xs font-semibold">
-            <button
-              onClick={() => setViewMode('mobile')}
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 transition ${
-                viewMode === 'mobile' ? 'bg-white text-sky-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>📱</span> Mobile
+        <div className="upt-studio-actions">
+          {editing ? (
+            <>
+              <button type="button" onClick={() => setMobilePanel(mobilePanel === 'edit' ? 'preview' : 'edit')} className="upt-mobile-switch">
+                {mobilePanel === 'edit' ? 'Show preview' : 'Show editor'}
+              </button>
+              <button type="button" onClick={saveDraft} className="upt-studio-primary">Save draft</button>
+            </>
+          ) : (
+            <button type="button" className="upt-studio-primary" onClick={() => { loadDraft(); setEditing(true); }}>
+              Use this design
             </button>
-            <button
-              onClick={() => setViewMode('desktop')}
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 transition ${
-                viewMode === 'desktop' ? 'bg-white text-sky-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>💻</span> Desktop
-            </button>
-          </div>
-
-          <button
-            onClick={() => setShowFullPreview(true)}
-            className="hidden sm:inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition"
-          >
-            <span>👁️</span> Full Screen
-          </button>
-
-          <button
-            onClick={() => setShowShareModal(true)}
-            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-1.5 text-xs font-bold text-white shadow-md shadow-sky-500/20 hover:opacity-95 transition"
-          >
-            <span>🚀</span> Publish & Share
-          </button>
+          )}
         </div>
       </header>
-
-      {/* 2. THREE-COLUMN WORKSPACE BODY */}
-      <div className="flex flex-1 overflow-hidden">
+      )}
+      <div className={'upt-studio-body ' + (editing ? 'upt-editing' : 'upt-trial') + ' upt-mobile-' + mobilePanel}>
+        {!editing && wizardPanel}
         {/* LEFT NAV ICONS COLUMN */}
-        <nav className="flex w-16 shrink-0 flex-col items-center justify-between border-r border-slate-200/90 bg-white py-4 z-20">
+        <nav className="upt-studio-tools flex w-16 shrink-0 flex-col items-center justify-between border-r border-slate-200/90 bg-white py-4 z-20">
           <div className="flex flex-col items-center gap-3">
             <button
-              onClick={() => setActiveTab('events')}
+              onClick={() => setActiveTab('events')} aria-pressed={activeTab === "events"}
               title="Ceremonies & Events"
               className={`relative flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'events'
@@ -851,7 +1105,7 @@ export default function StudioEditor() {
             </button>
 
             <button
-              onClick={() => setActiveTab('story')}
+              onClick={() => setActiveTab('story')} aria-pressed={activeTab === "story"}
               title="Couple Story & Blessings"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'story'
@@ -864,7 +1118,7 @@ export default function StudioEditor() {
             </button>
 
             <button
-              onClick={() => setActiveTab('themes')}
+              onClick={() => setActiveTab('themes')} aria-pressed={activeTab === "themes"}
               title="Themes, Cards & Music"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'themes'
@@ -877,7 +1131,7 @@ export default function StudioEditor() {
             </button>
 
             <button
-              onClick={() => setActiveTab('guests')}
+              onClick={() => setActiveTab('guests')} aria-pressed={activeTab === "guests"}
               title="Guest Personalization"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'guests'
@@ -890,7 +1144,7 @@ export default function StudioEditor() {
             </button>
 
             <button
-              onClick={() => setActiveTab('gallery')}
+              onClick={() => setActiveTab('gallery')} aria-pressed={activeTab === "gallery"}
               title="Photo Gallery & Moments"
               className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
                 activeTab === 'gallery'
@@ -905,7 +1159,7 @@ export default function StudioEditor() {
 
           {/* Settings Tab Button at Bottom */}
           <button
-            onClick={() => setActiveTab('settings')}
+            onClick={() => setActiveTab('settings')} aria-pressed={activeTab === "settings"}
             className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
               activeTab === 'settings'
                 ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
@@ -919,7 +1173,7 @@ export default function StudioEditor() {
         </nav>
 
         {/* LEFT EDITING WORKSPACE PANEL */}
-        <aside className="w-[360px] xl:w-[400px] shrink-0 border-r border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar">
+        <aside className="upt-studio-fields shrink-0 border-r border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar">
           <div className="flex items-center justify-between mb-2">
             <div>
               <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -1171,6 +1425,7 @@ export default function StudioEditor() {
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Groom Name</label>
                   <input
                     type="text"
+                    aria-label="Groom name"
                     value={groomName}
                     onChange={(e) => setGroomName(e.target.value)}
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 outline-none"
@@ -1180,6 +1435,7 @@ export default function StudioEditor() {
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Bride Name</label>
                   <input
                     type="text"
+                    aria-label="Bride name"
                     value={brideName}
                     onChange={(e) => setBrideName(e.target.value)}
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 outline-none"
@@ -1370,6 +1626,21 @@ export default function StudioEditor() {
                 </div>
               )}
 
+              {galleryImages.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-bold">Uploaded photos</h3>
+                  {galleryImages.map((photo, index) => (
+                    <div key={index} className="flex items-center gap-2 rounded-xl border p-2">
+                      <img src={photo} alt={"Uploaded photo " + (index + 1)} className="size-12 rounded object-cover" />
+                      <button type="button" onClick={() => setCoverPhoto(photo)} className="rounded border px-2 py-1">Use as cover</button>
+                      <button type="button" onClick={() => {
+                        setGalleryImages((photos) => photos.filter((_, i) => i !== index));
+                        if (coverPhoto === photo) setCoverPhoto("");
+                      }} className="rounded border px-2 py-1">Remove</button>
+                    </div>
+                  ))}
+                </div>
+              )}
               {/* Curated Pre-Wedding Moments */}
               <div>
                 <p className="font-bold text-slate-800 text-xs mb-2 flex items-center justify-between">
@@ -1411,31 +1682,12 @@ export default function StudioEditor() {
           {/* TAB CONTENT: SETTINGS (WORKABLE CUSTOM SLUG, AUTOPLAY & RULES) */}
           {activeTab === 'settings' && (
             <div className="space-y-4 text-xs">
-              {/* 1. Custom URL Slug */}
-              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs">
-                <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  Custom Invitation Link (Slug)
-                </label>
-                <div className="flex rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
-                  <span className="px-2.5 py-2 text-[10px] font-mono text-slate-500 bg-slate-100 border-r border-slate-200">
-                    uptemp.com/i/
-                  </span>
-                  <input
-                    type="text"
-                    value={customSlug}
-                    onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, ''))}
-                    className="flex-1 px-2.5 py-2 text-xs font-mono text-slate-800 bg-transparent outline-none"
-                  />
-                </div>
-                <p className="text-[10px] text-emerald-600 mt-1 font-semibold">✓ Link is available and 100% free forever</p>
-              </div>
-
               {/* 2. Festive Audio Autoplay & Volume */}
               <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-bold text-slate-800">Autoplay Festive Music</p>
-                    <p className="text-[10px] text-slate-500">Music starts playing when guests open the link</p>
+                    <p className="text-[10px] text-slate-500">Play music when the sample envelope opens</p>
                   </div>
                   <button
                     type="button"
@@ -1487,36 +1739,6 @@ export default function StudioEditor() {
                 </div>
               </div>
 
-              {/* 4. Privacy Passcode Lock */}
-              <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-bold text-slate-800">Private Passcode Lock</p>
-                    <p className="text-[10px] text-slate-500">Require guests to enter 4-digit PIN</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setRequirePasscode(!requirePasscode)}
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${requirePasscode ? 'bg-sky-600' : 'bg-slate-300'}`}
-                  >
-                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${requirePasscode ? 'translate-x-4' : 'translate-x-0.5'}`} />
-                  </button>
-                </div>
-
-                {requirePasscode && (
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 mb-1">4-Digit Security PIN</label>
-                    <input
-                      type="text"
-                      maxLength={4}
-                      value={passcodePin}
-                      onChange={(e) => setPasscodePin(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="w-32 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-center font-mono font-bold text-base tracking-widest text-slate-800"
-                    />
-                  </div>
-                )}
-              </div>
-
               {/* 5. Wishlys Wax Seal Reveal Animation */}
               <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-xs flex items-center justify-between">
                 <div>
@@ -1543,7 +1765,14 @@ export default function StudioEditor() {
         </aside>
 
         {/* 3. CENTER PREVIEW CANVAS (ONE CLEAN SIZE IN THE MIDDLE - EXACT MATCH TO PHOTO 3!) */}
-        <main className="relative flex-1 overflow-hidden bg-[#eaeff5] bg-[radial-gradient(#c5d3e3_1.2px,transparent_1.2px)] [background-size:22px_22px] px-4 py-3 sm:px-6 flex flex-col items-center justify-start select-none">
+        <main className="upt-studio-preview relative min-w-0 flex-1 overflow-auto px-3 py-4 sm:px-6 flex flex-col items-center">
+          {/* Device toggles + replay */}
+          <div className="upt-device-bar" role="group" aria-label="Preview size">
+            {([['mobile', 'Mobile'], ['tablet', 'Tablet'], ['desktop', 'Web']] as const).map(([id, label]) => (
+              <button key={id} type="button" aria-pressed={viewMode === id} onClick={() => setViewMode(id)}>{label}</button>
+            ))}
+            <button type="button" onClick={replayPreview} title="Replay the opening">↻ Replay</button>
+          </div>
           {/* Top Controls Bar: Switcher + Compact Zoom Toolbar (No floating zoom blocking the phone!) */}
           <div className="z-20 mb-3 flex items-center justify-between gap-3 w-full max-w-[420px]">
             {/* Live vs RSVP Mode Switcher */}
@@ -1551,19 +1780,19 @@ export default function StudioEditor() {
               <button
                 onClick={() => setPreviewMode('live')}
                 className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
-                  previewMode === 'live' ? 'bg-emerald-500 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  previewMode === 'live' ? 'bg-[#6e2849] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                Live Preview Mode
+                Invitation
               </button>
               <button
-                onClick={() => setPreviewMode('rsvp')}
+                onClick={() => { setViewMode('mobile'); setIsEnvelopeOpen(true); setRsvpSubmitted(false); setPreviewMode('rsvp'); rsvpRef.current?.scrollIntoView({ block: 'nearest' }); }}
                 className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
                   previewMode === 'rsvp' ? 'bg-sky-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <span>🔀</span> Test Interactive RSVP
+                Test RSVP
               </button>
             </div>
 
@@ -1594,11 +1823,11 @@ export default function StudioEditor() {
               transformOrigin: 'top center',
               transition: 'transform 0.15s ease-out',
             }}
-            className="flex justify-center items-start transition-all"
+            className="flex w-full justify-center items-start"
           >
-            {viewMode === 'mobile' ? (
+            {viewMode !== 'desktop' ? (
               /* EXACT REALISTIC iPHONE 16 PRO FRAME IN ONE CLEAN SIZE (MATCHING PHOTO 3) */
-              <div className="relative w-[350px] sm:w-[365px] h-[min(650px,calc(100vh-165px))] rounded-[48px] border-[9px] border-slate-900 bg-slate-900 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.4)] ring-1 ring-slate-800 flex flex-col overflow-hidden shrink-0 select-none">
+              <div key={previewKey} className={(viewMode === 'tablet' ? 'max-w-[560px] rounded-[30px] upt-anim-in ' : 'max-w-[365px] rounded-[48px] upt-anim-in ') + "relative w-full h-[min(670px,max(420px,calc(100dvh-195px)))] border-[9px] border-slate-900 bg-slate-900 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.4)] ring-1 ring-slate-800 flex flex-col overflow-hidden shrink-0 select-none"}>
                 {/* Fixed Dedicated Top Status Bar with Dynamic Island */}
                 <div className={`relative z-30 shrink-0 flex items-center justify-between px-6 pt-2 pb-1.5 border-b border-black/5 select-none ${currentTheme.phoneBg}`}>
                   <span className={`text-[11px] font-bold tracking-tight ${currentTheme.isDark ? 'text-white/80' : 'text-slate-800'}`}>9:41</span>
@@ -1667,7 +1896,7 @@ export default function StudioEditor() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="relative text-center p-3 z-10 text-white">
                             <span className="inline-block rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[9px] font-sans font-bold uppercase tracking-[0.2em] border border-white/20">
-                              Shubh Vivah Moments
+                              {occasionTitle}
                             </span>
                           </div>
                         </>
@@ -1679,7 +1908,7 @@ export default function StudioEditor() {
                               💍
                             </div>
                             <span className="inline-block rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">
-                              Royal Mandap & Palace
+                              {occasionTitle}
                             </span>
                           </div>
                           <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/20 to-transparent" />
@@ -1699,7 +1928,7 @@ export default function StudioEditor() {
                         {groomName} <span className="italic font-normal opacity-75">&</span> {brideName}
                       </h2>
                       <p className={`mt-1.5 text-[11px] font-serif leading-relaxed max-w-[260px] mx-auto ${currentTheme.subtextColor}`}>
-                        Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
+                        {isWedding ? "Invite you to celebrate their wedding." : "Invite you to celebrate with them."}
                       </p>
                     </div>
 
@@ -1730,7 +1959,7 @@ export default function StudioEditor() {
                       className={`mx-3.5 mb-3 rounded-2xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 text-center shadow-xs`}
                     >
                       <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-60 mb-1.5">
-                        COUNTDOWN TO MUHURTHAM
+                        COUNTDOWN TO THE EVENT
                       </p>
                       <div className="grid grid-cols-4 gap-1.5 text-center font-sans">
                         <div className="rounded-xl bg-black/5 py-1.5">
@@ -1799,17 +2028,7 @@ export default function StudioEditor() {
                               </a>
                               <button
                                 type="button"
-                                onClick={() => {
-                                  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${ev.name} - ${groomName} & ${brideName}\nLOCATION:${ev.venue}\nDESCRIPTION:Dress code: ${ev.dressCode}\nEND:VEVENT\nEND:VCALENDAR`;
-                                  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-                                  const link = document.createElement('a');
-                                  link.href = window.URL.createObjectURL(blob);
-                                  link.setAttribute('download', `${ev.name.replace(/\s+/g, '_')}.ics`);
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  document.body.removeChild(link);
-                                  toast.success('Event added to Calendar (.ics)');
-                                }}
+                                onClick={() => downloadCalendarEvent(ev, groomName + " & " + brideName)}
                                 className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-700 transition"
                               >
                                 <span>📅</span> Add to Cal
@@ -1821,7 +2040,7 @@ export default function StudioEditor() {
                     </div>
 
                     {/* Virtual Attendance / Live Stream Card */}
-                    {showLiveStream && (
+                    {showLiveStream && /^https?:\/\//i.test(liveStreamUrl) && (
                       <div className={`mx-3.5 mb-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-xs text-left`}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5">
@@ -1849,6 +2068,16 @@ export default function StudioEditor() {
                       </div>
                     )}
 
+                    {galleryImages.length > 0 && (
+                      <section className={currentTheme.titleColor + " mx-3.5 mb-4"} aria-label="Invitation photo gallery">
+                        <h3 className="mb-2 font-serif text-base font-bold">Our moments</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {galleryImages.map((photo, index) => (
+                            <img key={index} src={photo} alt={"Celebration photo " + (index + 1)} className="aspect-square w-full rounded-xl object-cover" />
+                          ))}
+                        </div>
+                      </section>
+                    )}
                     {/* Digital Blessing Wall */}
                     <div className={`mx-3.5 mb-3 rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3 shadow-xs text-left`}>
                       <div className="flex items-center justify-between mb-1.5">
@@ -1907,16 +2136,16 @@ export default function StudioEditor() {
 
                     {/* RSVP Interactive Mode inside the Phone */}
                     {previewMode === 'rsvp' && (
-                      <div className="mx-3.5 mb-4 rounded-2xl border-2 border-sky-400 bg-sky-50/95 p-3.5 text-left font-sans text-slate-800">
+                      <div ref={rsvpRef} className="mx-3.5 mb-4 rounded-2xl border-2 border-sky-400 bg-sky-50/95 p-3.5 text-left font-sans text-slate-800">
                         <p className="font-bold text-xs text-sky-950">RSVP for {currentGuest.name}</p>
                         <p className="text-[10px] text-slate-600 mb-2">
-                          Will you join our celebration?
+                          Will you join our celebration? {rsvpCutoffDate && <span className="block">Reply by {rsvpCutoffDate}</span>}
                         </p>
 
                         {rsvpSubmitted ? (
                           <div className="rounded-xl bg-emerald-100 p-2.5 text-center text-emerald-900">
-                            <p className="font-bold text-xs">✓ RSVP Confirmed!</p>
-                            <p className="text-[9px] mt-0.5">We look forward to welcoming you.</p>
+                            <p className="font-bold text-xs">✓ Sample response recorded</p>
+                            <p className="text-[9px] mt-0.5">{rsvpAttending ? "Attending" : "Declined"}</p>
                           </div>
                         ) : (
                           <div className="space-y-2">
@@ -1950,11 +2179,11 @@ export default function StudioEditor() {
                                 Attending Guests
                               </label>
                               <select
-                                value={rsvpGuestsCount}
+                                value={Math.min(rsvpGuestsCount, currentGuest.passes)}
                                 onChange={(e) => setRsvpGuestsCount(Number(e.target.value))}
                                 className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-800"
                               >
-                                {[1, 2, 3, 4, 5, 6].map((n) => (
+                                {Array.from({ length: currentGuest.passes }, (_, i) => i + 1).map((n) => (
                                   <option key={n} value={n}>
                                     {n} {n === 1 ? 'Guest' : 'Guests'}
                                   </option>
@@ -1981,7 +2210,7 @@ export default function StudioEditor() {
                               type="button"
                               onClick={() => {
                                 setRsvpSubmitted(true);
-                                toast.success('RSVP submitted successfully in live test!');
+                                toast.success('Sample RSVP recorded');
                               }}
                               className="w-full rounded-xl bg-sky-700 py-2 font-bold text-white text-xs shadow hover:bg-sky-800 transition"
                             >
@@ -2001,7 +2230,7 @@ export default function StudioEditor() {
               </div>
             ) : (
               /* WIDE DESKTOP BROWSER PREVIEW */
-              <div className="w-[95%] max-w-[820px] rounded-2xl border-4 border-slate-800 bg-slate-900 shadow-2xl overflow-hidden h-[min(650px,calc(100vh-165px))] flex flex-col">
+              <div className="w-full max-w-[820px] rounded-2xl border-4 border-slate-800 bg-slate-900 shadow-2xl overflow-hidden h-[min(650px,calc(100vh-165px))] flex flex-col">
                 <div className="bg-slate-800 px-4 py-2 flex items-center justify-between text-xs text-slate-300 shrink-0">
                   <div className="flex items-center gap-1.5">
                     <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
@@ -2009,7 +2238,7 @@ export default function StudioEditor() {
                     <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
                   </div>
                   <div className="rounded-lg bg-slate-900 px-6 py-1 text-[10px] font-mono text-slate-400 truncate max-w-sm">
-                    {shareableUrl}
+                    Invitation preview
                   </div>
                   <div className="text-[10px] font-bold text-sky-400">Desktop View</div>
                 </div>
@@ -2023,7 +2252,7 @@ export default function StudioEditor() {
                       {groomName} & {brideName}
                     </h2>
                     <p className={`text-xs mt-1 max-w-md mx-auto ${currentTheme.subtextColor}`}>
-                      Invite you to celebrate their auspicious union and begin their lifelong journey of love and togetherness.
+                      {isWedding ? "Invite you to celebrate their wedding." : "Invite you to celebrate with them."}
                     </p>
                   </div>
 
@@ -2054,7 +2283,7 @@ export default function StudioEditor() {
         </main>
 
         {/* 4. RIGHT WORKSPACE PANEL (REACTIVE GUEST PERSONALIZATION & INSTANT WHATSAPP) */}
-        <aside className="w-[340px] xl:w-[380px] shrink-0 border-l border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar text-xs">
+        <aside className="upt-studio-guests shrink-0 border-l border-slate-200/90 bg-white overflow-y-auto p-5 z-10 custom-scrollbar text-xs">
           <div className="flex items-center justify-between border-b border-sky-100 pb-3">
             <div>
               <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
@@ -2212,18 +2441,8 @@ export default function StudioEditor() {
               onClick={sendWhatsApp}
               className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:-translate-y-0.5"
             >
-              <span>💬</span> Send Test WhatsApp Message
+              <span>💬</span> Open in WhatsApp
             </button>
-
-            {/* Open Guest Link in New Tab */}
-            <a
-              href={shareableUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-sky-50 py-2.5 font-bold text-sky-800 text-xs hover:bg-sky-100 transition shadow-xs"
-            >
-              <span>🔗</span> Open Guest Link in New Tab ↗
-            </a>
 
             {/* Delete current guest option */}
             <button
@@ -2236,137 +2455,6 @@ export default function StudioEditor() {
           </div>
         </aside>
       </div>
-
-      {/* FULL SCREEN INTERACTIVE PREVIEW MODAL */}
-      {showFullPreview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-          <div className="relative w-full max-w-lg rounded-3xl bg-white shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between bg-slate-900 text-white px-5 py-3.5">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm">👁️ Live Invitation Preview</span>
-                <span className="rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold">
-                  {currentGuest.name}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => window.open(shareableUrl, '_blank')}
-                  className="rounded-lg bg-white/10 hover:bg-white/20 px-2.5 py-1 text-xs font-semibold"
-                >
-                  Open in New Tab ↗
-                </button>
-                <button
-                  onClick={() => setShowFullPreview(false)}
-                  className="rounded-full h-7 w-7 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white text-xs font-bold"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-
-            <div className={`flex-1 overflow-y-auto ${currentTheme.phoneBg} p-6 text-center custom-scrollbar`}>
-              <p className={`font-serif font-bold text-xs tracking-widest ${currentTheme.headerAccent}`}>
-                {godBlessing}
-              </p>
-              <h2 className={`text-2xl font-bold mt-2 ${currentTheme.titleColor}`} style={{ fontFamily: currentTheme.fontFamily }}>
-                {groomName} & {brideName}
-              </h2>
-              <div className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-4 my-4 text-left`}>
-                <p className={`text-xs font-bold ${currentTheme.isDark ? 'text-white' : 'text-slate-900'}`}>
-                  {currentGuest.salutation}
-                </p>
-              </div>
-              <div className="space-y-2 mt-4 text-left">
-                {guestVisibleEvents.map((ev) => (
-                  <div key={ev.id} className={`rounded-xl border ${currentTheme.cardBorder} ${currentTheme.cardBg} p-3`}>
-                    <p className={`font-bold text-xs ${currentTheme.headerAccent}`}>{ev.name}</p>
-                    <p className="text-[10px] text-slate-500">{ev.date} • {ev.time}</p>
-                    <p className="text-[10px] mt-1 text-slate-600">🏛️ {ev.venue}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-3 bg-slate-100 border-t flex justify-between items-center text-xs">
-              <span className="text-slate-500 truncate max-w-xs">{shareableUrl}</span>
-              <button
-                onClick={() => setShowFullPreview(false)}
-                className="rounded-full bg-[#123b5d] text-white px-4 py-1.5 font-bold"
-              >
-                Close Preview
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* SHARE / PUBLISH MODAL */}
-      {showShareModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl border border-sky-100">
-            <div className="flex items-center justify-between border-b pb-3">
-              <h3 className="font-serif text-xl font-bold text-slate-900">
-                🚀 Publish & Share Invitation
-              </h3>
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="text-slate-400 hover:text-slate-800 text-lg"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="mt-4 space-y-4 text-xs">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Public Guest Link
-                </label>
-                <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-2">
-                  <input
-                    type="text"
-                    readOnly
-                    value={shareableUrl}
-                    className="flex-1 bg-transparent font-mono text-[11px] text-slate-700 outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(shareableUrl);
-                      toast.success('Link copied! 📋');
-                    }}
-                    className="rounded-lg bg-sky-600 px-3 py-1 font-bold text-white hover:bg-sky-700 text-xs"
-                  >
-                    Copy
-                  </button>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
-                <p className="font-bold text-emerald-950 mb-1">✓ Ready for Instant Sharing</p>
-                <p className="text-[11px] text-emerald-800 leading-relaxed">
-                  Your digital invitation is live. Distant guests can view ceremonies, submit RSVPs, and watch live broadcasts directly from their phone browsers.
-                </p>
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={sendWhatsApp}
-                  className="flex-1 rounded-2xl bg-emerald-600 py-3 font-bold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 text-xs flex items-center justify-center gap-1.5"
-                >
-                  <span>💬</span> Share on WhatsApp
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowShareModal(false)}
-                  className="rounded-2xl border border-slate-200 px-5 py-3 font-bold text-slate-700 hover:bg-slate-50 text-xs"
-                >
-                  Done
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ADD GUEST MODAL */}
       {showAddGuestModal && (
@@ -2436,3 +2524,4 @@ export default function StudioEditor() {
     </div>
   );
 }
+

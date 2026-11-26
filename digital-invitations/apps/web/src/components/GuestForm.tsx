@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { guestAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 import { normalizeMobile } from '@/lib/format';
 
 interface Event {
@@ -115,8 +116,9 @@ export default function GuestForm({ invitationId, events, guest, onClose, onSave
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
+              aria-label="Close"
             >
-              ✕
+              <Icon name="close" />
             </button>
           </div>
 

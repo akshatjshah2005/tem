@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { guestAPI, invitationAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
 import GuestForm from '@/components/GuestForm';
+import Icon from '@/components/ui/Icon';
 
 interface Guest {
   id: string;
@@ -324,14 +325,14 @@ export default function GuestManagementPage() {
                 disabled={importing}
                 className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
               >
-                {importing ? 'Importing...' : '📊 Import Excel'}
+                {importing ? 'Importing...' : <><Icon name="sheet" /> Import Excel</>}
               </button>
             </div>
             <button
               onClick={handleBulkWhatsApp}
               className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
             >
-              💬 Send WhatsApp
+              <Icon name="chat" /> Send WhatsApp
             </button>
           </div>
 
@@ -361,7 +362,7 @@ export default function GuestManagementPage() {
         {/* Guests Table */}
         {guests.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-            <div className="text-6xl mb-4">👥</div>
+            <div className="text-6xl mb-4"><Icon name="users" /></div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No guests yet</h3>
             <p className="text-gray-600 mb-6">Add guests manually or import from Excel</p>
             <div className="flex justify-center gap-3">
@@ -375,7 +376,7 @@ export default function GuestManagementPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-50"
               >
-                📊 Import from Excel
+                <Icon name="sheet" /> Import from Excel
               </button>
             </div>
           </div>
@@ -465,29 +466,33 @@ export default function GuestManagementPage() {
                           onClick={() => handleCopyLink(guest)}
                           className="text-gray-600 hover:text-gray-900"
                           title="Copy personalized link"
+                          aria-label="Copy personalized link"
                         >
-                          🔗
+                          <Icon name="link" />
                         </button>
                         <button
                           onClick={() => handleEditGuest(guest)}
                           className="text-primary-600 hover:text-primary-900"
                           title="Edit guest"
+                          aria-label="Edit guest"
                         >
-                          ✏️
+                          <Icon name="pencil" />
                         </button>
                         <button
                           onClick={() => handleRegenerateLink(guest.id)}
                           className="text-yellow-600 hover:text-yellow-900"
                           title="Regenerate link"
+                          aria-label="Regenerate link"
                         >
-                          🔄
+                          <Icon name="replay" />
                         </button>
                         <button
                           onClick={() => handleDeleteGuest(guest.id)}
                           className="text-red-600 hover:text-red-900"
                           title="Delete guest"
+                          aria-label="Delete guest"
                         >
-                          🗑️
+                          <Icon name="trash" />
                         </button>
                       </div>
                     </td>
@@ -514,7 +519,7 @@ export default function GuestManagementPage() {
                 <h2 id="whatsapp-queue-title" className="mt-1 text-xl font-bold text-slate-900">Send invitations one by one</h2>
                 <p className="mt-1 text-sm text-slate-500">{whatsAppIndex + 1} of {whatsAppQueue.length} guests. WhatsApp opens for review; you must press Send there.</p>
               </div>
-              <button onClick={() => setWhatsAppQueue([])} className="rounded-lg px-3 py-1 text-slate-500 hover:bg-slate-100" aria-label="Close sharing queue">✕</button>
+              <button onClick={() => setWhatsAppQueue([])} className="rounded-lg px-3 py-1 text-slate-500 hover:bg-slate-100" aria-label="Close sharing queue"><Icon name="close" /></button>
             </div>
             <div className="mt-5 rounded-xl border border-sky-100 bg-sky-50/70 p-4">
               <p className="font-semibold text-slate-900">{whatsAppQueue[whatsAppIndex].name}</p>

@@ -1,7 +1,5 @@
-'use client';
-
-import StudioEditor from '@/components/StudioEditor';
+﻿import CreateStudio from '@/components/create/CreateStudio';
 
 export default function DashboardCreatePage() {
-  return <StudioEditor />;
+  return <CreateStudio />;
 }

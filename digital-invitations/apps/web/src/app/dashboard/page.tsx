@@ -1,759 +1,418 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
-import { invitationAPI } from '@/lib/api';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { SiteShell } from '@/components/ui/Sections';
+import Icon from '@/components/ui/Icon';
+import { useAuth } from '@/hooks/useAuth';
+import { defaultContent, displayNames, formatDate, getFunction, getTemplate, templatesFor } from '@/lib/functions';
+import {
+  addRsvp, deleteItem, deleteRsvp, duplicateItem, inviteUrl, markGuestSent, saveInvite, useStore,
+  type RsvpRecord, type StoredGuest, type StoredInvite, type StoredItem,
+} from '@/lib/store';
+import { buildXlsx, downloadBlob, toCsv, type Sheet } from '@/lib/xlsx';
+import './dashboard.css';
 
-interface Invitation {
-  id: string;
-  name: string;
-  slug: string;
-  status: 'PUBLISHED' | 'DRAFT' | 'ARCHIVED';
-  isPersonalized: boolean;
-  guestCount: number;
-  createdAt: string;
-  template?: {
-    name: string;
-    thumbnailUrl?: string;
-  };
-  _count: {
-    guests: number;
-    events: number;
-  };
+type Tab = 'rsvps' | 'guests';
+type StatusFilter = 'all' | 'attending' | 'declined' | 'awaiting';
+
+const fmtDateTime = (iso: string) => new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+function ago(iso: string, now: number) {
+  const s = Math.max(0, (now - new Date(iso).getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + ' min ago';
+  if (s < 86400) return Math.floor(s / 3600) + ' h ago';
+  if (s < 86400 * 7) return Math.floor(s / 86400) + ' d ago';
+  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
 }
 
-interface RSVPActivity {
-  id: string;
-  guestName: string;
-  passes: number;
-  diet: string;
-  status: 'Attending' | 'Declined' | 'Pending';
-  time: string;
-  message: string;
+const editHref = (item: StoredItem) =>
+  item.kind === 'love' ? '/love-story?edit=' + item.id + '#builder' : '/create?template=' + item.content.templateId + '&category=' + item.content.functionId + '&edit=' + item.id;
+
+async function copy(text: string, ok: string) {
+  try { await navigator.clipboard.writeText(text); toast.success(ok); } catch { toast.error('Couldn’t copy — long-press the link to copy it.'); }
 }
 
-const DEMO_INVITATIONS: Invitation[] = [
-  {
-    id: 'demo-invite-1',
-    name: 'Akshat & Priya Wedding Invite',
-    slug: 'akshat-priya',
-    status: 'PUBLISHED',
-    isPersonalized: true,
-    guestCount: 142,
-    createdAt: new Date().toISOString(),
-    template: {
-      name: 'Royal Sandalwood & Vivaah Mandap',
-      thumbnailUrl: '',
-    },
-    _count: {
-      guests: 142,
-      events: 3,
-    },
-  },
-  {
-    id: 'demo-invite-2',
-    name: 'Akshat & Priya Love Story Vault',
-    slug: 'love-story',
-    status: 'PUBLISHED',
-    isPersonalized: true,
-    guestCount: 65,
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    template: {
-      name: 'Secret Passcode Polaroid Vault (PIN: 1402)',
-      thumbnailUrl: '',
-    },
-    _count: {
-      guests: 65,
-      events: 4,
-    },
-  },
-];
+/* ---------- sample data so a new host can try every feature ---------- */
+function seedSample(ownerId: string) {
+  const content = defaultContent('wedding', 'royal-sandalwood');
+  const ev = content.events;
+  const guests: StoredGuest[] = [
+    { id: 'g-s1', name: 'Sharma Family', phone: '9876543210', group: 'Family', eventIds: ev.map((e) => e.id) },
+    { id: 'g-s2', name: 'Rahul Mehta', phone: '9812345678', group: 'Friends', eventIds: ev.slice(-2).map((e) => e.id) },
+    { id: 'g-s3', name: 'Uncle Ravi & Family', phone: '9898989898', group: 'Relatives', eventIds: ev.map((e) => e.id) },
+    { id: 'g-s4', name: 'Tanvi Kapoor', phone: '', group: 'Friends', eventIds: ev.slice(-1).map((e) => e.id) },
+    { id: 'g-s5', name: 'Singhania Family', phone: '9822001122', group: 'Neighbours', eventIds: ev.slice(-1).map((e) => e.id) },
+  ];
+  const saved = saveInvite({ title: 'Sample · ' + displayNames(content) + ' Wedding', ownerId, status: 'PUBLISHED', content, guests, personalize: true, waTemplate: 'Namaste {guest_name},\n\nWith joy we invite you to {headline} — {names}.\n\n{functions}\n\nYour personal invitation: {link}' });
+  const names = (g: StoredGuest) => ev.filter((e) => g.eventIds.includes(e.id)).map((e) => e.name);
+  addRsvp({ inviteId: saved.id, guestId: 'g-s1', name: 'Sharma Family', phone: '9876543210', attending: true, count: 4, diet: 'Vegetarian', message: 'Blessings to both of you!', eventNames: names(guests[0]) });
+  addRsvp({ inviteId: saved.id, guestId: 'g-s2', name: 'Rahul Mehta', phone: '9812345678', attending: true, count: 2, diet: 'Jain', message: 'Can’t wait for the sangeet!', eventNames: names(guests[1]) });
+  addRsvp({ inviteId: saved.id, guestId: 'g-s4', name: 'Tanvi Kapoor', attending: false, count: 0, diet: '', message: 'Travelling that week — sending love.', eventNames: names(guests[3]) });
+  return saved;
+}
 
-const DEMO_RSVPS: RSVPActivity[] = [
-  {
-    id: 'r-1',
-    guestName: 'Uncle Ravi & Family',
-    passes: 4,
-    diet: 'Vegetarian',
-    status: 'Attending',
-    time: '12 mins ago',
-    message: 'Looking forward to the celebration! Blessings to both of you.',
-  },
-  {
-    id: 'r-2',
-    guestName: 'Priya Sharma (Sister)',
-    passes: 2,
-    diet: 'Jain Vegetarian',
-    status: 'Attending',
-    time: '1 hour ago',
-    message: 'Can’t wait to dance at the Sangeet night! 🎉',
-  },
-  {
-    id: 'r-3',
-    guestName: 'Rahul Mehta & Friends',
-    passes: 2,
-    diet: 'Vegetarian',
-    status: 'Attending',
-    time: '3 hours ago',
-    message: 'Congratulations bhai! Super excited.',
-  },
-  {
-    id: 'r-4',
-    guestName: 'The Singhania Family',
-    passes: 3,
-    diet: 'Vegetarian',
-    status: 'Pending',
-    time: 'Yesterday',
-    message: 'Pending confirmation from elders',
-  },
-];
-
-export default function DashboardPage() {
+function Dashboard() {
   const router = useRouter();
-  const { user, loading: authLoading, logout } = useAuth();
-  const [invitations, setInvitations] = useState<Invitation[]>(DEMO_INVITATIONS);
-  const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'published' | 'drafts' | 'stories'>('all');
-  
-  // Modals
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showQrModal, setShowQrModal] = useState<string | null>(null);
-  const [selectedInviteForQr, setSelectedInviteForQr] = useState<Invitation | null>(null);
+  const params = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
+  const db = useStore();
+  const [now, setNow] = useState(0);
+  const [tab, setTab] = useState<Tab>('rsvps');
+  const [inviteFilter, setInviteFilter] = useState('all');
+  const [status, setStatus] = useState<StatusFilter>('all');
+  const [query, setQuery] = useState('');
+  const [justPublished, setJustPublished] = useState<string | null>(null);
 
+  useEffect(() => { setNow(Date.now()); const t = setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(t); }, []);
+  useEffect(() => { if (!authLoading && !user) router.replace('/login?next=/dashboard'); }, [authLoading, user, router]);
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
+    const id = params?.get('published');
+    if (id) { setJustPublished(id); window.history.replaceState(null, '', '/dashboard'); }
+  }, [params]);
 
-  useEffect(() => {
-    if (user) {
-      fetchInvitations();
-    }
-  }, [user]);
+  const items = useMemo(() => db.items.filter((i) => !user || i.ownerId === user.id), [db.items, user]);
+  const invites = items.filter((i): i is StoredInvite => i.kind === 'invite');
+  const ids = new Set(items.map((i) => i.id));
+  const rsvps = useMemo(() => db.rsvps.filter((r) => ids.has(r.inviteId)), [db.rsvps, items]); // eslint-disable-line react-hooks/exhaustive-deps
+  const byId = (id: string) => items.find((i) => i.id === id);
+  const rsvpFor = (inviteId: string, guestId: string) => rsvps.find((r) => r.inviteId === inviteId && r.guestId === guestId);
 
-  const fetchInvitations = async () => {
-    try {
-      setLoading(true);
-      const response = await invitationAPI.getAll({ page: 1, limit: 10 });
-      const loaded = response.data?.data || [];
-      if (loaded.length > 0) {
-        setInvitations(loaded);
-      } else {
-        setInvitations(DEMO_INVITATIONS);
-      }
-    } catch {
-      setInvitations(DEMO_INVITATIONS);
-    } finally {
-      setLoading(false);
-    }
+  /* ----- stats ----- */
+  const totalGuests = invites.reduce((s, i) => s + i.guests.length, 0);
+  const attending = rsvps.filter((r) => r.attending);
+  const headcount = attending.reduce((s, r) => s + r.count, 0);
+  const declined = rsvps.length - attending.length;
+  const answeredGuests = invites.reduce((s, i) => s + i.guests.filter((g) => rsvpFor(i.id, g.id)).length, 0);
+  const responseRate = totalGuests ? Math.round((answeredGuests / totalGuests) * 100) : 0;
+  const sentCount = invites.reduce((s, i) => s + i.guests.filter((g) => g.sentAt).length, 0);
+
+  /* ----- table rows ----- */
+  const q = query.trim().toLowerCase();
+  const rsvpRows = rsvps
+    .filter((r) => inviteFilter === 'all' || r.inviteId === inviteFilter)
+    .filter((r) => status === 'all' || (status === 'attending' ? r.attending : status === 'declined' ? !r.attending : false))
+    .filter((r) => !q || [r.name, r.message, r.diet, r.phone || ''].join(' ').toLowerCase().includes(q))
+    .sort((a, b) => (b.updatedAt || b.createdAt).localeCompare(a.updatedAt || a.createdAt));
+
+  const guestRows = invites
+    .filter((i) => inviteFilter === 'all' || i.id === inviteFilter)
+    .flatMap((i) => i.guests.map((g) => ({ invite: i, guest: g, rsvp: rsvpFor(i.id, g.id) })))
+    .filter(({ rsvp }) => status === 'all' || (status === 'attending' ? rsvp?.attending : status === 'declined' ? rsvp && !rsvp.attending : !rsvp))
+    .filter(({ guest }) => !q || [guest.name, guest.phone, guest.group].join(' ').toLowerCase().includes(q));
+
+  /* ----- export ----- */
+  const eventNamesFor = (inv: StoredInvite, g: StoredGuest) => inv.content.events.filter((e) => !inv.personalize || g.eventIds.includes(e.id)).map((e) => e.name).join(', ');
+
+  const allRsvpRows = [...rsvps].sort((a, b) => (b.updatedAt || b.createdAt).localeCompare(a.updatedAt || a.createdAt));
+  const allGuestRows = invites.flatMap((i) => i.guests.map((g) => ({ invite: i, guest: g, rsvp: rsvpFor(i.id, g.id) })));
+
+  const rsvpSheet = (rows = allRsvpRows): Sheet => ({
+    name: 'RSVP responses',
+    columns: [
+      { header: 'Guest / family', width: 26 }, { header: 'Invitation', width: 30 }, { header: 'Response', width: 12 }, { header: 'Guests coming', width: 14 },
+      { header: 'Meal preference', width: 18 }, { header: 'Functions', width: 34 }, { header: 'Phone', width: 16 }, { header: 'Blessing note', width: 44 }, { header: 'Received', width: 22 },
+    ],
+    rows: rows.map((r) => [r.name, byId(r.inviteId)?.title || '', r.attending ? 'Attending' : 'Declined', r.count, r.diet, r.eventNames.join(', '), r.phone || '', r.message, fmtDateTime(r.updatedAt || r.createdAt)]),
+  });
+  const guestSheet = (rows = allGuestRows): Sheet => ({
+    name: 'Guest list',
+    columns: [
+      { header: 'Guest / family', width: 26 }, { header: 'Phone', width: 16 }, { header: 'Group', width: 14 }, { header: 'Invitation', width: 30 }, { header: 'Invited to', width: 34 },
+      { header: 'Link sent', width: 20 }, { header: 'RSVP', width: 14 }, { header: 'Guests coming', width: 14 }, { header: 'Meal preference', width: 18 }, { header: 'Personal link', width: 52 },
+    ],
+    rows: rows.map(({ invite, guest, rsvp }) => [
+      guest.name, guest.phone, guest.group, invite.title, eventNamesFor(invite, guest), guest.sentAt ? fmtDateTime(guest.sentAt) : 'Not sent',
+      rsvp ? (rsvp.attending ? 'Attending' : 'Declined') : 'Awaiting', rsvp ? rsvp.count : '', rsvp?.diet || '', inviteUrl(invite, invite.personalize ? guest.id : undefined),
+    ]),
+  });
+  const summarySheet = (): Sheet => ({
+    name: 'Summary',
+    columns: [{ header: 'Invitation', width: 34 }, { header: 'Occasion', width: 22 }, { header: 'Guests', width: 10 }, { header: 'Responded', width: 12 }, { header: 'Attending', width: 12 }, { header: 'Headcount', width: 12 }, { header: 'Declined', width: 10 }, { header: 'Link', width: 48 }],
+    rows: items.map((i) => {
+      const rs = rsvps.filter((r) => r.inviteId === i.id);
+      const yes = rs.filter((r) => r.attending);
+      return [i.title, i.kind === 'love' ? 'Love Story' : getFunction(i.content.functionId).label, i.kind === 'invite' ? i.guests.length : '', rs.length, yes.length, yes.reduce((s, r) => s + r.count, 0), rs.length - yes.length, inviteUrl(i)];
+    }),
+  });
+
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  const downloadExcel = () => {
+    if (!items.length) { toast.error('Nothing to export yet — publish an invitation first.'); return; }
+    downloadBlob(buildXlsx([rsvpSheet(), guestSheet(), summarySheet()]), 'uptemp-rsvps-' + stamp() + '.xlsx');
+    toast.success('Excel file downloaded');
+  };
+  const downloadCsv = () => {
+    const sheet = tab === 'rsvps' ? rsvpSheet(rsvpRows) : guestSheet(guestRows);
+    downloadBlob(new Blob([toCsv(sheet)], { type: 'text/csv;charset=utf-8' }), 'uptemp-' + (tab === 'rsvps' ? 'rsvps' : 'guests') + '-' + stamp() + '.csv');
+    toast.success('CSV downloaded');
   };
 
-  const handleDelete = (id: string) => {
-    if (!confirm('Are you sure you want to delete this invitation?')) return;
-    setInvitations((prev) => prev.filter((i) => i.id !== id));
-    toast.success('Invitation removed from dashboard');
+  /* ----- actions ----- */
+  const sendWhatsApp = (invite: StoredInvite, g: StoredGuest) => {
+    const link = inviteUrl(invite, invite.personalize ? g.id : undefined);
+    const lines = invite.content.events.filter((e) => !invite.personalize || g.eventIds.includes(e.id)).map((e) => '• ' + e.name + ' — ' + formatDate(e.date, { day: 'numeric', month: 'short' }) + (e.venue ? ', ' + e.venue : '')).join('\n');
+    const text = (invite.waTemplate || '{link}').replaceAll('{guest_name}', g.name).replaceAll('{names}', displayNames(invite.content)).replaceAll('{headline}', invite.content.headline).replaceAll('{functions}', lines).replaceAll('{link}', link);
+    const digits = g.phone.replace(/\D/g, '');
+    window.open('https://wa.me/' + (digits.length === 10 ? '91' + digits : digits) + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+    markGuestSent(invite.id, g.id);
+  };
+  const shareItem = (item: StoredItem) => {
+    const text = (item.kind === 'love' ? 'A little something for you: ' : 'You’re invited! ') + inviteUrl(item);
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  };
+  const remove = (item: StoredItem) => {
+    if (!confirm('Delete “' + item.title + '” and all its RSVPs? This can’t be undone.')) return;
+    deleteItem(item.id);
+    if (inviteFilter === item.id) setInviteFilter('all');
+    toast.success('Invitation deleted');
+  };
+  const focusInvite = (id: string, t: Tab) => {
+    setInviteFilter(id); setTab(t); setStatus('all');
+    document.getElementById('activity')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const handleDuplicate = (inv: Invitation) => {
-    const dup: Invitation = {
-      ...inv,
-      id: `copy-${Date.now()}`,
-      name: `${inv.name} (Copy)`,
-      status: 'DRAFT',
-      createdAt: new Date().toISOString(),
-    };
-    setInvitations((prev) => [dup, ...prev]);
-    toast.success('Invitation duplicated successfully as Draft!');
-  };
-
-  const handleCopyLink = (slug: string) => {
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-    const link = slug === 'love-story' ? `${origin}/love-story` : `${origin}/create?template=royal-sandalwood`;
-    navigator.clipboard.writeText(link);
-    toast.success('Invitation link copied to clipboard! 📋');
-  };
-
-  const handleOpenQr = (inv: Invitation) => {
-    setSelectedInviteForQr(inv);
-    setShowQrModal(inv.slug);
-  };
-
-  const handleExportCSV = () => {
-    const headers = 'Guest Name,Passes,Diet,Status,Time,Message\n';
-    const rows = DEMO_RSVPS.map(
-      (r) => `"${r.guestName}",${r.passes},"${r.diet}","${r.status}","${r.time}","${r.message.replace(/"/g, '""')}"`
-    ).join('\n');
-    const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute('download', `Wedding_Guest_RSVPs_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success('Guest RSVP list exported as CSV! 📊');
-  };
-
-  // Filtered invitations
-  const filteredInvitations = useMemo(() => {
-    return invitations.filter((inv) => {
-      const matchSearch = inv.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (inv.template?.name && inv.template.name.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (!matchSearch) return false;
-      if (activeTab === 'published') return inv.status === 'PUBLISHED';
-      if (activeTab === 'drafts') return inv.status === 'DRAFT';
-      if (activeTab === 'stories') return inv.slug.includes('story') || inv.name.toLowerCase().includes('story');
-      return true;
-    });
-  }, [invitations, searchQuery, activeTab]);
-
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f4faff]">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-sky-100 border-t-sky-600"></div>
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Loading Dashboard...</p>
-        </div>
-      </div>
-    );
+  if (authLoading || !user || !db.ready) {
+    return <SiteShell><div className="db-loading"><span /><p>Loading your dashboard…</p></div></SiteShell>;
   }
 
-  if (!user) return null;
+  const fresh = justPublished ? byId(justPublished) : undefined;
+  const first = user.name.split(' ')[0];
 
   return (
-    <div className="min-h-screen bg-[#f4f8fc] text-slate-900 font-sans antialiased">
-      {/* 1. TOP NAVBAR */}
-      <header className="sticky top-0 z-30 border-b border-sky-100/80 bg-white/90 shadow-xs backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-18 items-center justify-between gap-4">
-            {/* Brand Logo */}
-            <div className="flex items-center gap-6">
-              <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-slate-900 group">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 via-sky-600 to-blue-700 text-lg font-extrabold text-white shadow-md shadow-sky-500/25 transition group-hover:scale-105">
-                  u
-                </span>
-                <span className="text-xl font-bold tracking-tight">
-                  uptemp<span className="text-sky-600">.</span>
-                </span>
-              </Link>
-
-              <div className="hidden md:flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 border border-emerald-200/60 text-[11px] font-bold text-emerald-700">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                100% Free Lifetime Tier Active
-              </div>
+    <SiteShell>
+      <div className="db">
+        {/* header */}
+        <section className="db-head">
+          <div className="sx-shell db-head-inner">
+            <div className="rv">
+              <p className="sx-eyebrow">Dashboard</p>
+              <h1>Namaste, <em>{first}</em></h1>
+              <p className="sx-muted">Your invitations, guest links and RSVPs — all in one place.</p>
             </div>
-
-            {/* Quick Links & Profile */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Link
-                href="/create?template=royal-sandalwood"
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3.5 py-2 text-xs font-bold text-sky-800 hover:bg-sky-100 transition border border-sky-200/70"
-              >
-                <span>✨</span> Wedding Studio
-              </Link>
-
-              <Link
-                href="/love-story"
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-pink-50 px-3.5 py-2 text-xs font-bold text-pink-700 hover:bg-pink-100 transition border border-pink-200/70"
-              >
-                <span>💌</span> Love Story
-              </Link>
-
-              {/* User Chip */}
-              <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-sky-600 to-indigo-600 text-white font-bold text-xs shadow-sm">
-                  {user.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="hidden lg:block text-left">
-                  <p className="text-xs font-bold text-slate-800 leading-tight">{user.name}</p>
-                  <p className="text-[10px] text-slate-500 leading-none truncate max-w-[120px]">{user.email}</p>
-                </div>
-              </div>
-
-              <button
-                onClick={logout}
-                className="rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 transition"
-              >
-                Logout
-              </button>
+            <div className="db-head-actions rv" style={{ '--rd': '100ms' } as React.CSSProperties}>
+              <Link className="sx-btn sx-btn-primary" href="/templates"><Icon name="plus" /> New invitation</Link>
+              <Link className="sx-btn sx-btn-ghost" href="/love-story#builder"><Icon name="heart" /> Love Story</Link>
+              <button type="button" className="sx-btn sx-btn-ghost" onClick={downloadExcel}><Icon name="sheet" /> Excel</button>
             </div>
           </div>
-        </div>
-      </header>
+        </section>
 
-      {/* 2. MAIN CONTAINER */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-        {/* 2.1 HERO WELCOME BANNER */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0d233a] via-[#12365a] to-[#0a1e33] p-7 sm:p-9 text-white shadow-xl shadow-sky-950/10">
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-sky-200 backdrop-blur-md border border-white/10">
-                <span>🎉</span> Live Celebration Hub
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight">
-                Welcome back, {user.name}!
-              </h1>
-              <p className="text-sm text-sky-100/80 leading-relaxed font-sans">
-                Manage your wedding invitations, track guest RSVPs with vegetarian options, customize private passcodes, and share instant WhatsApp invitations.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-sky-400 to-blue-500 px-5 py-3 text-xs sm:text-sm font-bold text-slate-950 shadow-lg shadow-sky-500/30 hover:scale-[1.02] active:scale-[0.98] transition"
-              >
-                <span>+</span> Create New Invitation
-              </button>
-              <button
-                onClick={handleExportCSV}
-                className="inline-flex items-center gap-1.5 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md hover:bg-white/20 transition"
-              >
-                <span>📥</span> Export Guest List (.csv)
-              </button>
-            </div>
-          </div>
-
-          {/* Decorative glowing gradient orbs */}
-          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-sky-500/20 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
-        </div>
-
-        {/* 2.2 METRICS OVERVIEW CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          <div className="rounded-2xl border border-sky-100 bg-white p-5 shadow-xs hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Invites</span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600 text-lg">💌</span>
-            </div>
-            <p className="mt-3 text-3xl font-extrabold text-slate-900">{invitations.length}</p>
-            <p className="mt-1 text-xs text-emerald-600 font-bold flex items-center gap-1">
-              <span>●</span> {invitations.filter((i) => i.status === 'PUBLISHED').length} Published & Live
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-sky-100 bg-white p-5 shadow-xs hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Guests</span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600 text-lg">👥</span>
-            </div>
-            <p className="mt-3 text-3xl font-extrabold text-slate-900">
-              {invitations.reduce((acc, i) => acc + (i.guestCount || 0), 0)}
-            </p>
-            <p className="mt-1 text-xs text-slate-500">Across 48 VIP families</p>
-          </div>
-
-          <div className="rounded-2xl border border-sky-100 bg-white p-5 shadow-xs hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Confirmed RSVPs</span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 text-lg">✓</span>
-            </div>
-            <p className="mt-3 text-3xl font-extrabold text-emerald-600">83%</p>
-            <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
-              <div className="h-full bg-emerald-500 rounded-full" style={{ width: '83%' }} />
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-sky-100 bg-white p-5 shadow-xs hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">WhatsApp Shares</span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-50 text-green-600 text-lg">💬</span>
-            </div>
-            <p className="mt-3 text-3xl font-extrabold text-slate-900">94</p>
-            <p className="mt-1 text-xs text-emerald-600 font-bold">1-Click Fast Delivery</p>
-          </div>
-        </div>
-
-        {/* 2.3 INVITATIONS SECTION HEADER & FILTER TABS */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-slate-900">My Invitations & Vaults</h2>
-              <p className="text-xs text-slate-500">Select an invitation to customize, copy guest links, or preview.</p>
-            </div>
-
-            {/* Filter Tabs & Search */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex rounded-xl bg-slate-100 p-1 text-xs font-bold">
-                <button
-                  onClick={() => setActiveTab('all')}
-                  className={`rounded-lg px-3 py-1.5 transition ${activeTab === 'all' ? 'bg-white text-sky-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-                >
-                  All ({invitations.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('published')}
-                  className={`rounded-lg px-3 py-1.5 transition ${activeTab === 'published' ? 'bg-white text-sky-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-                >
-                  Published ({invitations.filter((i) => i.status === 'PUBLISHED').length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('stories')}
-                  className={`rounded-lg px-3 py-1.5 transition ${activeTab === 'stories' ? 'bg-white text-sky-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-                >
-                  Love Stories
-                </button>
-              </div>
-
-              <input
-                type="text"
-                placeholder="Search invites..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-sky-400 shadow-xs"
-              />
-            </div>
-          </div>
-
-          {/* 2.4 INVITATIONS GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredInvitations.map((inv) => {
-              const isStory = inv.slug === 'love-story' || inv.name.toLowerCase().includes('love story');
-              const editUrl = isStory ? '/create/story' : `/create?template=royal-sandalwood`;
-              const liveUrl = isStory ? '/love-story' : `/create?template=royal-sandalwood`;
-
-              return (
-                <div
-                  key={inv.id}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xs transition duration-200 hover:-translate-y-1 hover:border-sky-300 hover:shadow-xl hover:shadow-sky-500/10"
-                >
-                  {/* Card Thumbnail / Header */}
-                  <div
-                    className={`relative h-44 w-full p-5 flex flex-col justify-between text-white ${
-                      isStory
-                        ? 'bg-gradient-to-br from-pink-600 via-rose-600 to-pink-900'
-                        : 'bg-gradient-to-br from-[#12365a] via-[#1b4b7c] to-[#0c243d]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between relative z-10">
-                      <span className="rounded-full bg-black/30 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase border border-white/10">
-                        {isStory ? '🔒 Passcode Vault' : '✨ Wedding Suite'}
-                      </span>
-                      <span className="rounded-full bg-emerald-500/90 px-2.5 py-0.5 text-[10px] font-bold text-white shadow-xs">
-                        {inv.status}
-                      </span>
-                    </div>
-
-                    <div className="relative z-10">
-                      <span className="text-3xl block mb-1">{isStory ? '💖' : '💍'}</span>
-                      <h3 className="text-lg font-serif font-bold text-white leading-tight drop-shadow-sm">
-                        {inv.name}
-                      </h3>
-                      <p className="text-[11px] text-white/80 font-sans mt-0.5 truncate">
-                        {inv.template?.name || 'Curated Premium Theme'}
-                      </p>
-                    </div>
-
-                    {/* Subtle decorative radial overlay */}
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.2)_0%,_transparent_70%)] pointer-events-none" />
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 border-b border-slate-100 pb-3">
-                      <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-400">Guests</p>
-                        <p className="font-bold text-slate-800 text-sm">{inv.guestCount} Allocated</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-400">Events</p>
-                        <p className="font-bold text-slate-800 text-sm">{inv._count?.events || 3} Functions</p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        <Link
-                          href={editUrl}
-                          className="flex items-center justify-center gap-1.5 rounded-xl bg-sky-600 py-2.5 text-xs font-bold text-white hover:bg-sky-700 transition shadow-xs"
-                        >
-                          <span>✏️</span> Customize
-                        </Link>
-                        <Link
-                          href={liveUrl}
-                          target="_blank"
-                          className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition"
-                        >
-                          <span>👁️</span> Live View ↗
-                        </Link>
-                      </div>
-
-                      <div className="flex items-center gap-2 pt-1">
-                        <button
-                          type="button"
-                          onClick={() => handleCopyLink(inv.slug)}
-                          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-sky-200 bg-sky-50 py-2 text-[11px] font-bold text-sky-800 hover:bg-sky-100 transition"
-                          title="Copy Link to Clipboard"
-                        >
-                          <span>🔗</span> Copy Link
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleOpenQr(inv)}
-                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-xs hover:bg-slate-50"
-                          title="Show QR Code"
-                        >
-                          📱
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDuplicate(inv)}
-                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-xs hover:bg-slate-50"
-                          title="Duplicate Invitation"
-                        >
-                          📋
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(inv.id)}
-                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs hover:bg-rose-100"
-                          title="Delete Invitation"
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 2.5 RECENT RSVP ACTIVITY & GUEST MANAGEMENT PREVIEW */}
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-7 shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
-            <div>
-              <h3 className="text-lg font-serif font-bold text-slate-900">Recent Guest RSVP Activity</h3>
-              <p className="text-xs text-slate-500">Live responses submitted directly through your invitation web link.</p>
-            </div>
-            <button
-              onClick={handleExportCSV}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-sky-200 bg-sky-50 px-3.5 py-2 text-xs font-bold text-sky-800 hover:bg-sky-100 transition"
-            >
-              <span>📊</span> Download Full Guest List (.csv)
-            </button>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400">
-                  <th className="py-2.5 px-3">Guest / Family</th>
-                  <th className="py-2.5 px-3">Reserved Passes</th>
-                  <th className="py-2.5 px-3">Diet Preference</th>
-                  <th className="py-2.5 px-3">Response Status</th>
-                  <th className="py-2.5 px-3">Submitted</th>
-                  <th className="py-2.5 px-3">Blessing Note</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {DEMO_RSVPS.map((r) => (
-                  <tr key={r.id} className="hover:bg-slate-50/70 transition">
-                    <td className="py-3 px-3 font-bold text-slate-800">{r.guestName}</td>
-                    <td className="py-3 px-3">
-                      <span className="rounded-full bg-slate-100 px-2 py-0.5 font-bold text-slate-700">
-                        {r.passes} Passes
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 text-slate-600">{r.diet}</td>
-                    <td className="py-3 px-3">
-                      <span
-                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-bold text-[11px] ${
-                          r.status === 'Attending'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : r.status === 'Declined'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}
-                      >
-                        {r.status === 'Attending' && '✓ Attending'}
-                        {r.status === 'Declined' && '✕ Declined'}
-                        {r.status === 'Pending' && '⏳ Pending'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 text-slate-400 text-[11px]">{r.time}</td>
-                    <td className="py-3 px-3 text-slate-600 italic max-w-xs truncate">"{r.message}"</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </main>
-
-      {/* 3. MODAL: CREATE NEW INVITATION (WISHLYS STYLE CHOOSE CATEGORY) */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-2xl rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-sky-100">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="sx-shell db-body">
+          {fresh && (
+            <div className="db-live">
+              <span className="db-live-icon"><Icon name="check" /></span>
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">
-                  Create a New Celebration
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Choose the format for your personalized digital invitation.
-                </p>
+                <strong>“{fresh.title}” is live</strong>
+                <p>{inviteUrl(fresh)}</p>
               </div>
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="h-8 w-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-800"
-              >
-                ✕
-              </button>
+              <div className="db-live-actions">
+                <button type="button" className="sx-btn sx-btn-sm sx-btn-ghost" onClick={() => copy(inviteUrl(fresh), 'Link copied')}><Icon name="copy" /> Copy link</button>
+                <a className="sx-btn sx-btn-sm sx-btn-ghost" href={'/v/' + fresh.slug} target="_blank" rel="noreferrer"><Icon name="eye" /> View</a>
+                {fresh.kind === 'invite' && fresh.guests.length > 0 && <button type="button" className="sx-btn sx-btn-sm sx-btn-primary" onClick={() => focusInvite(fresh.id, 'guests')}><Icon name="send" /> Send to guests</button>}
+              </div>
+              <button type="button" className="db-x" aria-label="Dismiss" onClick={() => setJustPublished(null)}><Icon name="close" /></button>
             </div>
+          )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-              {/* Option 1: Full Wedding Suite */}
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  router.push('/create?template=royal-sandalwood');
-                }}
-                className="text-left rounded-2xl border-2 border-sky-200 bg-sky-50/50 p-5 hover:border-sky-500 hover:bg-sky-50 transition group"
-              >
-                <span className="text-3xl block mb-2">💍</span>
-                <h4 className="font-serif font-bold text-base text-slate-900 group-hover:text-sky-700">
-                  Grand Wedding Suite
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Multi-ceremony lineup (Haldi, Sangeet, Muhurtham), RSVP dietary options, Google Maps directions, live stream & festive Shehnai music.
-                </p>
-                <span className="inline-block mt-3 text-xs font-bold text-sky-700">
-                  Open Wedding Customizer →
-                </span>
-              </button>
-
-              {/* Option 2: Love Story Secret Vault */}
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  router.push('/create/story');
-                }}
-                className="text-left rounded-2xl border-2 border-pink-200 bg-pink-50/50 p-5 hover:border-pink-500 hover:bg-pink-50 transition group"
-              >
-                <span className="text-3xl block mb-2">💌</span>
-                <h4 className="font-serif font-bold text-base text-slate-900 group-hover:text-pink-700">
-                  Love Story Passcode Vault
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Interactive 4-digit secret PIN protection, milestone timeline chapters, romantic audio, and animated unlocked polaroids.
-                </p>
-                <span className="inline-block mt-3 text-xs font-bold text-pink-700">
-                  Open Story Customizer →
-                </span>
-              </button>
-
-              {/* Option 3: Minimal Zen & Cinematic Couple */}
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  router.push('/create?template=minimal-zen&category=common-any');
-                }}
-                className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-sky-500 hover:bg-sky-50/40 transition group"
-              >
-                <span className="text-3xl block mb-2">🕊️</span>
-                <h4 className="font-serif font-bold text-base text-slate-900 group-hover:text-sky-700">
-                  Cinematic Couple (Minimal Zen)
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Clean editorial typography, modern video embed, digital blessing wall, and instant WhatsApp invitations.
-                </p>
-                <span className="inline-block mt-3 text-xs font-bold text-slate-700">
-                  Open Minimal Customizer →
-                </span>
-              </button>
-
-              {/* Option 4: Save The Date Countdown */}
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  router.push('/create?template=save-the-date');
-                }}
-                className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-sky-500 hover:bg-sky-50/40 transition group"
-              >
-                <span className="text-3xl block mb-2">📅</span>
-                <h4 className="font-serif font-bold text-base text-slate-900 group-hover:text-sky-700">
-                  Save The Date Single Screen
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Single high-impact screen with names, animated ticking countdown timer, and venue reveal.
-                </p>
-                <span className="inline-block mt-3 text-xs font-bold text-slate-700">
-                  Open Save The Date →
-                </span>
-              </button>
+          {/* stats */}
+          <div className="db-stats">
+            <div className="db-stat rv">
+              <span className="db-stat-icon"><Icon name="mail" /></span>
+              <small>Invitations</small>
+              <strong>{items.length}</strong>
+              <p>{items.filter((i) => i.status === 'PUBLISHED').length} live · {items.filter((i) => i.status === 'DRAFT').length} draft</p>
+            </div>
+            <div className="db-stat rv" style={{ '--rd': '70ms' } as React.CSSProperties}>
+              <span className="db-stat-icon"><Icon name="users" /></span>
+              <small>Guests invited</small>
+              <strong>{totalGuests}</strong>
+              <p>{sentCount} sent on WhatsApp</p>
+            </div>
+            <div className="db-stat rv" style={{ '--rd': '140ms' } as React.CSSProperties}>
+              <span className="db-stat-icon"><Icon name="rsvp" /></span>
+              <small>Response rate</small>
+              <strong>{responseRate}<sup>%</sup></strong>
+              <div className="db-bar" aria-hidden="true"><i style={{ width: responseRate + '%' }} /></div>
+              <p>{answeredGuests} of {totalGuests} guests replied</p>
+            </div>
+            <div className="db-stat rv" style={{ '--rd': '210ms' } as React.CSSProperties}>
+              <span className="db-stat-icon"><Icon name="user-check" /></span>
+              <small>Expected headcount</small>
+              <strong>{headcount}</strong>
+              <p>{attending.length} attending · {declined} declined</p>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* 4. MODAL: QR CODE GENERATOR */}
-      {showQrModal && selectedInviteForQr && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl border border-sky-100">
-            <h3 className="font-serif text-lg font-bold text-slate-900 mb-1">
-              Guest QR Code
-            </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Guests can scan this QR code with any phone camera to instantly open the invitation.
-            </p>
-
-            <div className="mx-auto my-3 flex h-48 w-48 items-center justify-center rounded-2xl border-2 border-slate-900 bg-slate-50 p-3 shadow-inner">
-              {/* Simulated High-Res QR SVG */}
-              <svg viewBox="0 0 100 100" className="h-full w-full fill-slate-900">
-                <rect x="10" y="10" width="25" height="25" />
-                <rect x="15" y="15" width="15" height="15" fill="white" />
-                <rect x="18" y="18" width="9" height="9" />
-                <rect x="65" y="10" width="25" height="25" />
-                <rect x="70" y="15" width="15" height="15" fill="white" />
-                <rect x="73" y="18" width="9" height="9" />
-                <rect x="10" y="65" width="25" height="25" />
-                <rect x="15" y="70" width="15" height="15" fill="white" />
-                <rect x="18" y="73" width="9" height="9" />
-                <circle cx="50" cy="50" r="8" fill="#0284c7" />
-                <rect x="45" y="15" width="10" height="20" />
-                <rect x="40" y="65" width="20" height="10" />
-                <rect x="65" y="45" width="20" height="10" />
-                <rect x="15" y="45" width="15" height="10" />
-              </svg>
+          {/* invitations */}
+          <section className="db-section">
+            <div className="db-section-head">
+              <h2>My invitations</h2>
+              <span>{items.length} total</span>
             </div>
 
-            <p className="text-[11px] font-mono text-slate-400 mt-2 truncate">
-              http://localhost:3000/i/{selectedInviteForQr.slug}
-            </p>
+            {items.length === 0 ? (
+              <div className="db-empty rv">
+                <span className="db-empty-icon"><Icon name="mail" /></span>
+                <h3>No invitations yet</h3>
+                <p>Pick a design, add your functions and publish — guest links and RSVPs will appear here.</p>
+                <div className="sx-actions sx-center">
+                  <Link className="sx-btn sx-btn-primary" href="/templates"><Icon name="plus" /> Create your first invitation</Link>
+                  <button type="button" className="sx-btn sx-btn-ghost" onClick={() => { seedSample(user.id); toast.success('Sample invitation added — delete it any time'); }}>Try with sample data</button>
+                </div>
+              </div>
+            ) : (
+              <div className="db-grid">
+                {items.map((item, idx) => {
+                  const rs = rsvps.filter((r) => r.inviteId === item.id);
+                  const yes = rs.filter((r) => r.attending);
+                  const isLove = item.kind === 'love';
+                  const tpl = !isLove ? (getTemplate(item.content.templateId) || templatesFor(item.content.functionId)[0]) : undefined;
+                  const fn = !isLove ? getFunction(item.content.functionId) : undefined;
+                  const firstEvent = !isLove ? item.content.events[0] : undefined;
+                  const bg = tpl ? tpl.palette : { bg: '#eef4fe', bg2: '#ffffff', ink: '#0f1e36', accent: '#2f6fed' };
+                  return (
+                    <article key={item.id} className="db-card rv" style={{ '--rd': (idx % 3) * 70 + 'ms' } as React.CSSProperties}>
+                      <div className="db-card-art" style={{ background: 'radial-gradient(120% 90% at 50% 0%,' + bg.bg2 + ',' + bg.bg + ' 75%)', color: bg.ink }}>
+                        <span className="db-card-badge" data-status={item.status}>{item.status === 'PUBLISHED' ? 'Live' : 'Draft'}</span>
+                        <span className="db-card-icon" style={{ color: bg.accent }}><Icon name={isLove ? 'heart' : fn!.icon} /></span>
+                        <strong style={{ fontFamily: tpl?.headFont }}>{isLove ? (item.story.from + ' & ' + item.story.to) : displayNames(item.content)}</strong>
+                        <small>{isLove ? 'Love Story · passcode protected' : tpl?.name}</small>
+                      </div>
+                      <div className="db-card-body">
+                        <h3>{item.title}</h3>
+                        <p className="db-card-meta">
+                          <span><Icon name={isLove ? 'lock' : 'calendar'} /> {isLove ? 'Private link' : firstEvent ? formatDate(firstEvent.date, { day: 'numeric', month: 'short', year: 'numeric' }) : 'No date'}</span>
+                          <span><Icon name="clock" /> Updated {now ? ago(item.updatedAt, now) : ''}</span>
+                        </p>
+                        {!isLove && (
+                          <div className="db-card-nums">
+                            <button type="button" onClick={() => focusInvite(item.id, 'guests')}><strong>{item.guests.length}</strong><span>Guests</span></button>
+                            <button type="button" onClick={() => focusInvite(item.id, 'rsvps')}><strong>{rs.length}</strong><span>Replies</span></button>
+                            <button type="button" onClick={() => { focusInvite(item.id, 'rsvps'); setStatus('attending'); }}><strong>{yes.reduce((s, r) => s + r.count, 0)}</strong><span>Coming</span></button>
+                          </div>
+                        )}
+                        <div className="db-card-actions">
+                          <Link className="sx-btn sx-btn-sm sx-btn-primary" href={editHref(item)}><Icon name="pencil" /> Edit</Link>
+                          <a className="sx-btn sx-btn-sm sx-btn-ghost" href={'/v/' + item.slug} target="_blank" rel="noreferrer"><Icon name="eye" /> View</a>
+                        </div>
+                        <div className="db-card-tools">
+                          <button type="button" onClick={() => copy(inviteUrl(item), 'Link copied')} title="Copy link" aria-label="Copy link"><Icon name="link" /></button>
+                          <button type="button" onClick={() => shareItem(item)} title="Share on WhatsApp" aria-label="Share on WhatsApp"><Icon name="chat" /></button>
+                          <button type="button" onClick={() => { duplicateItem(item.id); toast.success('Copied as a draft'); }} title="Duplicate" aria-label="Duplicate"><Icon name="copy" /></button>
+                          <button type="button" className="db-danger" onClick={() => remove(item)} title="Delete" aria-label="Delete"><Icon name="trash" /></button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+                <Link href="/templates" className="db-card-new rv">
+                  <span><Icon name="plus" /></span>
+                  <strong>New invitation</strong>
+                  <small>Wedding, sagai, birthday, griha pravesh…</small>
+                </Link>
+              </div>
+            )}
+          </section>
 
-            <div className="mt-5 flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  toast.success('QR Code downloaded as PNG image!');
-                  setShowQrModal(null);
-                }}
-                className="flex-1 rounded-xl bg-sky-600 py-2.5 text-xs font-bold text-white shadow hover:bg-sky-700"
-              >
-                Download QR
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowQrModal(null)}
-                className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50"
-              >
-                Close
-              </button>
+          {/* activity */}
+          <section className="db-section" id="activity">
+            <div className="db-panel">
+              <div className="db-panel-head">
+                <div className="db-tabs" role="tablist" aria-label="Activity">
+                  <button type="button" role="tab" aria-selected={tab === 'rsvps'} onClick={() => setTab('rsvps')}><Icon name="rsvp" /> RSVP responses <em>{rsvps.length}</em></button>
+                  <button type="button" role="tab" aria-selected={tab === 'guests'} onClick={() => setTab('guests')}><Icon name="users" /> Guest list <em>{totalGuests}</em></button>
+                </div>
+                <div className="db-downloads">
+                  <button type="button" className="sx-btn sx-btn-sm sx-btn-primary" onClick={downloadExcel}><Icon name="sheet" /> Download Excel</button>
+                  <button type="button" className="sx-btn sx-btn-sm sx-btn-ghost" onClick={downloadCsv}><Icon name="download" /> CSV</button>
+                </div>
+              </div>
+
+              <div className="db-filters">
+                <label className="db-search"><Icon name="search" /><input type="search" placeholder={tab === 'rsvps' ? 'Search name, note, meal…' : 'Search name, phone, group…'} value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search" /></label>
+                <select value={inviteFilter} onChange={(e) => setInviteFilter(e.target.value)} aria-label="Invitation">
+                  <option value="all">All invitations</option>
+                  {items.map((i) => <option key={i.id} value={i.id}>{i.title}</option>)}
+                </select>
+                <div className="db-seg" role="group" aria-label="Status">
+                  {(['all', 'attending', 'declined', ...(tab === 'guests' ? ['awaiting'] : [])] as StatusFilter[]).map((s) => (
+                    <button key={s} type="button" aria-pressed={status === s} onClick={() => setStatus(s)}>{s === 'all' ? 'All' : s[0].toUpperCase() + s.slice(1)}</button>
+                  ))}
+                </div>
+              </div>
+
+              {tab === 'rsvps' ? (
+                rsvpRows.length ? (
+                  <div className="db-table-wrap">
+                    <table className="db-table">
+                      <thead><tr><th>Guest / family</th><th>Response</th><th>Coming</th><th>Meal</th><th>Functions</th><th>Blessing note</th><th>Received</th><th><span className="sr-only">Actions</span></th></tr></thead>
+                      <tbody>
+                        {rsvpRows.map((r: RsvpRecord) => (
+                          <tr key={r.id}>
+                            <td><strong>{r.name}</strong><small>{byId(r.inviteId)?.title}{r.phone ? ' · ' + r.phone : ''}</small></td>
+                            <td><span className="db-pill" data-tone={r.attending ? 'yes' : 'no'}><Icon name={r.attending ? 'check' : 'close'} /> {r.attending ? 'Attending' : 'Declined'}</span></td>
+                            <td className="db-num">{r.attending ? r.count : '—'}</td>
+                            <td>{r.diet || '—'}</td>
+                            <td className="db-wrap">{r.eventNames.join(', ') || '—'}</td>
+                            <td className="db-note">{r.message ? '“' + r.message + '”' : '—'}</td>
+                            <td className="db-time" title={fmtDateTime(r.updatedAt || r.createdAt)}>{now ? ago(r.updatedAt || r.createdAt, now) : ''}</td>
+                            <td><button type="button" className="db-icon-btn db-danger" aria-label={'Delete RSVP from ' + r.name} onClick={() => { if (confirm('Delete this RSVP?')) deleteRsvp(r.id); }}><Icon name="trash" /></button></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="db-table-empty">
+                    <Icon name="rsvp" />
+                    <p>{rsvps.length ? 'No responses match these filters.' : 'No RSVPs yet. When guests open their link and reply, their answers appear here instantly.'}</p>
+                  </div>
+                )
+              ) : guestRows.length ? (
+                <div className="db-table-wrap">
+                  <table className="db-table">
+                    <thead><tr><th>Guest / family</th><th>Group</th><th>Invited to</th><th>Link</th><th>RSVP</th><th><span className="sr-only">Actions</span></th></tr></thead>
+                    <tbody>
+                      {guestRows.map(({ invite, guest, rsvp }) => (
+                        <tr key={invite.id + guest.id}>
+                          <td><strong>{guest.name}</strong><small>{guest.phone || 'No phone'} · {invite.title}</small></td>
+                          <td>{guest.group}</td>
+                          <td className="db-wrap">{eventNamesFor(invite, guest) || '—'}</td>
+                          <td>{guest.sentAt ? <span className="db-pill" data-tone="info"><Icon name="send" /> Sent {now ? ago(guest.sentAt, now) : ''}</span> : <span className="db-pill" data-tone="muted">Not sent</span>}</td>
+                          <td>{rsvp ? <span className="db-pill" data-tone={rsvp.attending ? 'yes' : 'no'}>{rsvp.attending ? 'Attending · ' + rsvp.count : 'Declined'}</span> : <span className="db-pill" data-tone="wait"><Icon name="clock" /> Awaiting</span>}</td>
+                          <td className="db-row-actions">
+                            <button type="button" className="db-icon-btn" aria-label={'Copy link for ' + guest.name} title="Copy personal link" onClick={() => copy(inviteUrl(invite, invite.personalize ? guest.id : undefined), 'Personal link copied')}><Icon name="link" /></button>
+                            <a className="db-icon-btn" aria-label={'Open ' + guest.name + '’s invitation'} title="Open as this guest" href={inviteUrl(invite, invite.personalize ? guest.id : undefined)} target="_blank" rel="noreferrer"><Icon name="eye" /></a>
+                            <button type="button" className="db-icon-btn db-wa" aria-label={'Send to ' + guest.name + ' on WhatsApp'} title="Send on WhatsApp" onClick={() => sendWhatsApp(invite, guest)}><Icon name="chat" /></button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="db-table-empty">
+                  <Icon name="users" />
+                  <p>{totalGuests ? 'No guests match these filters.' : 'No guests yet. Add or import guests in the editor’s “Guests & share” step.'}</p>
+                </div>
+              )}
+              <p className="db-foot">Excel includes three sheets: RSVP responses, Guest list (with each personal link) and a Summary per invitation.</p>
             </div>
-          </div>
+          </section>
         </div>
-      )}
-    </div>
+      </div>
+    </SiteShell>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={null}>
+      <Dashboard />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 
 const phases = [
   { number: '01', title: 'Infrastructure & setup', summary: 'The foundation for a reliable invitation platform.', items: ['Next.js website and API service', 'Database schema and migrations', 'Environment configuration', 'File storage and optimized media', 'Production hosting and API connectivity'], state: 'Foundation' },
@@ -74,7 +75,7 @@ export default function FeaturesPage() {
               </div>
             </div>
             <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-              {phase.items.map((item) => <li key={item} className="flex gap-2.5 text-sm leading-5 text-slate-600"><span className="mt-0.5 shrink-0 text-sky-600">✦</span><span>{item}</span></li>)}
+              {phase.items.map((item) => <li key={item} className="flex gap-2.5 text-sm leading-5 text-slate-600"><span className="mt-0.5 shrink-0 text-sky-600"><Icon name="sparkles" /></span><span>{item}</span></li>)}
             </ul>
           </article>)}
         </div>

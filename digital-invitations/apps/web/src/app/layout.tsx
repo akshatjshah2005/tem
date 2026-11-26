@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './site.css';
 import '@/styles/template-engine.css';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/hooks/useAuth';
@@ -8,8 +9,8 @@ import { AuthProvider } from '@/hooks/useAuth';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Uptemp — Elegant Digital Invitations',
-  description: 'Create elegant digital invitations with personalized details, event management, guest sharing and RSVP tools.',
+  title: 'uptemp — Cinematic Digital Invitations',
+  description: 'Cinematic digital invitations for weddings, sagai, haldi, sangeet, baby showers, birthdays, car deliveries, housewarmings and family celebrations — personal for every guest.',
 };
 
 export default function RootLayout({
@@ -36,3 +37,4 @@ export default function RootLayout({
     </html>
   );
 }
+

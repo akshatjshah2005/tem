@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { eventAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 import { toDateTimeLocal, splitDateTimeInput } from '@/lib/format';
 
 interface Event {
@@ -110,8 +111,9 @@ export default function EventForm({ invitationId, event, onClose, onSave }: Even
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
+              aria-label="Close"
             >
-              ✕
+              <Icon name="close" />
             </button>
           </div>
 

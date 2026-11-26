@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { mediaAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 import { mediaDisplayUrl, mediaIsImage } from '@/lib/format';
 
 interface Media {
@@ -123,7 +124,7 @@ export default function MediaUploader({
           onChange={(e) => handleFileSelect(e.target.files)}
           className="hidden"
         />
-        <div className="text-4xl mb-4">📸</div>
+        <div className="text-4xl mb-4"><Icon name="camera" /></div>
         <p className="text-slate-700 mb-2">
           {uploading ? 'Uploading...' : 'Drag & drop files here, or click to select'}
         </p>
@@ -142,7 +143,7 @@ export default function MediaUploader({
       {/* Media Grid */}
       {media.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-sky-200 bg-sky-50/50 py-12 text-center">
-          <div className="text-4xl mb-4">🖼️</div>
+          <div className="text-4xl mb-4"><Icon name="image" /></div>
           <h3 className="mb-2 text-lg font-semibold text-slate-900">No media yet</h3>
           <p className="text-slate-500">Upload images to use in your invitation</p>
         </div>
@@ -188,16 +189,18 @@ export default function MediaUploader({
                     disabled={index === 0}
                     className="bg-white text-gray-900 px-2 py-1 rounded text-xs font-medium hover:bg-gray-100 disabled:opacity-50"
                     title="Move left"
+                    aria-label="Move left"
                   >
-                    ←
+                    <Icon name="arrow-left" />
                   </button>
                   <button
                     onClick={() => handleMoveRight(index)}
                     disabled={index === media.length - 1}
                     className="bg-white text-gray-900 px-2 py-1 rounded text-xs font-medium hover:bg-gray-100 disabled:opacity-50"
                     title="Move right"
+                    aria-label="Move right"
                   >
-                    →
+                    <Icon name="arrow-right" />
                   </button>
                   <button
                     onClick={() => {
@@ -207,8 +210,9 @@ export default function MediaUploader({
                     }}
                     className="bg-red-600 text-white px-2 py-1 rounded text-xs font-medium hover:bg-red-700"
                     title="Delete"
+                    aria-label="Delete"
                   >
-                    ✕
+                    <Icon name="trash" />
                   </button>
                 </div>
               </div>

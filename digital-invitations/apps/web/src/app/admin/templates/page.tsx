@@ -6,6 +6,7 @@ import { templateAPI } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import Icon from '@/components/ui/Icon';
 
 interface Template {
   id: string;
@@ -116,7 +117,7 @@ export default function AdminTemplatesPage() {
             templates.map((template) => (
               <div key={template.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="h-48 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
-                  <span className="text-4xl">💌</span>
+                  <span className="text-4xl"><Icon name="letter" /></span>
                 </div>
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
