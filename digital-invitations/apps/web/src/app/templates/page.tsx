@@ -6,7 +6,10 @@ import { useSearchParams } from 'next/navigation';
 import TemplateCard from '@/components/ui/TemplateCard';
 import Icon from '@/components/ui/Icon';
 import { SiteShell } from '@/components/ui/Sections';
-import { FUNCTIONS, TEMPLATES, getFunction, resolveFunctionId, type FunctionId } from '@/lib/functions';
+import { FUNCTIONS, TEMPLATES, WEDDING_GROUP, getFunction, resolveFunctionId, type FunctionId } from '@/lib/functions';
+
+type Filter = FunctionId | 'all' | typeof WEDDING_GROUP.id;
+const inGroup = (id: FunctionId) => WEDDING_GROUP.functionIds.includes(id);
 
 const sorts = [
   { id: 'featured', label: 'Featured' },
@@ -16,11 +19,12 @@ const sorts = [
 
 function Library() {
   const params = useSearchParams();
-  const [fn, setFn] = useState<FunctionId | 'all'>(resolveFunctionId(params?.get('category')) || 'all');
+  const category = params?.get('category');
+  const [fn, setFn] = useState<Filter>(category === WEDDING_GROUP.id ? WEDDING_GROUP.id : resolveFunctionId(category) || 'all');
   const [sort, setSort] = useState<(typeof sorts)[number]['id']>('featured');
   const [query, setQuery] = useState('');
 
-  const pick = (id: FunctionId | 'all') => {
+  const pick = (id: Filter) => {
     setFn(id);
     const url = id === 'all' ? '/templates' : '/templates?category=' + id;
     window.history.replaceState(null, '', url);
@@ -29,11 +33,11 @@ function Library() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return TEMPLATES
-      .filter((t) => (fn === 'all' || t.functionId === fn) && (!q || [t.name, t.description, getFunction(t.functionId).label].join(' ').toLowerCase().includes(q)))
+      .filter((t) => (fn === 'all' || (fn === WEDDING_GROUP.id ? inGroup(t.functionId) : t.functionId === fn)) && (!q || [t.name, t.description, getFunction(t.functionId).label].join(' ').toLowerCase().includes(q)))
       .sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name) : sort === 'newest' ? Number(!!b.isNew) - Number(!!a.isNew) || a.order - b.order : a.order - b.order);
   }, [fn, sort, query]);
 
-  const current = fn === 'all' ? null : getFunction(fn);
+  const current = fn === 'all' ? null : fn === WEDDING_GROUP.id ? { icon: 'crown', label: WEDDING_GROUP.label, tagline: WEDDING_GROUP.tagline } : getFunction(fn);
   const countFor = (id: FunctionId) => TEMPLATES.filter((t) => t.functionId === id).length;
 
   return (
@@ -48,6 +52,9 @@ function Library() {
           <div className="tl-occ" role="group" aria-label="Occasion">
             <button type="button" aria-pressed={fn === 'all'} onClick={() => pick('all')}>
               <Icon name="sparkles" />All occasions<em>{TEMPLATES.length}</em>
+            </button>
+            <button type="button" aria-pressed={fn === WEDDING_GROUP.id} onClick={() => pick(WEDDING_GROUP.id)}>
+              <Icon name="crown" />{WEDDING_GROUP.label}<em>{TEMPLATES.filter((t) => inGroup(t.functionId)).length}</em>
             </button>
             {FUNCTIONS.map((f) => (
               <button key={f.id} type="button" aria-pressed={fn === f.id} onClick={() => pick(f.id)}>

@@ -244,6 +244,14 @@ export const getTemplate = (id?: string | null) => TEMPLATES.find((t) => t.id ==
 export const templatesFor = (fn: FunctionId) => TEMPLATES.filter((t) => t.functionId === fn);
 export const firstTemplateFor = (fn: FunctionId) => templatesFor(fn)[0];
 
+/** The "Wedding functions" group: every ritual of an Indian wedding, in order. */
+export const WEDDING_GROUP = {
+  id: 'wedding-functions' as const,
+  label: 'Wedding functions',
+  tagline: 'Sagai, haldi, sangeet and the wedding day — a design for every ritual',
+  functionIds: ['engagement', 'haldi', 'sangeet', 'wedding'] as FunctionId[],
+};
+
 /** Legacy category values used in older links. */
 const CATEGORY_ALIASES: Record<string, FunctionId> = { 'common-any': 'family', 'any-occasion': 'family', 'save-the-date': 'wedding', kankotri: 'wedding', festivals: 'family', baby: 'baby-shower', car: 'car-delivery', 'griha-pravesh': 'housewarming' };
 export const resolveFunctionId = (value?: string | null): FunctionId | undefined => {

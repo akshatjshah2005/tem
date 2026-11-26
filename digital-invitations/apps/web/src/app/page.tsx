@@ -7,7 +7,7 @@ import Icon, { type IconName } from '@/components/ui/Icon';
 import { SiteShell, StepsSection } from '@/components/ui/Sections';
 import CinematicInvite from '@/components/cinematic/CinematicInvite';
 import DeviceFrame, { DeviceToggle, type DeviceView } from '@/components/cinematic/DeviceFrame';
-import { FUNCTIONS, TEMPLATES, createHref, defaultContent, demoHref, getTemplate, templatesFor, type FunctionId } from '@/lib/functions';
+import { FUNCTIONS, TEMPLATES, createHref, defaultContent, demoHref, getTemplate, templatesFor, WEDDING_GROUP, type FunctionId } from '@/lib/functions';
 
 const inside: { icon: IconName; label: string }[] = [
   { icon: 'user-check', label: 'Guest name on the opening' },
@@ -24,26 +24,27 @@ const guests = [
   { initials: 'TK', name: 'Tanvi', events: ['Sangeet', 'Reception'], note: 'College friends — the fun nights' },
 ];
 
-const stats = [
-  { value: '9', label: 'occasions' },
-  { value: String(TEMPLATES.length), label: 'cinematic designs' },
-  { value: '6', label: 'opening styles' },
-  { value: '0', label: 'apps for guests' },
-];
+/** Occasions shown in the hero list (car delivery is left out here). */
+const SHOWCASE_FUNCTIONS = FUNCTIONS.filter((f) => f.id !== 'car-delivery');
+/** "All": one design per occasion, so visitors can flip through the range. */
+const ALL_DESIGNS = SHOWCASE_FUNCTIONS.map((f) => templatesFor(f.id)[0]);
+/** "Wedding functions": both designs for sagai, haldi, sangeet and the wedding. */
+const WEDDING_DESIGNS = WEDDING_GROUP.functionIds.flatMap((id) => templatesFor(id));
+type Pick = FunctionId | 'all' | 'wedding-functions';
 
 /* ---------- hero showcase: occasion rail · live device · what's inside ---------- */
 function Showcase() {
-  const [fnId, setFnId] = useState<FunctionId>('wedding');
+  const [fnId, setFnId] = useState<Pick>('all');
   const [templateId, setTemplateId] = useState('royal-sandalwood');
   const [view, setView] = useState<DeviceView>('phone');
   const [replay, setReplay] = useState(0);
   const template = getTemplate(templateId) || TEMPLATES[0];
   const content = useMemo(() => defaultContent(template.functionId, template.id), [template]);
-  const options = templatesFor(fnId);
+  const options = fnId === 'all' ? ALL_DESIGNS : fnId === 'wedding-functions' ? WEDDING_DESIGNS : templatesFor(fnId);
 
-  const pickFunction = (id: FunctionId) => {
+  const pickFunction = (id: Pick) => {
     setFnId(id);
-    setTemplateId(templatesFor(id)[0].id);
+    setTemplateId(id === 'all' ? ALL_DESIGNS[0].id : id === 'wedding-functions' ? WEDDING_DESIGNS[0].id : templatesFor(id)[0].id);
     setReplay((r) => r + 1);
   };
 
@@ -51,9 +52,15 @@ function Showcase() {
     <div className="hx-showcase">
       <div className="hx-rail" role="group" aria-label="Pick an occasion">
         <p className="hx-rail-title">Occasion</p>
-        {FUNCTIONS.map((f) => (
+        <button type="button" aria-pressed={fnId === 'all'} onClick={() => pickFunction('all')}>
+          <span className="hx-rail-icon"><Icon name="sparkles" /></span>All
+        </button>
+        <button type="button" aria-pressed={fnId === 'wedding-functions'} onClick={() => pickFunction('wedding-functions')}>
+          <span className="hx-rail-icon"><Icon name="crown" /></span>{WEDDING_GROUP.label}
+        </button>
+        {SHOWCASE_FUNCTIONS.map((f) => (
           <button key={f.id} type="button" aria-pressed={fnId === f.id} onClick={() => pickFunction(f.id)}>
-            <span className="hx-rail-icon"><Icon name={f.icon} /></span>{f.short}
+            <span className="hx-rail-icon"><Icon name={f.icon} /></span>{f.label}
           </button>
         ))}
       </div>
@@ -147,30 +154,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* numbers */}
-      <section className="hx-stats" aria-label="At a glance">
-        <div className="sx-shell hx-stats-grid">
-          {stats.map((s, i) => (
-            <div key={s.label} className="rv" style={{ '--rd': i * 80 + 'ms' } as React.CSSProperties}>
-              <strong>{s.value}</strong><span>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* moving occasion ticker */}
-      <div className="hx-ticker" aria-label="Occasions">
-        <div className="hx-ticker-track">
-          {[0, 1].map((copy) => (
-            <div key={copy} className="hx-ticker-set" aria-hidden={copy === 1}>
-              {FUNCTIONS.map((f) => (
-                <Link key={f.id} href={'/templates?category=' + f.id} tabIndex={copy === 1 ? -1 : 0}><Icon name={f.icon} />{f.label}</Link>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* template filmstrip */}
       <section className="sx-section" id="templates">
         <div className="sx-shell">
@@ -217,41 +200,6 @@ export default function HomePage() {
       </section>
 
       <StepsSection />
-
-      {/* tools */}
-      <section className="sx-section sx-section-tint">
-        <div className="sx-shell">
-          <div className="sx-head rv">
-            <div>
-              <p className="sx-eyebrow">Free tools</p>
-              <h2>More ways to celebrate</h2>
-            </div>
-          </div>
-          <div className="hx-tools">
-            <Link href="/poster-maker" className="hx-tool rv">
-              <div>
-                <span className="hx-tool-icon"><Icon name="frame" /></span>
-                <h3>Poster maker</h3>
-                <p>Countdown posters for weddings, birthdays, car deliveries and festivals — sized for WhatsApp status and Instagram.</p>
-                <span className="sx-textlink">Make a poster <Icon name="arrow-right" /></span>
-              </div>
-              <div className="hx-tool-art" aria-hidden="true">
-                <span style={{ '--r': '-8deg' } as React.CSSProperties}><small>Countdown</small><b>21</b><em>days to go</em></span>
-                <span style={{ '--r': '6deg' } as React.CSSProperties}><small>Happy</small><Icon name="diwali" className="hx-tool-art-icon" /><em>Diwali</em></span>
-              </div>
-            </Link>
-            <Link href="/love-story" className="hx-tool rv" style={{ '--rd': '120ms' } as React.CSSProperties}>
-              <div>
-                <span className="hx-tool-icon"><Icon name="heart" /></span>
-                <h3>Love Story</h3>
-                <p>Your letter, chapters and photos behind a passcode — for Valentine’s, anniversaries or long distance.</p>
-                <span className="sx-textlink">Write your story <Icon name="arrow-right" /></span>
-              </div>
-              <div className="hx-lock" aria-hidden="true"><span><Icon name="lock" /></span><i>• • • •</i></div>
-            </Link>
-          </div>
-        </div>
-      </section>
     </SiteShell>
   );
 }

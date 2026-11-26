@@ -699,14 +699,14 @@ function StudioWorkspace() {
         try {
           osc.stop();
           osc.disconnect();
-        } catch {}
+        } catch { }
       });
       oscillatorNodesRef.current = [];
       if (audioCtxRef.current) {
         audioCtxRef.current.close();
         audioCtxRef.current = null;
       }
-    } catch {}
+    } catch { }
   };
 
   const updateEvent = (id: string, field: keyof CeremonyEvent, value: any) => {
@@ -1058,30 +1058,30 @@ function StudioWorkspace() {
           <Link href="/templates" className="upt-wz-exit">All templates</Link>
         </header>
       ) : (
-      <header className="upt-studio-header">
-        <div className="upt-studio-heading">
-          <Link href="/" className="upt-studio-brand" aria-label="uptemp home"><span aria-hidden="true">✦</span></Link>
-          <Link href="/templates" className="upt-studio-back">← All templates</Link>
-          <div>
-            <p className="upt-studio-kicker">{editing ? 'Invitation studio' : 'Interactive template trial'}</p>
-            {editing ? <input aria-label="Invitation title" maxLength={100} value={inviteTitle} onChange={(e) => setInviteTitle(e.target.value)} /> : <h1>{currentTheme.name.split(' (')[0]}</h1>}
+        <header className="upt-studio-header">
+          <div className="upt-studio-heading">
+            <Link href="/" className="upt-studio-brand" aria-label="uptemp home"><span aria-hidden="true">✦</span></Link>
+            <Link href="/templates" className="upt-studio-back">← All templates</Link>
+            <div>
+              <p className="upt-studio-kicker">{editing ? 'Invitation studio' : 'Interactive template trial'}</p>
+              {editing ? <input aria-label="Invitation title" maxLength={100} value={inviteTitle} onChange={(e) => setInviteTitle(e.target.value)} /> : <h1>{currentTheme.name.split(' (')[0]}</h1>}
+            </div>
           </div>
-        </div>
-        <div className="upt-studio-actions">
-          {editing ? (
-            <>
-              <button type="button" onClick={() => setMobilePanel(mobilePanel === 'edit' ? 'preview' : 'edit')} className="upt-mobile-switch">
-                {mobilePanel === 'edit' ? 'Show preview' : 'Show editor'}
+          <div className="upt-studio-actions">
+            {editing ? (
+              <>
+                <button type="button" onClick={() => setMobilePanel(mobilePanel === 'edit' ? 'preview' : 'edit')} className="upt-mobile-switch">
+                  {mobilePanel === 'edit' ? 'Show preview' : 'Show editor'}
+                </button>
+                <button type="button" onClick={saveDraft} className="upt-studio-primary">Save draft</button>
+              </>
+            ) : (
+              <button type="button" className="upt-studio-primary" onClick={() => { loadDraft(); setEditing(true); }}>
+                Use this design
               </button>
-              <button type="button" onClick={saveDraft} className="upt-studio-primary">Save draft</button>
-            </>
-          ) : (
-            <button type="button" className="upt-studio-primary" onClick={() => { loadDraft(); setEditing(true); }}>
-              Use this design
-            </button>
-          )}
-        </div>
-      </header>
+            )}
+          </div>
+        </header>
       )}
       <div className={'upt-studio-body ' + (editing ? 'upt-editing' : 'upt-trial') + ' upt-mobile-' + mobilePanel}>
         {!editing && wizardPanel}
@@ -1091,11 +1091,10 @@ function StudioWorkspace() {
             <button
               onClick={() => setActiveTab('events')} aria-pressed={activeTab === "events"}
               title="Ceremonies & Events"
-              className={`relative flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-                activeTab === 'events'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              className={`relative flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'events'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                }`}
             >
               <span className="text-lg">📅</span>
               <span className="text-[9px] font-bold">Events</span>
@@ -1107,11 +1106,10 @@ function StudioWorkspace() {
             <button
               onClick={() => setActiveTab('story')} aria-pressed={activeTab === "story"}
               title="Couple Story & Blessings"
-              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-                activeTab === 'story'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'story'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                }`}
             >
               <span className="text-lg">📖</span>
               <span className="text-[9px] font-bold">Story</span>
@@ -1120,11 +1118,10 @@ function StudioWorkspace() {
             <button
               onClick={() => setActiveTab('themes')} aria-pressed={activeTab === "themes"}
               title="Themes, Cards & Music"
-              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-                activeTab === 'themes'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'themes'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                }`}
             >
               <span className="text-lg">🎨</span>
               <span className="text-[9px] font-bold">Themes</span>
@@ -1133,11 +1130,10 @@ function StudioWorkspace() {
             <button
               onClick={() => setActiveTab('guests')} aria-pressed={activeTab === "guests"}
               title="Guest Personalization"
-              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-                activeTab === 'guests'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'guests'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                }`}
             >
               <span className="text-lg">👥</span>
               <span className="text-[9px] font-bold">Guests</span>
@@ -1146,11 +1142,10 @@ function StudioWorkspace() {
             <button
               onClick={() => setActiveTab('gallery')} aria-pressed={activeTab === "gallery"}
               title="Photo Gallery & Moments"
-              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-                activeTab === 'gallery'
-                  ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'gallery'
+                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                }`}
             >
               <span className="text-lg">🖼️</span>
               <span className="text-[9px] font-bold">Gallery</span>
@@ -1160,11 +1155,10 @@ function StudioWorkspace() {
           {/* Settings Tab Button at Bottom */}
           <button
             onClick={() => setActiveTab('settings')} aria-pressed={activeTab === "settings"}
-            className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${
-              activeTab === 'settings'
-                ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
-                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-800'
-            }`}
+            className={`flex h-11 w-11 flex-col items-center justify-center rounded-2xl transition ${activeTab === 'settings'
+              ? 'bg-sky-100 text-sky-900 font-bold shadow-xs'
+              : 'text-slate-400 hover:bg-slate-100 hover:text-slate-800'
+              }`}
             title="Invitation Settings & Rules"
           >
             <span className="text-lg">⚙️</span>
@@ -1355,14 +1349,12 @@ function StudioWorkspace() {
                   <button
                     type="button"
                     onClick={() => setShowLiveStream(!showLiveStream)}
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${
-                      showLiveStream ? 'bg-sky-600' : 'bg-slate-300'
-                    }`}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${showLiveStream ? 'bg-sky-600' : 'bg-slate-300'
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                        showLiveStream ? 'translate-x-4' : 'translate-x-0.5'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${showLiveStream ? 'translate-x-4' : 'translate-x-0.5'
+                        }`}
                     />
                   </button>
                 </div>
@@ -1402,11 +1394,10 @@ function StudioWorkspace() {
                     <button
                       key={inv}
                       onClick={() => setGodBlessing(inv)}
-                      className={`truncate rounded-lg px-2 py-1.5 border text-left font-serif text-[11px] ${
-                        godBlessing === inv
-                          ? 'border-sky-500 bg-sky-50 font-bold text-sky-900'
-                          : 'border-slate-200 hover:bg-slate-50'
-                      }`}
+                      className={`truncate rounded-lg px-2 py-1.5 border text-left font-serif text-[11px] ${godBlessing === inv
+                        ? 'border-sky-500 bg-sky-50 font-bold text-sky-900'
+                        : 'border-slate-200 hover:bg-slate-50'
+                        }`}
                     >
                       {inv}
                     </button>
@@ -1459,9 +1450,8 @@ function StudioWorkspace() {
                   </div>
                   <button
                     onClick={toggleMusic}
-                    className={`px-3 py-1 text-xs font-bold rounded-full transition ${
-                      isPlayingMusic ? 'bg-amber-600 text-white shadow-xs' : 'bg-white border border-amber-300 text-amber-900'
-                    }`}
+                    className={`px-3 py-1 text-xs font-bold rounded-full transition ${isPlayingMusic ? 'bg-amber-600 text-white shadow-xs' : 'bg-white border border-amber-300 text-amber-900'
+                      }`}
                   >
                     {isPlayingMusic ? '⏸ Pause' : '▶ Play Song'}
                   </button>
@@ -1479,11 +1469,10 @@ function StudioWorkspace() {
                         }
                         toast.success(`Selected track: ${song.title}`);
                       }}
-                      className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition ${
-                        audioTrack === song.title
-                          ? 'border-amber-500 bg-white shadow-xs ring-1 ring-amber-300'
-                          : 'border-amber-100 bg-white/70 hover:bg-white'
-                      }`}
+                      className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition ${audioTrack === song.title
+                        ? 'border-amber-500 bg-white shadow-xs ring-1 ring-amber-300'
+                        : 'border-amber-100 bg-white/70 hover:bg-white'
+                        }`}
                     >
                       <div className="flex items-center gap-2">
                         <span className="text-base">{song.emoji}</span>
@@ -1513,11 +1502,10 @@ function StudioWorkspace() {
                         setCurrentTheme(theme);
                         toast.success(`Theme updated to ${theme.name}`);
                       }}
-                      className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${
-                        currentTheme.id === theme.id
-                          ? 'border-sky-500 bg-sky-50/80 shadow-xs ring-2 ring-sky-200'
-                          : 'border-slate-200 hover:bg-slate-50'
-                      }`}
+                      className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${currentTheme.id === theme.id
+                        ? 'border-sky-500 bg-sky-50/80 shadow-xs ring-2 ring-sky-200'
+                        : 'border-slate-200 hover:bg-slate-50'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className="flex -space-x-1.5">
@@ -1563,11 +1551,10 @@ function StudioWorkspace() {
                   <div
                     key={g.id}
                     onClick={() => setSelectedGuestId(g.id)}
-                    className={`cursor-pointer rounded-xl border p-3 transition ${
-                      selectedGuestId === g.id
-                        ? 'border-sky-500 bg-sky-50/90 shadow-xs ring-1 ring-sky-300'
-                        : 'border-slate-200 bg-white hover:bg-slate-50'
-                    }`}
+                    className={`cursor-pointer rounded-xl border p-3 transition ${selectedGuestId === g.id
+                      ? 'border-sky-500 bg-sky-50/90 shadow-xs ring-1 ring-sky-300'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <p className="font-bold text-slate-900">{g.name}</p>
@@ -1655,11 +1642,10 @@ function StudioWorkspace() {
                         setCoverPhoto(moment.url);
                         toast.success(`Set "${moment.title}" as invitation cover photo!`);
                       }}
-                      className={`group relative cursor-pointer overflow-hidden rounded-xl border-2 transition ${
-                        coverPhoto === moment.url
-                          ? 'border-sky-500 shadow-md ring-2 ring-sky-300'
-                          : 'border-slate-200 hover:border-sky-300'
-                      }`}
+                      className={`group relative cursor-pointer overflow-hidden rounded-xl border-2 transition ${coverPhoto === moment.url
+                        ? 'border-sky-500 shadow-md ring-2 ring-sky-300'
+                        : 'border-slate-200 hover:border-sky-300'
+                        }`}
                     >
                       <div className="h-20 w-full overflow-hidden bg-slate-100">
                         <img
@@ -1779,18 +1765,16 @@ function StudioWorkspace() {
             <div className="inline-flex items-center rounded-full border border-slate-300/80 bg-white/95 p-1 shadow-xs backdrop-blur">
               <button
                 onClick={() => setPreviewMode('live')}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
-                  previewMode === 'live' ? 'bg-[#6e2849] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${previewMode === 'live' ? 'bg-[#6e2849] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
               >
                 <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
                 Invitation
               </button>
               <button
                 onClick={() => { setViewMode('mobile'); setIsEnvelopeOpen(true); setRsvpSubmitted(false); setPreviewMode('rsvp'); rsvpRef.current?.scrollIntoView({ block: 'nearest' }); }}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${
-                  previewMode === 'rsvp' ? 'bg-sky-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition ${previewMode === 'rsvp' ? 'bg-sky-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
               >
                 Test RSVP
               </button>
@@ -2153,22 +2137,20 @@ function StudioWorkspace() {
                               <button
                                 type="button"
                                 onClick={() => setRsvpAttending(true)}
-                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${
-                                  rsvpAttending
-                                    ? 'bg-emerald-600 text-white border-emerald-600'
-                                    : 'bg-white text-slate-700'
-                                }`}
+                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${rsvpAttending
+                                  ? 'bg-emerald-600 text-white border-emerald-600'
+                                  : 'bg-white text-slate-700'
+                                  }`}
                               >
                                 ✓ Accept
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setRsvpAttending(false)}
-                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${
-                                  !rsvpAttending
-                                    ? 'bg-rose-600 text-white border-rose-600'
-                                    : 'bg-white text-slate-700'
-                                }`}
+                                className={`rounded-xl py-1.5 text-xs font-bold border transition ${!rsvpAttending
+                                  ? 'bg-rose-600 text-white border-rose-600'
+                                  : 'bg-white text-slate-700'
+                                  }`}
                               >
                                 ✕ Decline
                               </button>
