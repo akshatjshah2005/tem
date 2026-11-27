@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W2 Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500;800&family=Alex+Brush&family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f1ec;--panel:#ffffff;--ink:#1f1d1a;--muted:#6b665e;--line:#e3ddd3;
+  --accent:#9b3a4c;--accent-ink:#fff;--field:#faf8f4;--focus:#9b3a4c;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#161514;--panel:#1f1e1c;--ink:#efebe4;--muted:#a59f95;--line:#34312d;
+    --accent:#d0687c;--accent-ink:#1a1010;--field:#262422;--focus:#d0687c;}
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,sans-serif}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 380px;height:100vh}
+.stage-wrap{display:flex;flex-direction:column;min-width:0;min-height:0}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+.toolbar h1{font-size:15px;font-weight:600;margin:0 12px 0 0}
+button,.btn{font:inherit;font-weight:500;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:8px;padding:8px 12px;min-height:38px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+button:hover,.btn:hover{border-color:var(--muted)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,input:focus-visible,.btn:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.spacer{flex:1}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px;position:relative}
+.frame{position:relative;height:100%;aspect-ratio:720/1280;max-width:100%;box-shadow:0 10px 40px rgba(0,0,0,.18);border-radius:6px;overflow:hidden;background:#000}
+.frame canvas{width:100%;height:100%;display:block;cursor:default}
+.frame canvas.hot{cursor:text}
+#inlineEdit{position:absolute;display:none;border:1.5px dashed var(--focus);background:rgba(255,255,255,.12);padding:0 4px;text-align:center;outline:none;border-radius:4px;transform-origin:left top}
+.timeline{display:flex;gap:10px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);background:var(--panel)}
+.timeline input[type=range]{flex:1;accent-color:var(--accent)}
+.time{font-variant-numeric:tabular-nums;color:var(--muted);min-width:96px;text-align:right}
+.panel{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:16px}
+.panel h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 0 8px}
+.panel h2:first-child{margin-top:0}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.field{display:block;margin-bottom:10px}
+.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.field input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-height:40px}
+.field input[type=text]:focus{outline:2px solid var(--focus);outline-offset:1px;border-color:transparent}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.overlay{position:fixed;inset:0;background:rgba(20,18,16,.72);color:#fff;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;z-index:10;text-align:center;padding:24px}
+.bar{width:260px;height:6px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width .2s}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:11}
+.toast.show{opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto auto;height:auto}
+  .stage{height:78vh}
+  .panel{border-left:0;border-top:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="stage-wrap">
+    <div class="toolbar">
+      <h1>Wedding invite video</h1>
+      <button id="playBtn" class="primary" aria-label="Play">
+        <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>
+        <span id="playLabel">Play</span>
+      </button>
+      <button id="compareBtn" title="Hold to see the original video">Hold: original</button>
+      <label class="btn"><input type="checkbox" id="showAreas" checked> Show editable areas</label>
+      <span class="spacer"></span>
+      <button id="exportBtn">Save text (JSON)</button>
+      <label class="btn">Load text<input type="file" id="importFile" accept="application/json" class="sr"></label>
+      <button id="resetBtn">Reset</button>
+      <button id="recordBtn" class="primary">Download video</button>
+    </div>
+    <div class="stage">
+      <div class="frame" id="frame">
+        <canvas id="cv" width="720" height="1280" aria-label="Invitation video. Click any text to edit it."></canvas>
+        <input id="inlineEdit" type="text" aria-label="Edit text">
+      </div>
+    </div>
+    <div class="timeline">
+      <input type="range" id="seek" min="0" max="60.33" step="0.01" value="0" aria-label="Video position">
+      <span class="time" id="time">0:00 / 1:00</span>
+    </div>
+  </section>
+  <aside class="panel" id="panel">
+    <p class="hint">Click any text on the video to change it, or type here. Positions, fonts, colours and animation stay exactly as in the original.</p>
+  </aside>
+</div>
+<div class="overlay" id="loading"><div id="loadMsg">Preparing editable layers…</div><div class="bar"><i id="loadBar"></i></div></div>
+<div class="toast" id="toast" role="status"></div>
+<video id="vid" src="w2.mp4" playsinline preload="auto" style="display:none"></video>
+<video id="probe" src="w2.mp4" muted playsinline preload="auto" style="display:none"></video>
+
+<script>
+(() => {
+'use strict';
+const W = 720, H = 1280, DUR = 60.33;
+const STORE = 'w2-editor-v1';
+const SCENES = ['Opening', 'Blessing & families', 'Event 1', 'Event 2', 'Event 3', 'Event 4'];
+// [frame time with all text visible] per scene — used to lift the original text out
+const SCENE_FULL = [4.8, 15.9, 25.3, 36.0, 46.3, 60.2];
+// frames whose middle is empty paper — their median is the clean background
+const PLATE_TIMES = [7.0, 17.9, 28.6, 38.8, 48.8];
+const FONT = {
+  script: '400 SZ "Alex Brush"',
+  date:   '400 SZ "Alex Brush"',
+  serif:  '500 SZ "Abhaya Libre"',
+  bold:   '800 SZ "Abhaya Libre"',
+  mono:   '500 SZ "Cormorant Garamond"'
+};
+// id, label, scene, kind, original text, colour, size, centre x, baseline y, search rect, in start, in end, out start, out end, animation, rise px, x-scale
+const RAW = [
+["logo","Logo initials",0,"mono","HB","#bea373",193.7,370.5,423.4,[284,302,452,432],1.3,1.5,5.5,6.5,"fade",0,0.726],
+["couple","Couple names",0,"script","Hardik & Brinda","#ad4556",70,342.5,666,[105,600,585,697],2.7,3.5,4.9,6.4,"wipe",0,1],
+["s2_shree","Blessing line",1,"serif","|| Shree Ganeshay Namah ||","#884449",24.1,359.5,287.2,[150,266,570,298],7.9,8.5,16.1,17.7,"fade",60,1],
+["s2_l1","Invite line 1",1,"serif","With the blessings of God,","#263314",27,359,333,[90,309,630,343],8.7,8.9,16.1,17.7,"fade",0,1],
+["s2_l2","Invite line 2",1,"serif","Smt. Poonam Sahu & Shri. Anup Kumar Sahu","#1d2d0c",27,360,369,[50,345,670,379],8.9,9.1,16.1,17.7,"fade",0,1],
+["s2_l3","Invite line 3",1,"serif","seek your blessings and request your","#233112",27.1,360.5,404.2,[50,381,670,414],9.1,9.3,16.1,17.7,"fade",0,1],
+["s2_l4","Invite line 4",1,"serif","gracious presence at the wedding celebration","#202e0f",27,359,440,[30,416,690,450],9.3,9.5,16.1,17.7,"fade",0,1],
+["s2_l5","Invite line 5",1,"serif","of their son","#263314",27,359.5,475,[240,451,480,483],9.5,9.7,16.1,17.7,"fade",0,1],
+["s2_groom","Groom name",1,"script","Hardik","#943e47",102.5,334,582.9,[185,498,485,612],9.8,10.5,16.1,17.6,"fade",60,1],
+["s2_g1","Groom family 1",1,"serif","(Grand Son of Late. Ram Swaroop Sahu)","#1f2d0d",27.2,359.5,657.4,[60,633,660,668],10.7,10.8,16.1,17.7,"fade",0,1],
+["s2_g2","Groom family 2",1,"serif","& Late. Kailashpati Devi)","#253315",27.2,359,692.4,[60,669,660,703],10.8,11,16.1,17.7,"fade",0,1],
+["s2_g3","Groom family 3",1,"serif","(Son of Shri. Rakesh Kumar Sahu","#1f2e0e",27.1,359,728.2,[60,704,660,738],10.9,11.1,16.1,17.7,"fade",0,1],
+["s2_g4","Groom family 4",1,"serif","& Smt. Poonam Sahu)","#283617",27.1,359,763.2,[60,739,660,773],11.1,11.2,16.1,17.7,"fade",0,1],
+["s2_weds","Weds",1,"bold","-weds-","#1d320c",34.5,359.5,828,[285,799,435,835],11.7,11.9,16.1,17.7,"fade",0,1],
+["s2_bride","Bride name",1,"script","Brinda","#933e47",101.6,346.5,931.1,[195,852,505,965],12,12.7,16.1,17.6,"fade",60,1],
+["s2_b1","Bride family 1",1,"serif","(Grand Daughter of  Smt. Gunjra Devi &","#1d2c0b",27.1,360.5,1023.2,[125,997,600,1033],13,13.2,16.1,17.7,"fade",0,1],
+["s2_b2","Bride family 2",1,"serif","Late. Munshi Prasad Gupta)","#1f2e0e",27.2,359.5,1058.4,[125,1034,600,1069],13.2,13.4,16.1,17.7,"fade",0,1],
+["s2_b3","Bride family 3",1,"serif","(Daughter of  Smt. Sheela Gupta &","#1d2c0c",27.2,360,1094.4,[125,1069,600,1104],13.5,13.7,16.1,17.7,"fade",0,1],
+["s2_b4","Bride family 4",1,"serif","Shri. Bijendra Gupta)","#1d2c0d",27.3,359.5,1129.6,[225,1104,500,1141],13.7,13.9,16.1,17.7,"fade",0,1],
+["s3_title","Event name",2,"script","Mayra","#953d47",115.2,216.5,427.4,[75,333,335,497],18.3,19,25.9,27.7,"fade",60,1],
+["s3_l1","Line 1",2,"serif","Bhaat Bharan Ne Aayo,","#1d2e0c",30.8,230.5,542.6,[60,518,410,555],19.7,19.9,25.9,27.5,"fade",0,1],
+["s3_l2","Line 2",2,"serif","Biro Mahro, Bhaat Bharan Ne Aaye","#1d2c0c",30.8,234,583.6,[0,558,480,595],20,20.3,25.9,27.5,"fade",0,1],
+["s3_date","Date",2,"date","25th","#1c320b",102.6,229.5,696.2,[135,600,325,735],21,21.6,25.9,27.5,"fade",60,1],
+["s3_month","Month & year",2,"serif","June 2026","#1c2e0b",37.3,208,775.6,[105,746,315,783],22.2,22.4,25.9,27.5,"fade",0,1],
+["s3_time","Time",2,"serif","Mayra & Lunch: 2:00 pm","#1f2b0e",30.7,227.5,836.4,[55,810,405,850],22.9,23.9,25.9,27.5,"wipe",0,1],
+["s3_v1","Venue",2,"serif","The Grand Court Vikeihi","#1f2b0e",28.4,224.5,888.8,[55,863,405,895],24.3,24.5,25.9,27.5,"fade",0,1],
+["s3_v2","City",2,"serif","Civil Lines, Jaipur","#232d12",28.4,228,925.8,[95,901,365,938],24.7,24.9,25.9,27.7,"fade",0,1],
+["s4_title","Event name",3,"script","Sangeet","#766799",124.9,486,448.8,[320,363,645,507],28.8,29.4,36.9,38,"fade",60,1],
+["s4_l1","Line 1",3,"serif","A night of beats, blessings","#202b0f",29.2,496.5,546.4,[325,520,670,556],29.9,30.1,36.9,38,"fade",0,1],
+["s4_l2","Line 2",3,"serif","and beautiful memories","#1f290f",29.3,499,583.6,[335,558,665,590],30.2,30.5,36.9,38,"fade",0,1],
+["s4_date","Date",3,"date","25th","#1f310e",97.5,500,690.1,[415,600,590,722],31.4,32,36.9,38,"fade",60,1],
+["s4_month","Month & year",3,"serif","June 2026","#1e2c0d",35.3,498,763.6,[405,735,595,771],33,33.2,36.9,38,"fade",0,1],
+["s4_time","Time",3,"serif","6:30 pm onwards","#222b12",29.4,499.5,813.8,[380,787,620,825],33.3,34.2,36.9,38,"wipe",0,1],
+["s4_dinner","Dinner line",3,"serif","Followed by Dinner","#202b10",29.2,508.5,865.4,[370,839,645,876],34.4,34.7,36.9,38,"fade",0,1],
+["s4_v1","Venue",3,"serif","The Grand Court Vikeihi","#212a12",27,508.5,919,[350,894,665,925],35,35.2,36.9,38,"fade",0,1],
+["s4_v2","City",3,"serif","Civil Lines, Jaipur","#272d18",27,512,955,[390,929,635,966],35.3,35.6,36.9,38,"fade",0,1],
+["s5_title","Event name",4,"script","Tel Baan","#ce9f04",117.3,239.5,414.6,[20,323,440,447],38.8,39.5,47,48.1,"fade",60,1],
+["s5_l1","Line 1",4,"serif","Haldi, hugs & happy chaos","#1d2c0c",30.9,226,505.8,[40,479,415,518],41,41.3,47,48.1,"fade",0,1],
+["s5_date","Date",4,"date","26th","#1d320a",105.2,212.5,626.5,[120,536,305,660],41.6,42.3,47,48.1,"fade",60,1],
+["s5_month","Month & year",4,"serif","June 2026","#1b2e0b",37.5,215.5,706,[115,677,315,714],42.7,43,47,48.1,"fade",0,1],
+["s5_time","Time",4,"serif","10:30 am onwards","#1c2c0b",34,223,761,[80,732,370,770],44,44.9,47,48.1,"wipe",0,1],
+["s5_v1","Venue",4,"serif","The Grand Court Vikeihi","#1f2c0f",28.4,211.5,815.8,[50,791,375,822],45.4,45.6,47,48.1,"fade",0,1],
+["s5_v2","City",4,"serif","Civil Lines, Jaipur","#1e2b0e",28.6,215.5,854.2,[90,828,340,864],45.7,46,47,48.1,"fade",0,1],
+["s6_title","Event name",5,"script","Wedding","#ae4357",91.3,511.5,376.5,[355,320,670,412],48.9,49.5,60.3,60.33,"fade",60,1],
+["s6_l1","Line 1",5,"serif","Join us to celebrate the moment where","#1d2b0c",29.9,446.5,454.8,[190,430,715,461],50.9,51.1,60.3,60.33,"fade",0,1],
+["s6_l2","Line 2",5,"serif","love becomes a lifetime promise","#212f11",29.9,493.5,493.8,[190,468,715,506],51.2,51.4,60.3,60.33,"fade",0,1],
+["s6_date","Date",5,"date","26th","#1d310b",101.9,485,607.8,[395,518,575,642],51.6,52.3,60.3,60.33,"fade",60,1],
+["s6_month","Month & year",5,"serif","June 2026","#1b2c0a",36,481.5,685,[390,656,575,692],52.7,53,60.3,60.33,"fade",0,1],
+["s6_nikasi","Time 1",5,"serif","Nikasi - 5:00 pm","#1f2d0e",31.3,493,741.6,[370,716,615,755],53.7,54.5,60.3,60.33,"wipe",0,1],
+["s6_phera","Time 2",5,"serif","Phera -7:00 pm","#1f2c0e",31.2,497.5,790.4,[380,764,615,803],55.1,55.4,60.3,60.33,"fade",0,1],
+["s6_dinner","Dinner line",5,"serif","Followed by Dinner","#1d2c0c",31.8,501,846.6,[355,819,650,860],55.7,56.6,60.3,60.33,"wipe",0,1],
+["s6_v1","Venue",5,"serif","The Grand Court Vikeihi","#202c0f",27.6,494.5,905.2,[340,879,650,911],57.1,57.3,60.3,60.33,"fade",0,1],
+["s6_v2","City",5,"serif","Civil Lines, Jaipur","#202c0f",27.6,498,941.2,[380,916,617,952],57.4,57.7,60.3,60.33,"fade",0,1]
+];
+// colour used to find the original ink (logo is keyed on its darker gold)
+const KEY = { logo: '#926150' };
+const LOGO_BOX = [290, 302, 451, 423];
+const SCRIPT_UNSLANT = 0.18;
+
+const F = RAW.map(r => ({
+  id:r[0], label:r[1], scene:r[2], kind:r[3], orig:r[4], text:r[4], color:r[5], size:r[6], cx:r[7], base:r[8],
+  rect:r[9], inS:r[10], inE:r[11], outS:r[12], outE:r[13], anim:r[14], dy0:r[15], sx:r[16], patch:null, hit:null
+}));
+const byId = Object.fromEntries(F.map(f => [f.id, f]));
+// optical centring: shift the replacement script so its visual centre lands on the original's (measured)
+const OPTICAL = { couple:[-10.5,-7.7], logo:[4.2,-0.5], s2_groom:[-17.7,-12.5], s2_bride:[7.1,-16.7],
+  s3_title:[3.3,-20.4], s3_date:[2.2,-20.3], s4_title:[-1.6,-18.6], s4_date:[1.8,-18.5],
+  s5_title:[-11.3,-11.4], s5_date:[4.7,-17.5], s6_title:[5.8,1.6], s6_date:[4.2,-17.1] };
+for (const id in OPTICAL){ byId[id].cx -= OPTICAL[id][0]; byId[id].base -= OPTICAL[id][1]; }
+
+const $ = s => document.querySelector(s);
+const cv = $('#cv'), ctx = cv.getContext('2d');
+const vid = $('#vid'), probe = $('#probe');
+const inline = $('#inlineEdit');
+let plate = null, ready = false, editing = null, comparing = false, recording = false, logoImg = null;
+
+const hexRgb = h => [1,3,5].map(i => parseInt(h.slice(i, i + 2), 16));
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const fmt = t => `${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;
+function toast(msg){ const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
+
+/* ---------- saved text ---------- */
+function load(){
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (s && s.values) for (const id in s.values) if (byId[id]) byId[id].text = s.values[id];
+    if (s && s.logo) setLogo(s.logo, false);
+  } catch (e) {}
+}
+function save(){
+  const values = {}; F.forEach(f => { if (f.text !== f.orig) values[f.id] = f.text; });
+  try { localStorage.setItem(STORE, JSON.stringify({ values, logo: logoImg ? logoImg.src : null })); } catch (e) {}
+}
+function setLogo(src, persist = true){
+  if (!src){ logoImg = null; if (persist) save(); draw(); return; }
+  const im = new Image(); im.onload = () => { logoImg = im; if (persist) save(); draw(); }; im.src = src;
+}
+
+/* ---------- lifting the original text off the video ---------- */
+function seekProbe(t){ return new Promise(res => { const on = () => { probe.removeEventListener('seeked', on); res(); }; probe.addEventListener('seeked', on); probe.currentTime = t; }); }
+const work = document.createElement('canvas'); work.width = W; work.height = H;
+const wctx = work.getContext('2d', { willReadFrequently: true });
+async function grab(t){ await seekProbe(t); wctx.drawImage(probe, 0, 0, W, H); return wctx.getImageData(0, 0, W, H).data; }
+
+function buildPlate(frames){
+  const P = new Uint8ClampedArray(W * H * 4), v = new Array(frames.length), mid = frames.length >> 1;
+  for (let i = 0; i < P.length; i += 4){
+    for (let k = 0; k < 3; k++){ for (let f = 0; f < frames.length; f++) v[f] = frames[f][i + k]; v.sort((a, b) => a - b); P[i + k] = v[mid]; }
+    P[i + 3] = 255;
+  }
+  return P;
+}
+
+function buildPatch(f, d){
+  const T = hexRgb(KEY[f.id] || f.color);
+  const [rx0, ry0, rx1, ry1] = f.rect;
+  const rise = Math.max(0, Math.ceil(f.dy0)) + (f.dy0 ? 12 : 0);
+  const pad = 4;
+  const x0 = Math.max(0, rx0 - pad), y0 = Math.max(0, ry0 - pad);
+  const x1 = Math.min(W, rx1 + pad), y1 = Math.min(H, ry1 + pad + rise);
+  const w = x1 - x0, h = y1 - y0;
+  const m = new Uint8Array(w * h);
+  for (let y = ry0; y < ry1; y++) for (let x = rx0; x < rx1; x++){
+    const i = (y * W + x) * 4;
+    const pr = plate[i], pg = plate[i+1], pb = plate[i+2];
+    const vr = pr - T[0], vg = pg - T[1], vb = pb - T[2], vv = vr*vr + vg*vg + vb*vb || 1;
+    const dr = pr - d[i], dg = pg - d[i+1], db = pb - d[i+2];
+    const a = (dr*vr + dg*vg + db*vb) / vv;
+    if (a <= 0.06) continue;
+    const er = dr - a*vr, eg = dg - a*vg, eb = db - a*vb;
+    if (er*er + eg*eg + eb*eb > 34*34) continue;
+    m[(y - y0) * w + (x - x0)] = 1;
+  }
+  // smear downward to cover the path of text that rises into place
+  if (rise){
+    for (let x = 0; x < w; x++){ let run = 0; for (let y = 0; y < h; y++){ const k = y*w + x; if (m[k] === 1) run = rise; else if (run > 0){ m[k] = 2; run--; } } }
+  }
+  // dilate 2px solid + 1px soft edge
+  const out = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+    if (!m[y*w + x]) continue;
+    for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++){
+      const X = x + dx, Y = y + dy; if (X < 0 || Y < 0 || X >= w || Y >= h) continue;
+      const r = Math.max(Math.abs(dx), Math.abs(dy)), val = r <= 2 ? 255 : 120, k = Y*w + X;
+      if (val > out[k]) out[k] = val;
+    }
+  }
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const pc = c.getContext('2d'); const img = pc.createImageData(w, h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+    const k = y*w + x, a = out[k]; if (!a) continue;
+    const i = ((y + y0) * W + (x + x0)) * 4, j = k * 4;
+    img.data[j] = plate[i]; img.data[j+1] = plate[i+1]; img.data[j+2] = plate[i+2]; img.data[j+3] = a;
+  }
+  pc.putImageData(img, 0, 0);
+  f.patch = { c, x: x0, y: y0 };
+}
+
+async function prepare(){
+  const bar = $('#loadBar'); const steps = PLATE_TIMES.length + SCENE_FULL.length; let n = 0;
+  const tick = () => { bar.style.width = (++n / steps * 100) + '%'; };
+  await new Promise(r => probe.readyState >= 2 ? r() : probe.addEventListener('loadeddata', r, { once: true }));
+  const frames = []; for (const t of PLATE_TIMES){ frames.push(await grab(t)); tick(); }
+  plate = buildPlate(frames);
+  for (let s = 0; s < SCENE_FULL.length; s++){
+    const d = await grab(SCENE_FULL[s]); tick();
+    F.filter(f => f.scene === s).forEach(f => buildPatch(f, d));
+  }
+}
+
+/* ---------- drawing the new text ---------- */
+function fontFor(kind, size){ return FONT[kind].replace('SZ', size + 'px'); }
+function measure(f, size){
+  ctx.save();
+  let w;
+  if (f.kind === 'date'){
+    const m = f.text.match(/^(\d+)(.*)$/) || [0, f.text, ''];
+    ctx.font = fontFor('date', size); const w1 = ctx.measureText(m[1]).width;
+    ctx.font = fontFor('date', size * .55); const w2 = ctx.measureText(m[2]).width;
+    w = w1 + w2;
+  } else {
+    ctx.font = fontFor(f.kind, size);
+    if (f.kind === 'mono') ctx.letterSpacing = (-0.1 * size) + 'px';
+    w = ctx.measureText(f.text).width + (f.kind === 'mono' ? 0.1 * size : 0);
+  }
+  ctx.restore();
+  return w * f.sx;
+}
+// keep the line centred where it was; shrink only if it would run off the frame
+function fitSize(f){
+  const maxW = 2 * Math.min(f.cx, W - f.cx) - 16;
+  const w = measure(f, f.size);
+  return w > maxW ? f.size * maxW / w : f.size;
+}
+function stateAt(f, t){
+  const startPad = f.dy0 ? 0.35 : 0.05;
+  if (t < f.inS - startPad || t > f.outE + 0.05) return null;
+  const p = f.inE > f.inS ? clamp((t - f.inS) / (f.inE - f.inS)) : (t >= f.inS ? 1 : 0);
+  // measured from the original: titles/dates rise ~60px at constant speed while fading in linearly
+  let o = f.anim === 'fade' ? p : (p > 0 ? 1 : 0);
+  if (t > f.outS) o *= clamp(1 - (t - f.outS) / Math.max(.01, f.outE - f.outS));
+  return { o, p, dy: f.dy0 * (1 - p), wipe: f.anim === 'wipe' ? p : 1 };
+}
+function drawField(f, st){
+  if (!f.text && !(f.id === 'logo' && logoImg)) return;
+  const size = fitSize(f), w = measure(f, size);
+  ctx.save();
+  ctx.globalAlpha = st.o;
+  const left = f.cx - w / 2;
+  f.hit = { x: left - 10, y: f.base - size * 1.05, w: w + 20, h: size * 1.4 };
+  if (st.wipe < 1){ ctx.beginPath(); ctx.rect(left - 12, 0, (w + 24) * st.wipe, H); ctx.clip(); }
+  ctx.translate(0, st.dy);
+  if (f.id === 'logo' && logoImg){
+    const [bx0, by0, bx1, by1] = LOGO_BOX, bw = bx1 - bx0, bh = by1 - by0;
+    const s = Math.min(bw / logoImg.width, bh / logoImg.height);
+    const iw = logoImg.width * s, ih = logoImg.height * s;
+    ctx.drawImage(logoImg, bx0 + (bw - iw) / 2, by0 + (bh - ih) / 2, iw, ih);
+    f.hit = { x: bx0, y: by0, w: bw, h: bh };
+    ctx.restore(); return;
+  }
+  if (f.id === 'logo'){
+    const g = ctx.createLinearGradient(0, f.base - size * .75, 0, f.base);
+    g.addColorStop(0, '#c9ab70'); g.addColorStop(.5, '#b8975c'); g.addColorStop(1, '#a5844c');
+    ctx.fillStyle = g;
+  } else ctx.fillStyle = f.color;
+  ctx.translate(f.cx, f.base); ctx.scale(f.sx, 1);
+  const scripty = f.kind === 'script' || f.kind === 'date';
+  // the original lettering is more upright and a touch heavier than Alex Brush
+  const put = (s, x, y, sz) => {
+    ctx.fillText(s, x, y);
+    if (scripty){ ctx.strokeStyle = ctx.fillStyle; ctx.lineJoin = 'round'; ctx.lineWidth = sz * 0.012; ctx.strokeText(s, x, y); }
+  };
+  if (scripty) ctx.transform(1, 0, SCRIPT_UNSLANT, 1, SCRIPT_UNSLANT * size * 0.3, 0);
+  if (f.kind === 'date'){
+    const m = f.text.match(/^(\d+)(.*)$/) || [0, f.text, ''];
+    ctx.font = fontFor('date', size); const w1 = ctx.measureText(m[1]).width;
+    ctx.font = fontFor('date', size * .55); const w2 = ctx.measureText(m[2]).width;
+    const l = -(w1 + w2) / 2;
+    ctx.font = fontFor('date', size); put(m[1], l, 0, size);
+    ctx.font = fontFor('date', size * .55); put(m[2], l + w1, -size * .5, size * .55);
+  } else if (scripty){
+    ctx.font = fontFor(f.kind, size);
+    const tw = ctx.measureText(f.text).width;
+    put(f.text, -tw / 2, 0, size);
+  } else {
+    ctx.font = fontFor(f.kind, size);
+    if (f.kind === 'mono') ctx.letterSpacing = (-0.1 * size) + 'px';
+    const tw = ctx.measureText(f.text).width + (f.kind === 'mono' ? 0.1 * size : 0);
+    ctx.fillText(f.text, -tw / 2, 0);
+  }
+  ctx.restore();
+}
+
+function draw(){
+  if (!ready) return;
+  const t = vid.currentTime;
+  ctx.drawImage(vid, 0, 0, W, H);
+  if (!comparing){
+    for (const f of F){
+      const st = stateAt(f, t);
+      if (!st){ f.hit = null; continue; }
+      ctx.drawImage(f.patch.c, f.patch.x, f.patch.y);
+      if (editing === f){ f.hit = null; continue; }
+      drawField(f, st);
+      if (st.o < 0.15) f.hit = null;
+    }
+    if ($('#showAreas').checked && vid.paused && !recording){
+      ctx.save(); ctx.strokeStyle = 'rgba(155,58,76,.55)'; ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5;
+      for (const f of F) if (f.hit && f !== editing) ctx.strokeRect(f.hit.x, f.hit.y, f.hit.w, f.hit.h);
+      ctx.restore();
+    }
+  }
+  $('#seek').value = t;
+  $('#time').textContent = `${fmt(t)} / ${fmt(DUR)}`;
+}
+function loop(){ draw(); if (!vid.paused) requestAnimationFrame(loop); }
+
+/* ---------- click-to-edit on the video ---------- */
+function toVideo(e){ const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
+function hitTest(p){ for (let i = F.length - 1; i >= 0; i--){ const h = F[i].hit; if (h && p.x >= h.x && p.x <= h.x + h.w && p.y >= h.y && p.y <= h.y + h.h) return F[i]; } return null; }
+cv.addEventListener('mousemove', e => { if (ready) cv.classList.toggle('hot', !!hitTest(toVideo(e))); });
+cv.addEventListener('click', e => {
+  if (!ready || recording) return;
+  const f = hitTest(toVideo(e));
+  if (f) openInline(f); else togglePlay();
+});
+function openInline(f){
+  pause();
+  if (f.id === 'logo' && logoImg){ document.getElementById('in-logo').focus(); return; }
+  editing = f;
+  const r = cv.getBoundingClientRect(), s = r.width / W;
+  const size = fitSize(f), h = f.hit || { x: f.cx - 150, y: f.base - size, w: 300, h: size * 1.4 };
+  const width = Math.max(h.w, 220);
+  Object.assign(inline.style, {
+    display: 'block',
+    left: ((f.cx - width / 2) * s) + 'px', top: (h.y * s) + 'px',
+    width: (width * s) + 'px', height: (h.h * s) + 'px',
+    font: fontFor(f.kind === 'date' ? 'script' : f.kind, size * s),
+    color: f.id === 'logo' ? '#b8975c' : f.color, lineHeight: (h.h * s) + 'px'
+  });
+  inline.value = f.text;
+  inline.setAttribute('aria-label', 'Edit ' + f.label);
+  draw();
+  inline.focus(); inline.select();
+}
+function closeInline(commit){
+  if (!editing) return;
+  if (commit) setText(editing, inline.value);
+  editing = null; inline.style.display = 'none'; draw();
+}
+inline.addEventListener('input', () => { if (editing) { editing.text = inline.value; syncPanel(editing); } });
+inline.addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ e.preventDefault(); closeInline(true); }
+  if (e.key === 'Escape'){ e.preventDefault(); closeInline(true); }
+});
+inline.addEventListener('blur', () => closeInline(true));
+
+function setText(f, v){ f.text = v; syncPanel(f); save(); draw(); }
+function syncPanel(f){ const el = document.getElementById('in-' + f.id); if (el && el.value !== f.text) el.value = f.text; }
+
+/* ---------- side panel ---------- */
+function buildPanel(){
+  const panel = $('#panel');
+  SCENES.forEach((name, s) => {
+    const h = document.createElement('h2'); h.textContent = name; panel.appendChild(h);
+    if (s === 0){
+      const row = document.createElement('div'); row.className = 'row'; row.style.marginBottom = '12px';
+      row.innerHTML = '<label class="btn">Upload logo image<input type="file" id="logoFile" accept="image/*" class="sr"></label><button id="logoClear">Use initials</button>';
+      panel.appendChild(row);
+    }
+    F.filter(f => f.scene === s).forEach(f => {
+      const lab = document.createElement('label'); lab.className = 'field';
+      lab.innerHTML = `<span>${f.label}</span><input type="text" id="in-${f.id}">`;
+      panel.appendChild(lab);
+      const input = lab.querySelector('input'); input.value = f.text;
+      input.addEventListener('focus', () => { pause(); vid.currentTime = Math.min(DUR - 0.05, Math.max(f.inE + 0.3, Math.min(f.outS - 0.2, SCENE_FULL[s]))); });
+      input.addEventListener('input', () => { f.text = input.value; save(); draw(); });
+    });
+  });
+  $('#logoFile').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const rd = new FileReader(); rd.onload = () => { setLogo(rd.result); toast('Logo image added'); }; rd.readAsDataURL(file);
+    e.target.value = '';
+  });
+  $('#logoClear').addEventListener('click', () => { setLogo(null); toast('Showing initials'); });
+}
+
+/* ---------- playback ---------- */
+function setPlayUi(){
+  const playing = !vid.paused;
+  $('#playLabel').textContent = playing ? 'Pause' : 'Play';
+  $('#playBtn').setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  $('#playIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M7 5v14l12-7z"/>';
+}
+function pause(){ vid.pause(); setPlayUi(); draw(); }
+function togglePlay(){ if (vid.paused){ if (vid.ended || vid.currentTime >= DUR - 0.05) vid.currentTime = 0; vid.play(); } else vid.pause(); }
+vid.addEventListener('play', () => { setPlayUi(); loop(); });
+vid.addEventListener('pause', () => { setPlayUi(); draw(); });
+vid.addEventListener('seeked', draw);
+$('#playBtn').addEventListener('click', togglePlay);
+$('#seek').addEventListener('input', e => { vid.currentTime = +e.target.value; });
+$('#showAreas').addEventListener('change', draw);
+const cmpOn = () => { comparing = true; draw(); }, cmpOff = () => { comparing = false; draw(); };
+$('#compareBtn').addEventListener('pointerdown', cmpOn);
+['pointerup', 'pointerleave', 'blur'].forEach(ev => $('#compareBtn').addEventListener(ev, cmpOff));
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space'){ e.preventDefault(); togglePlay(); }
+});
+
+/* ---------- save / load / reset ---------- */
+$('#exportBtn').addEventListener('click', () => {
+  const data = { template: 'w2', values: Object.fromEntries(F.map(f => [f.id, f.text])), logo: logoImg ? logoImg.src : null };
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  a.download = 'w2-text.json'; a.click(); URL.revokeObjectURL(a.href);
+});
+$('#importFile').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  file.text().then(txt => {
+    const d = JSON.parse(txt);
+    for (const id in (d.values || {})) if (byId[id]) { byId[id].text = String(d.values[id]); syncPanel(byId[id]); }
+    setLogo(d.logo || null); save(); draw(); toast('Text loaded');
+  }).catch(() => toast('That file could not be read'));
+  e.target.value = '';
+});
+$('#resetBtn').addEventListener('click', () => {
+  if (!confirm('Put all text back to the original?')) return;
+  F.forEach(f => { f.text = f.orig; syncPanel(f); }); setLogo(null); save(); draw(); toast('Original text restored');
+});
+
+/* ---------- download the edited video ---------- */
+let audioDest = null;
+function audioTracks(){
+  try {
+    if (!audioDest){
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      const src = ac.createMediaElementSource(vid);
+      audioDest = ac.createMediaStreamDestination();
+      src.connect(audioDest); src.connect(ac.destination);
+      audioDest.ac = ac;
+    }
+    audioDest.ac.resume();
+    return audioDest.stream.getAudioTracks();
+  } catch (e) { return []; }
+}
+$('#recordBtn').addEventListener('click', async () => {
+  if (recording) return;
+  if (!window.MediaRecorder){ toast('This browser cannot record video'); return; }
+  closeInline(true);
+  const types = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm'];
+  const mime = types.find(t => MediaRecorder.isTypeSupported(t)) || '';
+  const stream = new MediaStream([...cv.captureStream(30).getVideoTracks(), ...audioTracks()]);
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8e6 });
+  const chunks = []; rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+  recording = true;
+  const btn = $('#recordBtn'); btn.disabled = true;
+  const ov = $('#loading'); $('#loadMsg').textContent = 'Recording your video… keep this tab open'; ov.style.display = 'flex';
+  const bar = $('#loadBar'); bar.style.width = '0';
+  const prog = setInterval(() => { bar.style.width = (vid.currentTime / DUR * 100) + '%'; }, 250);
+  vid.pause(); vid.currentTime = 0;
+  await new Promise(r => vid.addEventListener('seeked', r, { once: true }));
+  rec.start(500);
+  await vid.play();
+  await new Promise(r => vid.addEventListener('ended', r, { once: true }));
+  await new Promise(r => setTimeout(r, 300));
+  rec.stop();
+  await new Promise(r => rec.onstop = r);
+  clearInterval(prog); ov.style.display = 'none'; recording = false; btn.disabled = false; draw();
+  const ext = (rec.mimeType || mime).includes('mp4') ? 'mp4' : 'webm';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || mime }));
+  a.download = 'wedding-invite.' + ext; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  toast('Video saved as .' + ext);
+});
+
+/* ---------- start ---------- */
+(async () => {
+  try {
+    await Promise.all([
+      document.fonts.load(fontFor('script', 40), 'Hardik'), document.fonts.load(fontFor('serif', 40), 'Smt'),
+      document.fonts.load(fontFor('bold', 40), 'weds'), document.fonts.load(fontFor('mono', 40), 'HB')
+    ]);
+    load(); buildPanel();
+    await prepare();
+    await new Promise(r => vid.readyState >= 2 ? r() : vid.addEventListener('loadeddata', r, { once: true }));
+    ready = true; $('#loading').style.display = 'none';
+    vid.currentTime = SCENE_FULL[0];
+  } catch (e) {
+    console.error(e);
+    $('#loadMsg').textContent = location.protocol === 'file:'
+      ? 'Open this page through the local server (http://localhost/…), not as a file — the browser blocks reading video pixels from file:// pages.'
+      : 'Could not prepare the video: ' + e.message;
+  }
+})();
+})();
+</script>
+</body>
+</html>
